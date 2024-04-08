@@ -1,0 +1,35 @@
+{
+    "trade": {
+        "AMOUNT_USD_TO_BUY_IN_USD": 3,
+        "PERCENTAGE_TAKE_PROFIT": 150
+
+        
+    },
+    "filter": {
+      "MIN_PRICE_CHANGE_5M": 10,
+      "MIN_PRICE_CHANGE_1H": -70,
+      "MIN_PRICE_CHANGE_6H": 10,
+      "MIN_PRICE_CHANGE_24H": 10,  
+      "MIN_VOLUME_5M": 1000,
+      "MIN_VOLUME_1H": 500,
+      "MIN_VOLUME_6H": 1000,
+      "MIN_VOLUME_24H": 1000,
+      "MIN_BUYS_5M": 1000,
+      "MIN_BUYS_1H": 1000,
+      "MIN_BUYS_6H": 1000,
+      "MIN_BUYS_24H": 1000,
+      "MIN_MARKET_CAP": 1,
+      "MAX_MARKET_CAP": 150000,
+      "MIN_LIQUIDITY": 400  
+    },
+    "connection": {
+        "BIRD_EYE_API_KEY": "eccc7565cb0c42ff85c19b64a640d41f",
+        "DEXTOOLS_API_KEY": "t2UZtgUjAH07OL282qRu7hwNvJAmYik4uWY1E4w0",
+        "RPC_ENDPOINT": "https://serene-soft-dream.solana-mainnet.quiknode.pro/d9545d21916469751695fb7a165e97325634fdb5"
+    }
+
+  }
+
+
+
+
