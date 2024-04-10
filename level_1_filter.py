@@ -26,9 +26,9 @@ import pandas as pd
 
 # price change
 MIN_PRICE_CHANGE_5M = 10
-MIN_PRICE_CHANGE_1H = -70
-MIN_PRICE_CHANGE_6H = 10
-MIN_PRICE_CHANGE_24H = 10
+MIN_PRICE_CHANGE_1H = -20
+MIN_PRICE_CHANGE_6H = -20
+MIN_PRICE_CHANGE_24H = -20
 
 # volume
 MIN_VOLUME_5M = 1000
@@ -51,7 +51,7 @@ MAX_SELLS_24H = 1000
 # market cap
 
 MIN_MARKET_CAP = 1
-MAX_MARKET_CAP = 150000
+MAX_MARKET_CAP = 125000
 
 # liquidity
 
@@ -68,7 +68,7 @@ MIN_LIQUIDITY = 400
 
 def get_filtered_dexscreener():
     csvPathToSave = 'data/level_1_filter.csv'
-    source_file = 'data/recent_tokens_list.csv'
+    source_file = 'data/token_overview_list.csv'
 
     df = pd.read_csv(source_file)
 
@@ -84,26 +84,27 @@ def get_filtered_dexscreener():
     if all(col in df.columns for col in required_columns):
         # Correct date format according to your actual data
         date_format = '%Y-%m-%d %H:%M:%S'
-        df['createdDateTime'] = pd.to_datetime(df['createdDateTime'], format=date_format)
+        df['createdDateTime'] = pd.to_datetime(df['createdDateTime'], format='%d-%m-%y %H:%M:%S')
 
         # Add your filter criteria here as necessary
         initial_filter = (
             #(df['priceChange_5m'] > 0) &
-            (df['priceChange_1h'] > -20) &
-            #(df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
-            #(df['priceChange_24h'] > MIN_PRICE_CHANGE_24H) &
+            (df['priceChange_1h'] > MIN_PRICE_CHANGE_5M) &
+            (df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
+            (df['priceChange_24h'] > MIN_PRICE_CHANGE_24H) &
             #(df['volume_5m'] >= MIN_VOLUME_5M) &
             (df['volume_1h'] >= MIN_VOLUME_1H) &
             #(df['volume_6h'] >= MIN_VOLUME_6H) &
             #(df['volume_24h'] >= MIN_VOLUME_24H) &
             (df['buys_5m'] >= df['sells_5m']) &
             (df['buys_1h'] >= df['sells_1h']) &
-            #(df['buys_6h'] > MIN_BUYS_6H) &
+            (df['buys_1h'] > 0) &
+            (df['buys_6h'] > df['buys_1h']) &
             #(df['buys_24h'] > MIN_BUYS_24H) &
             #(df['sells_5m'] <= df['buys_5m'] * 0.6) &
             (df['sells_1h'] <= df['buys_1h'] * 0.7) &
             #(df['sells_6h'] <= df['buys_6h'] * 0.6) &
-            (df['sells_24h'] <= df['buys_24h'] * 0.7) &
+            #(df['sells_24h'] <= df['buys_24h'] * 0.7) &
             (df['marketCap'] >= MIN_MARKET_CAP) & (df['marketCap'] <= MAX_MARKET_CAP) &
             (df['liquidity'] >= MIN_LIQUIDITY)
         )

@@ -176,10 +176,11 @@ def filter_recent_tokens():
         print("No recent tokens found within the last 10 days.")
         
 def get_token_overview_for_list(src_csv_file):
+    
     df_addresses = pd.read_csv(src_csv_file)
     data_list = []
 
-    # Split the addresses into manageable chunks of 15 addresses each
+    # Split the addresses into manageable chunks
     address_chunks = [chunk.tolist() for chunk in np.array_split(df_addresses['address'], max(len(df_addresses) // 20, 1))]
     counter = 20
     for addresses_chunk in address_chunks:
@@ -189,54 +190,58 @@ def get_token_overview_for_list(src_csv_file):
 
         time.sleep(1)
         response = requests.get(uri)
-      
 
         if response.status_code == 200:
             print(f"Fetched overview for {counter} addresses")
-            counter = counter + 20
+            counter += 20
             print(f"Response code: {response.status_code}\n")
             json_data = response.json()
-            for pair in json_data['pairs']:
-                liquidity = pair.get('liquidity', {}).get('usd', None)
-                marketCap = pair.get('fdv', None)
-                priceUSD = pair.get('priceUsd', None)
 
-                data = {
-                    'createdDateTime': datetime.fromtimestamp(pair.get('pairCreatedAt', 0) / 1000, timezone('UTC')).strftime('%d-%m-%y %H:%M:%S'),
-                    'address': pair['baseToken']['address'],
-                    'symbol': pair['baseToken']['symbol'],
-                    'pairAddress': pair['pairAddress'],
-                    'buys_5m': pair['txns']['m5']['buys'],
-                    'buys_1h': pair['txns']['h1']['buys'],
-                    'buys_6h': pair['txns']['h6']['buys'],
-                    'buys_24h': pair['txns']['h24']['buys'],
-                    'sells_5m': pair['txns']['m5']['sells'],
-                    'sells_1h': pair['txns']['h1']['sells'],
-                    'sells_6h': pair['txns']['h6']['sells'],
-                    'sells_24h': pair['txns']['h24']['sells'],
-                    'volume_5m': pair['volume']['m5'],
-                    'volume_1h': pair['volume']['h1'],
-                    'volume_6h': pair['volume']['h6'],
-                    'volume_24h': pair['volume']['h24'],
-                    'priceChange_5m': pair['priceChange']['m5'],
-                    'priceChange_1h': pair['priceChange']['h1'],
-                    'priceChange_6h': pair['priceChange']['h6'],
-                    'priceChange_24h': pair['priceChange']['h24'],
-                    'liquidity': liquidity,
-                    'marketCap': marketCap,
-                    'priceUSD': priceUSD
-                }
+            pairs = json_data.get('pairs')
+            if pairs is not None:
+                for pair in pairs:
+                    liquidity = pair.get('liquidity', {}).get('usd', None)
+                    marketCap = pair.get('fdv', None)
+                    priceUSD = pair.get('priceUsd', None)
 
-                if marketCap is not None:
-                    data['marketCap'] = int(marketCap) if not pd.isna(marketCap) else None
+                    data = {
+                        'createdDateTime': datetime.fromtimestamp(pair.get('pairCreatedAt', 0) / 1000, timezone('UTC')).strftime('%d-%m-%y %H:%M:%S'),
+                        'address': pair['baseToken']['address'],
+                        'symbol': pair['baseToken']['symbol'],
+                        'pairAddress': pair['pairAddress'],
+                        'buys_5m': pair['txns']['m5']['buys'],
+                        'buys_1h': pair['txns']['h1']['buys'],
+                        'buys_6h': pair['txns']['h6']['buys'],
+                        'buys_24h': pair['txns']['h24']['buys'],
+                        'sells_5m': pair['txns']['m5']['sells'],
+                        'sells_1h': pair['txns']['h1']['sells'],
+                        'sells_6h': pair['txns']['h6']['sells'],
+                        'sells_24h': pair['txns']['h24']['sells'],
+                        'volume_5m': pair['volume']['m5'],
+                        'volume_1h': pair['volume']['h1'],
+                        'volume_6h': pair['volume']['h6'],
+                        'volume_24h': pair['volume']['h24'],
+                        'priceChange_5m': pair['priceChange']['m5'],
+                        'priceChange_1h': pair['priceChange']['h1'],
+                        'priceChange_6h': pair['priceChange']['h6'],
+                        'priceChange_24h': pair['priceChange']['h24'],
+                        'liquidity': liquidity,
+                        'marketCap': marketCap,
+                        'priceUSD': priceUSD
+                    }
 
-                if priceUSD is not None:
-                    data['priceUSD'] = format(float(priceUSD), '.20f').rstrip('0').rstrip('.')
+                    if marketCap is not None:
+                        data['marketCap'] = int(marketCap) if not pd.isna(marketCap) else None
 
-                data['website'] = pair['info']['websites'][0]['url'] if 'info' in pair and 'websites' in pair['info'] and pair['info']['websites'] else None
-                data['twitter'] = next((s['url'] for s in pair['info']['socials'] if s['type'] == 'twitter'), None) if 'info' in pair and 'socials' in pair['info'] else None
-                data['telegram'] = next((s['url'] for s in pair['info']['socials'] if s['type'] == 'telegram'), None) if 'info' in pair and 'socials' in pair['info'] else None
-                data_list.append(data)
+                    if priceUSD is not None:
+                        data['priceUSD'] = format(float(priceUSD), '.20f').rstrip('0').rstrip('.')
+
+                    data['website'] = pair['info']['websites'][0]['url'] if 'info' in pair and 'websites' in pair['info'] and pair['info']['websites'] else None
+                    data['twitter'] = next((s['url'] for s in pair['info']['socials'] if s['type'] == 'twitter'), None) if 'info' in pair and 'socials' in pair['info'] else None
+                    data['telegram'] = next((s['url'] for s in pair['info']['socials'] if s['type'] == 'telegram'), None) if 'info' in pair and 'socials' in pair['info'] else None
+                    data_list.append(data)
+            else:
+                print(f"No 'pairs' found in the response for addresses: {addresses_str}")
         else:
             print(f"\nFailed to fetch data for addresses. Status code:", response.status_code)
 
@@ -245,6 +250,7 @@ def get_token_overview_for_list(src_csv_file):
     if not data_list:
         print("No data fetched. Check API request format and limits.")
 
+    # Drop duplicates based on the 'address' column
     df_result = df_result.drop_duplicates(subset='address', keep='first')
     df_result.to_csv("data/token_overview_list.csv", index=False)
     print("Data written to 'data/token_overview_list.csv'")

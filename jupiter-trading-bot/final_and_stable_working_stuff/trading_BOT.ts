@@ -1,13 +1,13 @@
 import axios from 'axios';
 import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
-import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
+import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import { removePendingTransactions, repeatProcessTransactions } from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/trade_manager';
 import { amountToUiAmount } from '@solana/spl-token';
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
 import { parse } from 'csv-parse/sync';
 import { Parser } from 'json2csv';
-import {update_account_PNL, wrapper} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
+import {update_account_PNL, update_pnl_after_buy, update_account_PNL_v2, wrapper} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import {checkOHLCVConditions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
 import {get_token_price, get_token_prices} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import { format } from 'date-fns';
@@ -83,73 +83,81 @@ async function buy(amount_usd: number, token_address: String) {
 }
 
 async function buy_all_from_filtered() {
+    console.log("DEBUG: starting buy_all_from_filtered()");
 
     let all_transactions_succeed = true;
     const logFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/data_logs.csv';
     const filePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_2_filter.csv';
-    const balances = await getAllBalances();
-    // Append start log to the CSV
-    const startTimestamp = format(new Date(), 'dd-MM-yyyy HH:mm:ss');
-    const startLog = `"${startTimestamp}","buy_all_from_filtered() starting now."\n`;
-    fs.appendFileSync(logFilePath, startLog);
 
-    if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
-        console.log("The source csv file level_2_filter.csv is empty.\n");
-        return;
-    }
+    try {
+        const balances = await getAllBalances();
 
-    const data: CsvRow[] = []; // Use an array to collect data from the stream
-    const stream = fs.createReadStream(filePath).pipe(csv());
+        // Append start log to the CSV
+        const startTimestamp = format(new Date(), 'dd-MM-yyyy HH:mm:ss');
+        const startLog = `"${startTimestamp}","buy_all_from_filtered() starting now."\n`;
+        fs.appendFileSync(logFilePath, startLog);
 
-    // Collect data from the stream into an array
-    stream.on('data', (row: CsvRow) => data.push(row));
-    await new Promise(resolve => stream.on('end', resolve));
-
-    console.log("Checking for new Buy opportunities...");
-
-    for (const row of data) {
-        const balance = balances[row.address];
-        console.log(`\nPerforming OHLCV checks on ${row.address}. Balance: ${balance}`);
-
-        if ((balance && balance < 1) || !balance) {
-            const canBuy = await checkOHLCVConditions(row.pairAddress);
-            console.log(`OHLCV check result: ${canBuy}`);
-            
-            if (canBuy) {
-                try {
-
-                    all_transactions_succeed = await buy(AMOUNT_USD_TO_BUY, row.address);
-                    await sleep(1000); // Ensure a pause before processing the next token
-
-                } catch (error) {
-                    console.error('Error during buy operation:', error);
-                }
-            }
-        } else {
-            console.log("INFO: Wallet already holds that token, not Buying.");
-            await sleep(1000); // If you need to delay even when not buying, you should await the sleep
+        if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
+            console.log("The source csv file level_2_filter.csv is empty.\n");
+            return;
         }
+
+        const data: CsvRow[] = [];
+        const stream = fs.createReadStream(filePath).pipe(csv());
+
+        stream.on('data', (row: CsvRow) => data.push(row));
+        await new Promise(resolve => stream.on('end', resolve));
+
+        console.log("Checking for new Buy opportunities...");
+
+        for (const row of data) {
+            const balance = balances[row.address];
+            console.log(`\nPerforming OHLCV checks on ${row.address}. Balance: ${balance}`);
+
+            if ((balance && balance < 1) || !balance) {
+                const canBuy = await checkOHLCVConditions(row.pairAddress);
+                console.log(`OHLCV check result: ${canBuy}`);
+                
+                if (canBuy) {
+                    try {
+                        all_transactions_succeed = await buy(AMOUNT_USD_TO_BUY, row.address);
+                        await sleep(1000); // Ensure a pause before processing the next token
+                    } catch (error) {
+                        console.error('Error during buy operation:', error);
+                    }
+                }
+            } else {
+                console.log("INFO: Wallet already holds that token, not Buying.");
+                await sleep(1000);
+            }
+        }
+    } catch (error) {
+        console.error('Error fetching balances:', error);
+        return false;
     }
+
     if (all_transactions_succeed) {
         console.log('All transactions processed.');
         return true;
+    } else {
+        console.log('Some transactions failed.');
+        return false;
     }
-    console.log('Some transactions failed.');
-    return false;
-    
 }
 
 
 
-async function sell_all_for_address(token_balance: number, tokenAddress: String) {
-    //const token_balance = await getTokenBalance(tokenAddress);
+async function sell_all_for_address(tokenAddress: String) {
+    const token_balance = await getTokenBalance(tokenAddress);
 
     //if (token_balance === undefined) {
     //    console.error('Token balance is undefined.');
      //   return; // Handle the undefined case appropriately
     //}
+    if (token_balance) {
+        await pre_and_post_sell_operations(token_balance, tokenAddress);
+    }
     
-    await pre_and_post_sell_operations(token_balance, tokenAddress);
 }
 
 const args = process.argv.slice(2);
@@ -352,41 +360,7 @@ async function buy_all_from_DEGEN_lIST() {
     });
 }
 
-async function startAutoBuyProcess(mode: String) {
 
-    if (mode == "degen") {
-        while (true) {
-            try {
-                await checkAndBuyDEGENERATE();
-                // Wait for 5 minutes before repeating the process
-                console.log("Waiting 5 minutes before starting the next cycle...");
-                await delay(5000); // 5 minutes in milliseconds
-            } catch (error) {
-                console.error("An error occurred during the auto-buy process:", error);
-                // Decide if you want to continue or exit the loop in case of an error
-                // For now, we'll just wait 5 minutes before trying again
-                await delay(5000);
-            }
-        }
-    }
-    else{
-        while (true) {
-            try {
-                await checkAndBuy();
-    
-                // Wait for 5 minutes before repeating the process
-                console.log("Waiting 5 minutes before starting the next cycle...");
-                await delay(5000); // 5 minutes in milliseconds
-            } catch (error) {
-                console.error("An error occurred during the auto-buy process:", error);
-                // Decide if you want to continue or exit the loop in case of an error
-                // For now, we'll just wait 5 minutes before trying again
-                await delay(5000);
-            }
-        }
-    }
-    
-}
 
 
 
@@ -405,12 +379,14 @@ async function printTokenBalancesInUSD() {
     const priceMap = await get_token_prices(tokenAddresses);
 
     let tokenValues: { tokenAddress: string; usdValue: number; balance: number; }[] = [];
+    let totalUSDInvested = 0; // To accumulate the total USD value
 
     for (const tokenAddress of tokenAddresses) {
         const balance = balances[tokenAddress];
         const price = priceMap.get(tokenAddress);
         if (balance > 0 && price !== undefined) {
             const usdValue = balance * price;
+            totalUSDInvested += usdValue; // Add to total USD invested
             tokenValues.push({ tokenAddress, usdValue, balance });
         }
     }
@@ -420,17 +396,17 @@ async function printTokenBalancesInUSD() {
 
     // Print the tokens in order
     tokenValues.forEach(({ tokenAddress, usdValue, balance }) => {
-        console.log(`Address: ${tokenAddress}: USD Value: ${usdValue.toFixed(2)}`);
-        console.log(`Balance: ${balance}`)
+        console.log(`Address: ${tokenAddress}: USD Value: ${usdValue.toFixed(2)}    Balance: ${balance}`);
     });
-
-    // Example of selling logic, uncomment if you need to execute sells
-    // for (const { tokenAddress, balance } of tokenValues) {
-    //     if (usdValue < 0.45) {
-    //         await sell_all_for_address(balance, tokenAddress);
-    //         await delay(6000);
-    //     }
-    // }
+    const sol_balance = await refresh_SOL_balance();
+    const sol_value_in_USD = await getAmountInUSD(sol_balance);
+    console.log(`Sol balance: ${sol_balance}`);
+    console.log(`Sol USD Value: ${sol_value_in_USD}`);
+    console.log(`Tokens total balance: ${totalUSDInvested}`);
+    totalUSDInvested += sol_value_in_USD;
+    // Print the total amount of USD invested in the wallet
+    
+    console.log(`Total USD Invested: ${totalUSDInvested.toFixed(2)}`);
 }
 
 async function delay(ms: number): Promise<void> {
@@ -445,7 +421,7 @@ async function full_liquidation() {
     for (const [tokenAddress, balance] of Object.entries(balances)) {
       if (balance && balance > 0 && balance < 0.1) {
         console.log(`Liquidating ${balance} tokens of address ${tokenAddress}...`);
-        await sell_all_for_address(balance, tokenAddress);
+        await sell_all_for_address(tokenAddress);
       }
     }
   
@@ -456,11 +432,12 @@ async function full_liquidation() {
     async function buyTokens() {
         try {
             const result = await buy_all_from_filtered();
+            await update_pnl_after_buy();
             // Set the timeout only if the result is explicitly false
             if (result === true) {
                 setTimeout(buyTokens, 180 * 1000); // Call again after 5 minutes
             }else {
-                setTimeout(buyTokens, 1 * 1000);
+                setTimeout(buyTokens, 15 * 1000);
             }
         } catch (error) {
             console.error("Error calling buy_all_from_filtered:", error);
@@ -474,13 +451,13 @@ async function full_liquidation() {
 function sellWrapper() {
     async function sellTokens() {
         try {
-            const result = await update_account_PNL();
+            const result = await update_account_PNL_v2();
             await printTokenBalancesInUSD();
             // Set the timeout only if the result is explicitly false
             if (result === true) {
                 console.log("all_transactions_succeed" + (result))
                 console.log("all_transactions_succeed should be TRUE")
-                setTimeout(sellTokens, 45 * 1000); // Call again after 5 minutes
+                setTimeout(sellTokens, 10 * 1000); // Call again after 5 minutes
             }else {
                 console.log("all_transactions_succeed" + (result))
                 console.log("all_transactions_succeed should be FALSE")
@@ -554,7 +531,7 @@ switch (arg1) {
     case "sell-all":
         if (args.length >= 2) {
             const tokenAddress = args[1];
-            //sell_all_for_address(tokenAddress);
+            sell_all_for_address(tokenAddress);
         } else {
             console.log("Error: Insufficient arguments for 'sell-all'");
         }
@@ -566,9 +543,7 @@ switch (arg1) {
         getAllBalances();
         break;
  
-    case "auto-buy":
-        startAutoBuyProcess("fff");
-        break;
+   
     case "balance-in-usd":
         printTokenBalancesInUSD();
         break;    

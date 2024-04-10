@@ -33,7 +33,7 @@ const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : 
 
 
 
-const maxSlippage = 99;
+const maxSlippage = 200;
 
 const web3 = require('@solana/web3.js');
 

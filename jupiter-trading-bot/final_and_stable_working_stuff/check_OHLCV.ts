@@ -23,4 +23,10 @@ function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-//checkOHLCVConditions()
+async function main() {
+    const result = await checkOHLCVConditions("GtUyqhmwzEVJUoAWtWLtD2JWRfW1fyXxkF3gj5GJjVCo");
+    console.log(result);
+}
+
+
+

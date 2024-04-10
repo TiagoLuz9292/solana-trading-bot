@@ -71,7 +71,7 @@ def is_pullback(ohlcv_data, pullback_percentage):
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
-def is_uptrend(ohlcv_data, periods, bullish_percentage=0.51):
+def is_uptrend(ohlcv_data, periods, bullish_percentage=0.62):
     data_length = len(ohlcv_data)
     
     # Calculate the number of periods to consider based on the data available
@@ -129,7 +129,7 @@ def has_bullish_engulfing(ohlcv_data):
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
-def has_positive_momentum(ohlcv_data, periods, min_avg_price_change_percentage=3):
+def has_positive_momentum(ohlcv_data, periods, min_avg_price_change_percentage=5):
     if len(ohlcv_data) < periods:
         return False  # Not enough data to analyze
 
@@ -224,29 +224,29 @@ def analyze_conditions(data: PoolAddress):
     ohlcv_data_1h = fetch_pool_data(pairAddress, "hour", 1, 3)
     time.sleep(1)
     
-    is_uptrend_5m = is_uptrend(ohlcv_data_5m, 7)
-    is_uptrend_15m = is_uptrend(ohlcv_data_15m, 4)
+    is_uptrend_5m = is_uptrend(ohlcv_data_5m, 10)
+    is_uptrend_15m = is_uptrend(ohlcv_data_15m, 5)
     is_uptrend_1h = is_uptrend(ohlcv_data_1h, 3)
 
-    has_positive_momentum_5m = has_positive_momentum(ohlcv_data_5m, 7)
-    has_positive_momentum_15m = has_positive_momentum(ohlcv_data_15m, 4)
+    has_positive_momentum_5m = has_positive_momentum(ohlcv_data_5m, 10)
+    has_positive_momentum_15m = has_positive_momentum(ohlcv_data_15m, 5)
     has_positive_momentum_1h = has_positive_momentum(ohlcv_data_1h, 3)
 
     trade_quality = 0
 
 
     if (is_uptrend_5m):
-        trade_quality = trade_quality + 1
+        trade_quality = trade_quality + 3
     if (is_uptrend_15m):
-        trade_quality = trade_quality + 1
+        trade_quality = trade_quality + 3
     if (is_uptrend_1h):
-        trade_quality = trade_quality + 1
+        trade_quality = trade_quality + 2
     if (has_positive_momentum_5m):
-        trade_quality = trade_quality + 1
+        trade_quality = trade_quality + 3
     if (has_positive_momentum_15m):
-        trade_quality = trade_quality + 1
+        trade_quality = trade_quality + 3
     if (has_positive_momentum_1h):
-        trade_quality = trade_quality + 1     
+        trade_quality = trade_quality + 2     
 
 
     print("\n***** Uptrend 5m: " + str(is_uptrend_5m))
@@ -259,7 +259,7 @@ def analyze_conditions(data: PoolAddress):
     print("Trade quality: " + str(trade_quality))
 
     # If all conditions are met
-    if (trade_quality > 3):
+    if (trade_quality >= 11):
         return True
     else:
         return False

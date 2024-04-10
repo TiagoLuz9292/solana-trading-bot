@@ -3,9 +3,10 @@ import { Parser } from 'json2csv';
 import axios from 'axios';
 import { parse } from 'csv-parse/sync';
 import { format } from 'date-fns';
-export {get_token_price, wrapper, get_token_prices, update_account_PNL};
+export {get_token_price, wrapper, get_token_prices, update_account_PNL, update_account_PNL_v2, update_pnl_after_buy};
 import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
+import { off } from 'process';
 
 interface RecordType {
     address: string;
@@ -37,7 +38,7 @@ interface TokenRecord {
     PNL: string;
 }
 
-const TP_1_PRECENTAGE = 2.5;
+const TP_1_PRECENTAGE = 3.5;
 
 async function get_token_price(tokenAddress: String): Promise<number> {
     const url = `https://public-api.dextools.io/trial/v2/token/solana/${tokenAddress}/price`;
@@ -82,47 +83,140 @@ async function get_token_prices(tokenAddresses: string[]): Promise<Map<string, n
     }
 }
 
+async function update_pnl_after_buy() {
+    const src_csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/buy_tracker_final.csv"; // Replace with the path to your source CSV file
+    const dest_csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_trades.csv"; // Replace with the path to your destination CSV file
+
+    // Read destination file and create a set of addresses
+    const destData = fs.existsSync(dest_csv_file)
+        ? fs.readFileSync(dest_csv_file, { encoding: 'utf-8' })
+        : '';
+    const destRecords = parse(destData, { columns: true });
+    const destAddresses = new Set(destRecords.map((record: TokenRecord) => record.address));
+
+    // Read source file
+    const srcData = fs.existsSync(src_csv_file)
+        ? fs.readFileSync(src_csv_file, { encoding: 'utf-8' })
+        : '';
+    const srcRecords = parse(srcData, { columns: true });
+
+    // Iterate through source records and add missing ones to destination
+    for (const srcRecord of srcRecords) {
+        if (!destAddresses.has(srcRecord.address)) {
+            const entryPrice = parseFloat(srcRecord.entryPrice);
+            const tokenAmountReceived = parseFloat(srcRecord.token_amount_received);
+
+            // Perform calculations
+            const TP_price = (entryPrice * 3.5).toFixed(9); // Adjust precision as needed
+            const amount_to_sell = (tokenAmountReceived * 0.70).toFixed(9); // Adjust precision as needed
+
+            // Append the new record to destination data with the specified fields
+            destRecords.push({
+                tx_date: srcRecord.tx_date, // Assuming tx_date is present in the source record
+                address: srcRecord.address,
+                entryPrice: srcRecord.entryPrice,
+                token_amount_received: srcRecord.token_amount_received,
+                TP_price: TP_price.toString(),
+                amount_to_sell: amount_to_sell.toString(),
+                PNL: '' // Initialize PNL as empty
+            });
+        }
+    }
+
+    // Use the json2csv Parser to convert the updated records back to CSV
+    const fields = ['tx_date', 'address', 'entryPrice', 'token_amount_received', 'TP_price', 'amount_to_sell', 'PNL'];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(destRecords);
+
+    // Write the updated destination data back to the CSV file
+    fs.writeFileSync(dest_csv_file, csv, { encoding: 'utf-8' });
+}
 
 
 async function update_account_PNL_v2() {
-    const transactionFilePath = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/buy_BOT/transactions_v2.csv";
-    const accountPnlFilePath = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/buy_BOT/account_PNL_v2.csv";
+    const dest_csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_trades.csv";
+    let all_transactions_succeed = true;
 
-    const csvContent = fs.readFileSync(transactionFilePath, { encoding: 'utf-8' });
-    const records: RecordType[] = parse(csvContent, {
-        columns: true,
-        skip_empty_lines: true
-    }) as RecordType[];
+    try {
+        let destRecords: TokenRecord[] = fs.existsSync(dest_csv_file)
+            ? parse(fs.readFileSync(dest_csv_file, { encoding: 'utf-8' }), {
+                columns: true,
+                skip_empty_lines: true
+            })
+            : [];
 
-    const tokenAddresses = records.map(record => record.address);
-    const priceMap = await get_token_prices(tokenAddresses);
-    
+        // Get all balances at once
+        const allBalances = await getAllBalances();
 
-    const updatedRecords: RecordType[] = [];
-    for (const record of records) {
-        const currentPrice = priceMap.get(record.address);
-        let pnl: number | undefined = undefined;
+        for (const record of destRecords) {
+            const currentPrice = await get_token_price(record.address);
+            const entryPrice = parseFloat(record.entryPrice);
+            const pnl = ((currentPrice - entryPrice) / entryPrice) * 100;
+            record.PNL = pnl.toFixed(2); // Update the PNL in the record
 
-        if (record.tx_state === 'Completed' && record.entryPrice && currentPrice !== undefined) {
-            pnl = ((currentPrice - parseFloat(record.entryPrice)) / parseFloat(record.entryPrice)) * 100;
+            const balance = allBalances[record.address];
+
+            if (pnl < -59) {
+                if (balance && balance > 0) {
+                    console.log(`\n***** PNL below -59%, SELLING ENTIRE BALANCE of ${record.address} *****\n`);
+                    const result = await pre_and_post_sell_operations(balance, record.address);
+                    if (!result) {
+                        all_transactions_succeed = false;
+                    }
+                } 
+                record.TP_price = ''; // Clear TP_price after selling
+            }
+            // Check balance and if TP_price is met, sell
+            else if (balance && balance > parseFloat(record.amount_to_sell)) {
+                if (record.TP_price && currentPrice >= parseFloat(record.TP_price)) {
+                    console.log(`\n***** Token at TP price, SELLING ${record.amount_to_sell} of ${record.address} *****\n`);
+                    const amountToSell = parseFloat(record.amount_to_sell);
+                    if (!isNaN(amountToSell)) {
+                        const result = await pre_and_post_sell_operations(amountToSell, record.address);
+                        if (result) {
+                            record.TP_price = ''; // Clear TP_price if the sell was successful
+                        } else {
+                            all_transactions_succeed = false;
+                        }
+                    } else {
+                        console.error("Invalid amount to sell for token:", record.address);
+                        all_transactions_succeed = false;
+                    }
+                }
+            }else {
+                record.TP_price = ''; // Optionally clear TP_price if conditions not met
+            }
         }
 
-        const existingTP = record.TP && record.TP !== '' ? record.TP : null;
-        updatedRecords.push({ ...record, currentPrice, PNL: pnl, TP: existingTP });
+        destRecords.sort((a, b) => parseFloat(b.PNL) - parseFloat(a.PNL));
+
+        const json2csvParser = new Parser({
+            header: true,
+            includeEmptyRows: false,
+            fields: ['tx_date', 'address', 'entryPrice', 'token_amount_received', 'TP_price', 'amount_to_sell', 'PNL']
+        });
+
+        const csv = json2csvParser.parse(destRecords);
+        fs.writeFileSync(dest_csv_file, csv, { encoding: 'utf-8' });
+
+        console.log("\nAccount PNL updated and saved to destination CSV file.");
+        return all_transactions_succeed;
+    } catch (error) {
+        console.error("An error occurred while updating account PNL:", error);
+        return false;
     }
-
-    // Sort the updated records by PNL in descending order
-    updatedRecords.sort((a, b) => (b.PNL ?? 0) - (a.PNL ?? 0));
-
-    const json2csvParser = new Parser({ header: true });
-    const csv = json2csvParser.parse(updatedRecords);
-    fs.writeFileSync(accountPnlFilePath, csv);
-
-    console.log(`Updated transactions saved to ${accountPnlFilePath}`);
-    return updatedRecords;
 }
 
 async function update_account_PNL() {
+
+
+    /*
+        Change this function so that it wont need to go through the buy tracker file before checking if there is any token to sell,
+        it should be another code to do that, it takes time
+
+    */
+
+
     const logFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/data_logs.csv';
     const startTimestamp = format(new Date(), 'dd-MM-yyyy HH:mm:ss');
     const startLog = `"${startTimestamp}","update_account_PNL() starting now."\n`;
@@ -161,12 +255,20 @@ async function update_account_PNL() {
             const entryPrice = parseFloat(srcRecord.entryPrice);
             const pnl = ((currentPrice - entryPrice) / entryPrice) * 100;
 
+
+
             if (destRecordsMap[recordKey]) {
                 // Update PNL for existing record
                 destRecordsMap[recordKey].PNL = pnl.toFixed(2);
-
+                //destRecordsMap[recordKey].TP_price = (entryPrice * TP_1_PRECENTAGE).toFixed(9);
                 // Check token balance and update TP_price if necessary
                 const tokenBalance = allBalances[destRecordsMap[recordKey].address];
+                if (pnl <= -58 && tokenBalance && tokenBalance > 1) {
+                    const result = await pre_and_post_sell_operations(tokenBalance, destRecordsMap[recordKey].address);
+                        if (!result) {
+                            all_transactions_succeed = false;
+                        }
+                }
                 if (tokenBalance && tokenBalance < parseFloat(destRecordsMap[recordKey].amount_to_sell)) {
                     destRecordsMap[recordKey].TP_price = '';
                 }

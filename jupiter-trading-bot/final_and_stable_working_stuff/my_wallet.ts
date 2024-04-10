@@ -9,7 +9,7 @@ import { writeFile, access } from 'fs/promises';
 import { promises as fs } from 'fs';
 import { parse } from 'csv-parse/sync';
 import { Parser } from 'json2csv';
-export { getAllBalances, getTokenBalance, refresh_SOL_balance as refresh_SOL_and_USDC_balance, processTransactions};
+export { getAllBalances, getTokenBalance, refresh_SOL_balance as refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance};
 import { config } from 'dotenv';
 import { Keypair, Connection, PublicKey, LAMPORTS_PER_SOL, TokenAccountsFilter } from "@solana/web3.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
@@ -54,7 +54,9 @@ interface Balance {
 config();
 
 // Initialize the Solana connection
-const solanaConnection = new Connection("https://api.mainnet-beta.solana.com");
+const web3 = require('@solana/web3.js');
+const solanaConnection = new web3.Connection('https://serene-soft-dream.solana-mainnet.quiknode.pro/d9545d21916469751695fb7a165e97325634fdb5', 'confirmed');
+    'confirmed'
 
 // Load the wallet's secret key
 let wallet: Keypair | null = null;
@@ -151,34 +153,32 @@ async function check_if_token_account_exists(tokenAddress: String): Promise<bool
     }
 }
 
-async function refresh_SOL_balance(): Promise<void> {
+async function refresh_SOL_balance(): Promise<number> {
     if (!wallet) {
         console.error('Wallet not initialized');
-        return;
+        return 0; // return 0 if the wallet is not initialized
     }
 
-    
     try {
         const results = await Promise.allSettled([
             solanaConnection.getBalance(wallet.publicKey),
         ]);
 
         const solBalanceResult = results[0];
-      
-
         if (solBalanceResult.status === 'fulfilled') {
-            solBalance = solBalanceResult.value / LAMPORTS_PER_SOL; // Convert lamports to SOL
+            const solBalance = solBalanceResult.value / LAMPORTS_PER_SOL; // Convert lamports to SOL
+            console.log("SOL Balance:");
+            console.log(`----------`);
+            console.log(`SOL: ${solBalance}`);
+            return solBalance; // return SOL balance
         } else if (solBalanceResult.status === 'rejected') {
             console.error('Error fetching SOL balance:', solBalanceResult.reason);
         }
-
-        console.log("Balance:")
-        console.log(`----------`);
-        console.log(`SOL: ${solBalance}`);
-
     } catch (error) {
         console.error('Unexpected error during balance refresh:', error);
     }
+
+    return 0; // return 0 if the balance couldn't be fetched or on error
 }
 
 
@@ -225,33 +225,31 @@ async function processTransactions(): Promise<void> {
 
   async function getAllBalances(): Promise<{ [address: string]: number | undefined }> {
     console.log("DEBUG: getting all balances");
-    await refresh_SOL_balance();
 
     if (!wallet) {
         console.error('Wallet not initialized');
-        return {};
+        throw new Error('Wallet not initialized'); // Throw an error to be caught by the caller
     }
     
     const balances: { [address: string]: number | undefined } = {};
 
     try {
-        await delay(1000);
+        await delay(3000);
         const tokenAccounts = await solanaConnection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_PROGRAM_ID });
 
         for (const { account } of tokenAccounts.value) {
             const tokenAddress = account.data.parsed.info.mint.toString();
             const balance = account.data.parsed.info.tokenAmount.uiAmount;
-            if (balance && balance > 0) { // Only add token with balance greater than 0
-                //console.log(`${tokenAddress}: ${balance}`);
-                balances[tokenAddress] = balance; // Assign balance to the address key in the balances object
+            if (balance && balance > 0) {
+                balances[tokenAddress] = balance;
             }
         }
-
     } catch (error) {
         console.error('Error fetching all token balances:', error);
+        throw error; // Rethrow the caught error
     }
-
-    return balances; // Return the object containing address-balance pairs
+    
+    return balances;
 }
 
 function delay(ms: number) {
