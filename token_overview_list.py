@@ -128,6 +128,7 @@ def get_token_overview_for_token(token_address):
         pprint.pprint(json_response)
         # Extract relevant data from the JSON response
         data = {
+            'symbol': [json_response['pairs'][0]['baseToken']['symbol']],
             'pairAddress': [json_response['pairs'][0]['pairAddress']],
             'pairCreatedAt': [pd.to_datetime(json_response['pairs'][0]['pairCreatedAt'], unit='ms').strftime('%d-%m-%y %H:%M:%S')],
             'priceUsd': [json_response['pairs'][0]['priceUsd']],

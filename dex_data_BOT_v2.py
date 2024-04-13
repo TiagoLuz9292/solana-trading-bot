@@ -159,7 +159,7 @@ def reload():
         level_2_filter.fetch_audit_data() 
 
         print("Filter complete.")
-        time.sleep(900)
+        time.sleep(30)
 
     #end_time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     # Log the completion of the reload function
@@ -171,7 +171,7 @@ def reload_initial_list():
 
     #append_to_csv(csv_file_path, {"timestamp": start_time, "description": "reload_initial_list() function started."})
 
-    #initial_list.get_token_list()
+    initial_list.get_token_list()
     token_overview_list.get_token_overview_for_list("data/initial_list_fresh.csv")
     token_overview_list.filter_recent_tokens()
 

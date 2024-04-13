@@ -15,7 +15,7 @@ def get_token_list() -> None:
     offset = 0
     fetched_tokens = 0
     itt = 0
-    tokens_to_fetch = 20000
+    tokens_to_fetch = 27000
     csv_filename = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/initial_list_fresh.csv'
 
     # Open the CSV file in write mode to overwrite existing data or create a new file
@@ -54,6 +54,7 @@ def get_token_list() -> None:
             offset += limit
         else:
             print(f"Failed to retrieve data: {response.status_code}")
-            break
+            time.sleep(3)
+            
 
     print(f"Completed. {fetched_tokens} tokens fetched and saved to {csv_filename}.")

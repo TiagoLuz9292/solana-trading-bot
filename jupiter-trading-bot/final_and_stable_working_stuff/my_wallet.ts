@@ -4,12 +4,12 @@ getAllBalances()
 
 */
 import csv from 'csv-parser';
-
+import {get_token_price, get_token_prices} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import { writeFile, access } from 'fs/promises';
 import { promises as fs } from 'fs';
 import { parse } from 'csv-parse/sync';
 import { Parser } from 'json2csv';
-export { getAllBalances, getTokenBalance, refresh_SOL_balance as refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance};
+export { getAllBalances, getTokenBalance, refresh_SOL_balance as refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance, printTokenBalancesInUSD};
 import { config } from 'dotenv';
 import { Keypair, Connection, PublicKey, LAMPORTS_PER_SOL, TokenAccountsFilter } from "@solana/web3.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
@@ -223,18 +223,92 @@ async function processTransactions(): Promise<void> {
     }
   }
 
-  async function getAllBalances(): Promise<{ [address: string]: number | undefined }> {
-    console.log("DEBUG: getting all balances");
+
+  async function printTokenBalancesInUSD() {
+    const balances = (await getAllBalances() || {}) as { [address: string]: number };
+
+    // Get unique token addresses from the balances
+    const tokenAddresses = Object.keys(balances).filter(address => balances[address] > 0);
+
+    if (tokenAddresses.length === 0) {
+        console.log("No token balances to display.");
+        return;
+    }
+
+    // Get prices for all tokens
+    const priceMap = await get_token_prices(tokenAddresses);
+
+    let tokenValues: { tokenAddress: string; usdValue: number; balance: number; }[] = [];
+    let totalUSDInvested = 0; // To accumulate the total USD value
+    let USDC_value = 0;
+    for (const tokenAddress of tokenAddresses) {
+        if (tokenAddress == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
+            USDC_value = balances[tokenAddress];
+            continue;
+        }
+        const balance = balances[tokenAddress];
+        const price = priceMap.get(tokenAddress);
+        if (balance > 0 && price !== undefined) {
+            const usdValue = balance * price;
+            totalUSDInvested += usdValue; // Add to total USD invested
+            tokenValues.push({ tokenAddress, usdValue, balance });
+        }
+    }
+
+    // Sort the tokens by their USD value in descending order
+    tokenValues.sort((a, b) => b.usdValue - a.usdValue);
+
+    // Print the tokens in order
+    tokenValues.forEach(({ tokenAddress, usdValue, balance }) => {
+        console.log(`Address: ${tokenAddress}: USD Value: ${usdValue.toFixed(2)}    Balance: ${balance}`);
+    });
+    const sol_balance = await refresh_SOL_balance();
+    const sol_value_in_USD = await getAmountInUSD(sol_balance);
+    console.log(`Sol balance: ${sol_balance}`);
+    console.log(`Sol total in USD: ${sol_value_in_USD}`);
+    console.log(`Tokens total in USD: ${totalUSDInvested}`);
+    console.log(`Total USDC: $${USDC_value.toFixed(2)}`);
+    totalUSDInvested += sol_value_in_USD;
+    // Print the total amount of USD invested in the wallet
+    
+    console.log(`Total USD Invested: ${(totalUSDInvested + USDC_value).toFixed(2)}`);
+    const telegram_message = `Sol balance: ${sol_balance}\nSol USD value: $${sol_value_in_USD.toFixed(2)}\nTotal USDC: $${USDC_value.toFixed(2)}\nTokens USD value: $${(totalUSDInvested - sol_value_in_USD).toFixed(2)}\n\n Total USD value: 🟢 $${(totalUSDInvested + USDC_value).toFixed(2)} 🟢`
+    return telegram_message;
+    
+}
+
+async function getAmountInUSD(solAmount: number): Promise<number> {
+    //const url = "https://public-api.birdeye.so/public/price?address=So11111111111111111111111111111111111111112";
+    //const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+    
+    try {
+        //const response = await axios.get(url, { headers });
+        //await delay(1000);
+        //const solPrice = response.data.data.value;
+        const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
+        console.log(`SOL Price: ${solPrice}`);
+
+        // Calculate the amount in USD for the given amount of SOL
+        const usdAmount = solAmount * solPrice;
+        return usdAmount;
+    } catch (error) {
+        console.error("Error fetching SOL price", error);
+        throw error;
+    }
+}
+
+
+
+async function getAllBalances(): Promise<{ [address: string]: number | undefined }> {
+    //console.log("DEBUG: getting all balances");
 
     if (!wallet) {
         console.error('Wallet not initialized');
         throw new Error('Wallet not initialized'); // Throw an error to be caught by the caller
     }
-    
     const balances: { [address: string]: number | undefined } = {};
-
     try {
-        await delay(3000);
+        await delay(1000);
         const tokenAccounts = await solanaConnection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_PROGRAM_ID });
 
         for (const { account } of tokenAccounts.value) {
@@ -248,9 +322,19 @@ async function processTransactions(): Promise<void> {
         console.error('Error fetching all token balances:', error);
         throw error; // Rethrow the caught error
     }
-    
     return balances;
 }
+
+
+
+
+
+
+
+
+
+
+
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));

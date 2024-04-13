@@ -17,14 +17,12 @@ def delete_file(csv_file):
 def fetch_audit_data():
     csv_file = "data/level_1_filter.csv"
     output_file = "data/level_2_filter.csv"
-    
 
     if not os.path.exists(csv_file) or os.path.getsize(csv_file) == 0:
         print("Source file is empty or does not exist.")
         return None
 
     df = pd.read_csv(csv_file)
-    
     filtered_rows = []
 
     for index, row in df.iterrows():
@@ -36,28 +34,32 @@ def fetch_audit_data():
         }
         time.sleep(2)
         response = requests.get(url, headers=headers)
-        
+
+        print(f"Status code for {address}: {response.status_code}")
         if response.status_code == 200:
-            data = response.json()
-            audit_data = data.get('data')
-            print(f"Filtering audit info for {address}")
-            if isinstance(audit_data, dict):
-                def check_value(key, expected_value):
-                    return audit_data.get(key) == expected_value
+            try:
+                data = response.json()
+                audit_data = data.get('data')
+                print(f"Filtering audit info for {address}")
+                if isinstance(audit_data, dict):
+                    def check_value(key, expected_value):
+                        return audit_data.get(key) == expected_value
 
-                conditions_met = all([
-                    check_value('isOpenSource', 'yes'),
-                    check_value('isHoneypot', 'no'),
-                    check_value('isMintable', 'no'),
-                    check_value('slippageModifiable', 'no'),
-                    check_value('isContractRenounced', 'yes'),
-                    check_value('isPotentiallyScam', 'no')
-                ])
+                    conditions_met = all([
+                        check_value('isOpenSource', 'yes'),
+                        check_value('isHoneypot', 'no'),
+                        check_value('isMintable', 'no'),
+                        check_value('slippageModifiable', 'no'),
+                        check_value('isContractRenounced', 'yes'),
+                        check_value('isPotentiallyScam', 'no')
+                    ])
 
-                if conditions_met:
-                    filtered_rows.append(row)
-            else:
-                print(f"No audit data found for address {address}")
+                    if conditions_met:
+                        filtered_rows.append(row)
+                else:
+                    print(f"No audit data found for address {address}")
+            except requests.exceptions.JSONDecodeError:
+                print(f"Failed to decode JSON for address {address}. Response: {response.text}")
         else:
             print(f"Failed to fetch data for address {address}, status code: {response.status_code}")
 

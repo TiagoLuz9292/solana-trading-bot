@@ -18,15 +18,18 @@
     "csv-parser": "^3.0.0",
     "csv-stringify": "^6.4.6",
     "date-fns": "^3.6.0",
+    "date-fns-tz": "^3.0.1",
     "dotenv": "^16.4.5",
     "fast-csv": "^5.0.1",
     "fs": "^0.0.1-security",
     "json2csv": "^6.0.0-alpha.2",
-    "node-fetch": "^3.3.2"
+    "node-fetch": "^3.3.2",
+    "node-telegram-bot-api": "^0.65.1"
   },
   "devDependencies": {
     "@types/json2csv": "^5.0.7",
     "@types/node": "^20.12.2",
-    "@types/node-fetch": "^2.6.11"
+    "@types/node-fetch": "^2.6.11",
+    "@types/node-telegram-bot-api": "^0.64.6"
   }
 }
