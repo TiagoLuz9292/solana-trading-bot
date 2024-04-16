@@ -35,6 +35,7 @@ interface TokenToSell {
     symbol: String;
     token_amount_sold: number;
     profit_in_usd: number;
+    message: String;
 }
 
 interface TokenRecord {
@@ -70,6 +71,7 @@ interface DestinationRecord {
     usd_spent: number;
     usd_received: string;
     result_usd: string;
+    message: String;
 }
 
 interface TokenToSell {
@@ -89,14 +91,15 @@ interface SourceRecord {
     token_amount_received: string;
 }
 
+const STOP_LOSS = -30;
+const BREAKEVEN = 20;
 
-
-const TP_1_PRICE = 2.5;
-const TP_2_PRICE = 5;
-const TP_3_PRICE = 10;
+const TP_1_PRICE = 1.65;
+const TP_2_PRICE = 2.35;
+const TP_3_PRICE = 4.6;
 
 const TP_1_AMOUNT = 0.70;
-const TP_2_AMOUNT = 0.5;
+const TP_2_AMOUNT = 0.65;
 const TP_3_AMOUNT = 1;
 
 function delay(ms: number) {
@@ -133,7 +136,7 @@ async function get_token_prices(tokenAddresses: string[]): Promise<Map<string, n
     for (let i = 0; i < tokenAddresses.length; i += MAX_ADDRESSES_PER_CALL) {
         const chunk = tokenAddresses.slice(i, i + MAX_ADDRESSES_PER_CALL);
         const joinedAddresses = chunk.join('%2C');
-        const url = `https://public-api.birdeye.so/public/multi_price?list_address=${joinedAddresses}`;
+        const url = `https://public-api.birdeye.so/defi/multi_price?list_address=${joinedAddresses}`;
         const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
 
         try {
@@ -175,10 +178,16 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
             throw new Error(`No matching record found for address: ${sellData.address}`);
         }
 
-        const exitPrice = sellData.profit_in_usd / parseFloat(sourceRecord.token_amount_received);
+        const exitPrice = sellData.profit_in_usd / parseFloat(sellData.token_amount_sold.toFixed(2));
+        const percentChangeFromEntry = ((exitPrice - parseFloat(sourceRecord.entryPrice)) / parseFloat(sourceRecord.entryPrice)) * 100;
+        
+
+
         const usdReceived = sellData.profit_in_usd;
         const usdSpent = parseFloat(sourceRecord.usd_spent);
-        const resultUsd = usdReceived - usdSpent;
+        const resultUsd = (usdSpent * percentChangeFromEntry) / 100;
+        
+        const message = sellData.message;
 
         return {
             buy_date: sourceRecord.tx_date,
@@ -189,14 +198,15 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
             exitPrice: exitPrice.toFixed(9),
             usd_spent: usdSpent,
             usd_received: usdReceived.toString(),
-            result_usd: resultUsd.toFixed(2)
+            result_usd: resultUsd.toFixed(2),
+            message: message
         };
     });
 
     // Check if the destination file exists and write accordingly
     if (!existsSync(dest_csv_path)) {
         // Create the file with headers
-        const csvHeaders = ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'usd_spent', 'usd_received', 'result_usd'];
+        const csvHeaders = ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'usd_spent', 'usd_received', 'result_usd',];
         const csvData = stringify(newRecords, {
             header: true,
             columns: csvHeaders
@@ -206,7 +216,7 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
         // Append the new records without headers
         const csvData = stringify(newRecords, {
             header: false,
-            columns: ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'usd_spent', 'usd_received', 'result_usd']
+            columns: ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'usd_spent', 'usd_received', 'result_usd']
         });
         await fsPromises.appendFile(dest_csv_path, csvData, { encoding: 'utf-8' });
     }
@@ -342,7 +352,7 @@ async function update_account_PNL_v3() {
             
 
             // Check if balance exists and is greater than 0
-            if (!currentBalance || currentBalance <= 0) {
+            if (!currentBalance || currentBalance < 1) {
                 console.log(`Skipping record for address ${record.address} due to zero or non-existent balance.`);
                 continue; // Skip to the next record if the balance is zero or undefined
             }
@@ -352,13 +362,21 @@ async function update_account_PNL_v3() {
             }
 
             const pnl = ((currentPrice - entryPrice) / entryPrice) * 100;
-            record.PNL = pnl.toFixed(2);
+            record.PNL = `${pnl.toFixed(2)} %`;
             
-            const usdValue = currentBalance * currentPrice;
+            const usdValue = ((currentBalance * currentPrice) * pnl) / 100;
             record.USD_value = usdValue.toFixed(2);
             
-            if (!record.TP_price_1 && record.PNL <= 10) {
-                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "Breakeaven SL reached!!")
+
+            if (record.TP_price_1 && currentBalance < record.token_amount_received * 0.7) {
+                record.TP_price_1 = '';
+            }
+            if (record.TP_price_2 && currentBalance < ((record.token_amount_received * 0.3)) * 0.4) {
+                record.TP_price_2 = '';
+            }
+
+            if (!record.TP_price_1 && record.PNL <= BREAKEVEN) {
+                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "Breakeaven SL reached!!", pnl)
                 if (!result) {
                     all_transactions_succeed = false;
                 }else {
@@ -368,7 +386,7 @@ async function update_account_PNL_v3() {
 
             if (record.TP_price_1 && currentPrice >= parseFloat(record.TP_price_1)) {
                 console.log(`\n***** Token at TP_price_1, SELLING ${currentBalance * TP_1_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_1_AMOUNT), record.address, record.symbol, "TP 1 Reached!!")
+                const result = await pre_and_post_sell_operations((currentBalance * TP_1_AMOUNT), record.address, record.symbol, "TP 1 Reached!!" , pnl)
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -377,7 +395,7 @@ async function update_account_PNL_v3() {
             }
             if (!record.TP_price_1 && record.TP_price_2 && currentPrice >= parseFloat(record.TP_price_2)) {
                 console.log(`\n***** Token at TP_price_2, SELLING ${currentBalance * TP_2_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_2_AMOUNT), record.address, record.symbol, "TP 2 Reached!!")
+                const result = await pre_and_post_sell_operations((currentBalance * TP_2_AMOUNT), record.address, record.symbol, "TP 2 Reached!!", pnl)
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -386,7 +404,7 @@ async function update_account_PNL_v3() {
             }
             if (!record.TP_price_1 && !record.TP_price_2 && record.TP_price_3 && currentPrice >= parseFloat(record.TP_price_3)) {
                 console.log(`\n***** Token at TP_price_3, SELLING ${currentBalance * TP_3_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_3_AMOUNT), record.address, record.symbol, "TP 3 Reached!!")
+                const result = await pre_and_post_sell_operations((currentBalance * TP_3_AMOUNT), record.address, record.symbol, "TP 3 Reached!!", pnl)
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -396,9 +414,9 @@ async function update_account_PNL_v3() {
 
             
             
-            if (pnl < -51) {
-                console.log(`\n***** PNL below -51%, SELLING ENTIRE BALANCE of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "51% SL reached!!")
+            if (pnl < STOP_LOSS) {
+                console.log(`\n***** PNL below ${STOP_LOSS}%, SELLING ENTIRE BALANCE of ${record.address} *****\n`);
+                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, `${STOP_LOSS}% SL reached!!`, pnl)
                 if (!result) {
                     all_transactions_succeed = false;
                 }else {

@@ -167,9 +167,7 @@ async function refresh_SOL_balance(): Promise<number> {
         const solBalanceResult = results[0];
         if (solBalanceResult.status === 'fulfilled') {
             const solBalance = solBalanceResult.value / LAMPORTS_PER_SOL; // Convert lamports to SOL
-            console.log("SOL Balance:");
-            console.log(`----------`);
-            console.log(`SOL: ${solBalance}`);
+            
             return solBalance; // return SOL balance
         } else if (solBalanceResult.status === 'rejected') {
             console.error('Error fetching SOL balance:', solBalanceResult.reason);
@@ -299,32 +297,39 @@ async function getAmountInUSD(solAmount: number): Promise<number> {
 
 
 
-async function getAllBalances(): Promise<{ [address: string]: number | undefined }> {
-    //console.log("DEBUG: getting all balances");
-
+async function getAllBalances(retryCount = 3): Promise<{ [address: string]: number | undefined }> {
     if (!wallet) {
         console.error('Wallet not initialized');
-        throw new Error('Wallet not initialized'); // Throw an error to be caught by the caller
+        throw new Error('Wallet not initialized');
     }
-    const balances: { [address: string]: number | undefined } = {};
-    try {
-        await delay(1000);
-        const tokenAccounts = await solanaConnection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_PROGRAM_ID });
 
-        for (const { account } of tokenAccounts.value) {
-            const tokenAddress = account.data.parsed.info.mint.toString();
-            const balance = account.data.parsed.info.tokenAmount.uiAmount;
-            if (balance && balance > 0) {
-                balances[tokenAddress] = balance;
+    let attempts = 0;
+    while (attempts < retryCount) {
+        try {
+            await delay(1000); // delay to prevent hammering the server if there's a quick retry
+            const tokenAccounts = await solanaConnection.getParsedTokenAccountsByOwner(wallet.publicKey, { programId: TOKEN_PROGRAM_ID });
+            const balances: { [address: string]: number | undefined } = {};
+            
+            for (const { account } of tokenAccounts.value) {
+                const tokenAddress = account.data.parsed.info.mint.toString();
+                const balance = account.data.parsed.info.tokenAmount.uiAmount;
+                if (balance && balance > 0) {
+                    balances[tokenAddress] = balance;
+                }
+            }
+            return balances; // successful fetch, return balances
+        } catch (error) {
+            console.error(`Attempt ${attempts + 1} failed: Error fetching all token balances`, error);
+            attempts++;
+            if (attempts >= retryCount) {
+                throw new Error(`Failed to fetch balances after ${retryCount} attempts`); // throws if all retries fail
             }
         }
-    } catch (error) {
-        console.error('Error fetching all token balances:', error);
-        throw error; // Rethrow the caught error
     }
-    return balances;
-}
 
+    // This line should theoretically never be reached because the last throw inside the catch block should either succeed or throw an error.
+    throw new Error('Unreachable code executed in getAllBalances function');
+}
 
 
 

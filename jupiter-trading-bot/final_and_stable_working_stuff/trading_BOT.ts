@@ -26,7 +26,7 @@ interface CsvRow {
 
 
 
-const AMOUNT_USD_TO_BUY = 4;
+const AMOUNT_USD_TO_BUY = 3;
 const AMOUNT_SOL_TO_BUY = 0.0175;
 
 
@@ -35,7 +35,7 @@ async function delay(ms: number): Promise<void> {
 }
 
 async function getAmountInSOL(usdAmount: number): Promise<string> {
-    const url = "https://public-api.birdeye.so/public/price?address=So11111111111111111111111111111111111111112";
+    const url = "https://public-api.birdeye.so/defi/price?address=So11111111111111111111111111111111111111112";
     const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
     
     try {
@@ -80,13 +80,11 @@ async function buy_manual(amount_usd: number, token_address: String) {
     
 }
 
-async function buy_all_from_filtered() {
+async function buy_all_from_filtered(excludedAddresses = new Set()) {
     console.log("DEBUG: starting buy_all_from_filtered()");
 
     let all_transactions_succeed = true;
-    const logFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/data_logs.csv';
     const filePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_2_filter.csv';
-    const exclusionFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/buy_tracker_final.csv';
 
     try {
         const balances = await getAllBalances();
@@ -95,40 +93,34 @@ async function buy_all_from_filtered() {
             console.log("The source csv file level_2_filter.csv is empty.\n");
             return;
         }
-       
+
         const data: CsvRow[] = [];
         const stream = fs.createReadStream(filePath).pipe(csv());
-
-        stream.on('data', (row: CsvRow) => data.push(row));
+        stream.on('data', (row) => data.push(row));
         await new Promise(resolve => stream.on('end', resolve));
 
         console.log("Checking for new Buy opportunities...");
 
         for (const row of data) {
-            
+            if (excludedAddresses.has(row.address)) {
+                console.log(`Skipping purchase for excluded address ${row.address}`);
+                continue;
+            }
+
             const balance = balances[row.address];
             console.log(`\nPerforming OHLCV checks on ${row.address}. Balance: ${balance}`);
 
             if ((balance && balance < 1) || !balance) {
                 const canBuy = await checkOHLCVConditions(row.pairAddress);
                 console.log(`OHLCV check result: ${canBuy}`);
-                
+
                 if (canBuy) {
                     try {
-                        //const amount_sol_string = await getAmountInSOL(AMOUNT_USD_TO_BUY);
-                        //const amount_sol = parseFloat(amount_sol_string);
                         const amount_SOL = await getAmountInSOL(AMOUNT_USD_TO_BUY);
-                        
-
                         const result = pre_and_post_buy_operations(AMOUNT_USD_TO_BUY, parseFloat(amount_SOL), row.address, row.symbol);
-                        all_transactions_succeed
-
                         if (!result) {
                             all_transactions_succeed = false;
-                        }else {
-                            
-                        } 
-
+                        }
                         await delay(1000); // Ensure a pause before processing the next token
                     } catch (error) {
                         console.error('Error during buy operation:', error);
@@ -140,7 +132,7 @@ async function buy_all_from_filtered() {
             }
         }
     } catch (error) {
-        console.error('Error fetching balances:', error);
+        console.error('Error fetching balances or reading CSV:', error);
         return false;
     }
 
@@ -163,7 +155,7 @@ async function sell_all_for_address(tokenAddress: String, symbol: String) {
      //   return; // Handle the undefined case appropriately
     //}
     if (token_balance) {
-        await pre_and_post_sell_operations(token_balance, tokenAddress, "", "");
+        await pre_and_post_sell_operations(token_balance, tokenAddress, "", "", 100);
     }
     
 }
@@ -184,7 +176,7 @@ async function printTokenBalancesInUSD() {
     const priceMap = await get_token_prices(tokenAddresses);
 
     let tokenValues: { tokenAddress: string; usdValue: number; balance: number; }[] = [];
-    let totalUSDInvested = 0; // To accumulate the total USD value
+    let tokens_USD_value = 0; // To accumulate the total USD value
     let USDC_value = 0;
     for (const tokenAddress of tokenAddresses) {
         if (tokenAddress == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
@@ -195,7 +187,7 @@ async function printTokenBalancesInUSD() {
         const price = priceMap.get(tokenAddress);
         if (balance > 0 && price !== undefined) {
             const usdValue = balance * price;
-            totalUSDInvested += usdValue; // Add to total USD invested
+            tokens_USD_value += usdValue; // Add to total USD invested
             tokenValues.push({ tokenAddress, usdValue, balance });
         }
     }
@@ -209,32 +201,50 @@ async function printTokenBalancesInUSD() {
     });
     const sol_balance = await refresh_SOL_balance();
     const sol_value_in_USD = await getAmountInUSD(sol_balance);
-    console.log(`Sol balance: ${sol_balance}`);
-    console.log(`Sol total in USD: ${sol_value_in_USD}`);
-    console.log(`Tokens total in USD: ${totalUSDInvested}`);
+    const usdc_plus_tokens = (tokens_USD_value + USDC_value).toFixed(2);
+    const totalUSDInvested = (tokens_USD_value + USDC_value + sol_value_in_USD).toFixed(2);
+    console.log(`\nSol balance: ${sol_balance}\n`);
+
+    console.log(`Sol total in USD: $${sol_value_in_USD.toFixed(2)}`);
     console.log(`Total USDC: $${USDC_value.toFixed(2)}`);
-    totalUSDInvested += sol_value_in_USD;
+    console.log(`Total USD Invested: $${totalUSDInvested}\n`);
+    console.log(`Trading total in USD: * $${usdc_plus_tokens} *\n`);
+    
+    //totalUSDInvested += sol_value_in_USD;
     // Print the total amount of USD invested in the wallet
     
-    console.log(`Total USD Invested: ${(totalUSDInvested + USDC_value).toFixed(2)}`);
-    const telegram_message = `Sol balance: ${sol_balance}\nSol USD value: $${sol_value_in_USD.toFixed(2)}\nTotal USDC: $${USDC_value.toFixed(2)}\nTokens USD value: $${(totalUSDInvested - sol_value_in_USD).toFixed(2)}\n\n Total USD value: 🟢 $${(totalUSDInvested + USDC_value).toFixed(2)} 🟢`
+    
+    const telegram_message = `Sol balance: ${sol_balance}\nSol total in USD: $${sol_value_in_USD.toFixed(2)}\nTotal USDC: $${USDC_value.toFixed(2)}\nTotal USD Invested: $${totalUSDInvested}\n\n\nTrading total in USD: 🟢 $${usdc_plus_tokens} 🟢`
     return telegram_message;
     
 }
 
-function buyWrapper() {
+function makePositive(num: number): number {
+    return Math.abs(num);
+  }
+
+  async function buyWrapper() {
     async function buyTokens() {
         try {
-            const result = await buy_all_from_filtered();
-            //await update_pnl_after_buy();
-            // Set the timeout only if the result is explicitly false
+            const exclusionFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2_inbound.csv';
+            const excludedAddresses = new Set();
+
+            if (fs.existsSync(exclusionFilePath)) {
+                const data = fs.createReadStream(exclusionFilePath).pipe(csv({ headers: true }));
+                for await (const row of data) {
+                    excludedAddresses.add(row.address);
+                }
+            }
+
+            const result = await buy_all_from_filtered(excludedAddresses);
             if (result === true) {
-                setTimeout(buyTokens, 90 * 1000); // Call again after 5 minutes
-            }else {
-                setTimeout(buyTokens, 15 * 1000);
+                setTimeout(buyTokens, 40 * 1000); // Retry after 5 minutes
+            } else {
+                setTimeout(buyTokens, 10 * 1000); // Retry after 1 minute
             }
         } catch (error) {
             console.error("Error calling buy_all_from_filtered:", error);
+            setTimeout(buyTokens, 15 * 1000); // Retry after 1.5 minutes
         }
     }
     buyTokens();
@@ -253,6 +263,7 @@ function sellWrapper() {
             }
         } catch (error) {
             console.error("Error calling update_account_PNL:", error);
+            setTimeout(sellTokens, 10 * 1000);
         }
     }
     sellTokens();
@@ -273,7 +284,8 @@ async function processBalances() {
             }
 
             if (balance && balance > 0) {  // Check if the balance is greater than zero and is defined
-                await pre_and_post_sell_operations(balance, address, "", "full liquidation");
+                pre_and_post_sell_operations(balance, address, "", "full liquidation" , 100);
+                await delay(1000);
             }
         }
         console.log("All operations completed successfully.");
@@ -289,7 +301,7 @@ function refresh_balance_in_telegram() {
             if (telegram_message) {
                 await send_message(telegram_message);
             }
-            setTimeout(refreshBalance, 185 * 1000);
+            setTimeout(refreshBalance, 250 * 1000);
             
         } catch (error) {
             console.error("Error calling update_account_PNL:", error);
@@ -340,7 +352,7 @@ switch (arg1) {
         if (args.length >= 3) {
             const tokenAddress = args[1];
             const amountToken = parseFloat(args[2]);
-            pre_and_post_sell_operations(amountToken, tokenAddress, "", "manual sell");
+            pre_and_post_sell_operations(amountToken, tokenAddress, "", "manual sell", 100);
         } else {
             console.log("Error: Insufficient arguments for 'sell'");
         }

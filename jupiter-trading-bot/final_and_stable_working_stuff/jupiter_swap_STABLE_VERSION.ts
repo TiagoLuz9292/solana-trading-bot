@@ -12,7 +12,7 @@ import {get_token_price} from './account_pnl';
 export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations};
 import { getAllBalances, getTokenBalance } from './my_wallet';
 import { create_sell_tracker_file, create_sell_tracker_file_v2, create_transactions_file, create_transactions_file_V2 } from './file_manager';
-import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction } from "@solana/web3.js";
+import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createAssociatedTokenAccountInstruction } from "@solana/spl-token";
 import dotenv from "dotenv";
 import axios from "axios";
@@ -94,6 +94,7 @@ interface TokenToSell {
     symbol: String;
     token_amount_sold: number;
     profit_in_usd: number;
+    message: String;
 }
 
 
@@ -432,7 +433,7 @@ async function waitForTransactionConfirmation(signature: String, tokenAddress: S
     return tokenAmountChange;
 }
 
-async function pre_and_post_sell_operations(token_amount: number, token_address: String, symbol: String, message: String) {
+async function pre_and_post_sell_operations(token_amount: number, token_address: String, symbol: String, message: String, pnl: number) {
     try {
         await create_sell_tracker_file_v2();
 
@@ -469,7 +470,8 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
             address: token_address,
             symbol: symbol,
             token_amount_sold: token_amount,
-            profit_in_usd: usdc_received
+            profit_in_usd: usdc_received,
+            message: message
         }];
 
         update_sell_tracker_after_sell(data);
@@ -478,7 +480,7 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
     
 
         console.log(`\nSucessfull SELL: ${token_amount} of ${symbol}-${token_address}; Received $${usdc_received} USDC`);
-        await send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold: ${token_amount.toFixed(2)} ${symbol}\nReceived:  $${usdc_received} USDC ($${usdc_received.toFixed(2)})\n\nToken address\n\n${token_address}\n\nTransaction:\n\n${signature}\n@Furymuse`);
+        await send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold:   ${token_amount.toFixed(2)} ${symbol}\nUSDC result:   $${((usdc_received * pnl) / 100).toFixed(2)} USDC\n\nToken address:\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n@Furymuse`);
         return signature;
     } catch (error) {
         console.error("Error during swap operation:", error);
@@ -530,9 +532,41 @@ async function pre_and_post_buy_operations(amount_usd: number, amount_sol: numbe
 
 
         console.log(`\nSucessfull BUY: ${tokenAmountReceived} of ${symbol}-${token_address}`);
-        await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${amount_usd.toFixed(2)} USDC (${amount_sol} SOL)\nGot: ${tokenAmountReceived.toFixed(2)} ${symbol}\n\nToken address\n\n${token_address}\n\nTransaction:\n\n${signature}\n@Furymuse`);
+        await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${amount_usd.toFixed(2)} USDC (${amount_sol} SOL)\nGot: ${tokenAmountReceived.toFixed(2)} ${symbol}\n\nToken address\n\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n@Furymuse`);
         return signature;
     } catch (error) {
         console.error("Error during pre and post buy operations:", error);
     }
 }
+
+async function sendSol(receiverAddress: string, amountSol: number): Promise<string> {
+    
+    const receiver = new PublicKey(receiverAddress);
+
+    // Create a transaction for sending SOL
+    const transaction = new Transaction().add(
+        SystemProgram.transfer({
+            fromPubkey: wallet.publicKey,  // Use the globally available 'wallet' Keypair
+            toPubkey: receiver,
+            lamports: amountSol * LAMPORTS_PER_SOL  // Convert SOL to lamports
+        })
+    );
+
+    // Sign and send the transaction
+    try {
+        const signature = await sendAndConfirmTransaction(
+            connection,
+            transaction,
+            [wallet],  // Use the 'wallet' Keypair for signing the transaction
+            { commitment: "confirmed" }
+        );
+        console.log(`Transaction successful with signature: ${signature}`);
+        return signature;
+    } catch (error) {
+        console.error('Transaction failed:', error);
+        throw error;
+    }
+}
+
+
+

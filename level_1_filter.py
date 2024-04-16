@@ -26,9 +26,14 @@ import pandas as pd
 
 # price change
 MIN_PRICE_CHANGE_5M = 10
-MIN_PRICE_CHANGE_1H = -20
-MIN_PRICE_CHANGE_6H = -20
-MIN_PRICE_CHANGE_24H = -20
+MIN_PRICE_CHANGE_1H = 10
+MIN_PRICE_CHANGE_6H = 10
+MIN_PRICE_CHANGE_24H = 0
+
+MAX_PRICE_CHANGE_5M = 10
+MAX_PRICE_CHANGE_1H = 80
+MAX_PRICE_CHANGE_6H = 100
+MAX_PRICE_CHANGE_24H = -20
 
 # volume
 MIN_VOLUME_5M = 1000
@@ -89,9 +94,12 @@ def get_filtered_dexscreener():
         # Add your filter criteria here as necessary
         initial_filter = (
             #(df['priceChange_5m'] > 0) &
-            (df['priceChange_1h'] > MIN_PRICE_CHANGE_5M) &
+            (df['priceChange_1h'] > MIN_PRICE_CHANGE_1H) &
             (df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
             (df['priceChange_24h'] > MIN_PRICE_CHANGE_24H) &
+            #(df['priceChange_1h'] < MAX_PRICE_CHANGE_5M) &
+            #(df['priceChange_6h'] < MAX_PRICE_CHANGE_6H) &
+            
             #(df['volume_5m'] >= MIN_VOLUME_5M) &
             (df['volume_1h'] >= MIN_VOLUME_1H) &
             #(df['volume_6h'] >= MIN_VOLUME_6H) &
