@@ -14,6 +14,7 @@
     "@solana/spl-token": "^0.4.3",
     "@solana/web3.js": "^1.91.4",
     "axios": "^1.6.8",
+    "csv": "^6.3.8",
     "csv-parse": "^5.5.5",
     "csv-parser": "^3.0.0",
     "csv-stringify": "^6.4.6",

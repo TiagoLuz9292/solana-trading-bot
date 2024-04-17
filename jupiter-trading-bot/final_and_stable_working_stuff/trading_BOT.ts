@@ -11,9 +11,10 @@ import {update_account_PNL_v3} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-
 import {checkOHLCVConditions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
 import {get_token_price, get_token_prices} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import { format } from 'date-fns';
-import {send_message} from './telegram_bot';
+import {send_message, start_bot} from './telegram_bot';
 import { stringify } from 'csv-stringify/sync';
 import { log } from 'console';
+
 
 
 
@@ -85,64 +86,82 @@ async function buy_all_from_filtered(excludedAddresses = new Set()) {
 
     let all_transactions_succeed = true;
     const filePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_2_filter.csv';
+    const openOrdersFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2.csv'; // Path to open orders CSV file
+    const csvHeaders = [
+      'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
+      'buys_1h', 'buys_6h', 'buys_24h', 'sells_5m', 'sells_1h',
+      'sells_6h', 'sells_24h', 'volume_5m', 'volume_1h', 'volume_6h',
+      'volume_24h', 'priceChange_5m', 'priceChange_1h', 'priceChange_6h',
+      'priceChange_24h', 'liquidity', 'marketCap', 'priceUSD', 'website',
+      'twitter', 'telegram'
+    ];
 
     try {
         const balances = await getAllBalances();
 
         if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
             console.log("The source csv file level_2_filter.csv is empty.\n");
-            return;
+            return true;
         }
 
-        const data: CsvRow[] = [];
-        const stream = fs.createReadStream(filePath).pipe(csv());
-        stream.on('data', (row) => data.push(row));
-        await new Promise(resolve => stream.on('end', resolve));
+        // Read the open orders file to get existing addresses
+        const openOrdersAddresses = new Set();
+        if (fs.existsSync(openOrdersFilePath) && fs.statSync(openOrdersFilePath).size > 0) {
+            const openOrdersStream = fs.createReadStream(openOrdersFilePath).pipe(csv({ headers: csvHeaders }));
+            for await (const order of openOrdersStream) {
+                if (order.address && order.address.trim() !== '' && order.address !== 'address') {
+                    openOrdersAddresses.add(order.address.trim());
+                }
+            }
+        }
 
-        console.log("Checking for new Buy opportunities...");
+        const stream = fs.createReadStream(filePath).pipe(csv({ headers: csvHeaders }));
 
-        for (const row of data) {
-            if (excludedAddresses.has(row.address)) {
-                console.log(`Skipping purchase for excluded address ${row.address}`);
+        for await (const row of stream) {
+            // Skip rows with no address or with the placeholder "address"
+            if (!row.address || row.address.trim() === '' || row.address === 'address') {
+                console.log("Skipping row with invalid address.");
+                continue;
+            }
+
+            if (excludedAddresses.has(row.address) || openOrdersAddresses.has(row.address)) {
+                console.log(`Skipping purchase for excluded or open order address ${row.address}`);
                 continue;
             }
 
             const balance = balances[row.address];
-            console.log(`\nPerforming OHLCV checks on ${row.address}. Balance: ${balance}`);
+            console.log(`Performing OHLCV checks on ${row.address}. Balance: ${balance}`);
 
-            if ((balance && balance < 1) || !balance) {
+            if ((balance && balance < 1) || balance === undefined) {
                 const canBuy = await checkOHLCVConditions(row.pairAddress);
                 console.log(`OHLCV check result: ${canBuy}`);
 
                 if (canBuy) {
                     try {
                         const amount_SOL = await getAmountInSOL(AMOUNT_USD_TO_BUY);
-                        const result = pre_and_post_buy_operations(AMOUNT_USD_TO_BUY, parseFloat(amount_SOL), row.address, row.symbol);
+                        const result = await pre_and_post_buy_operations(AMOUNT_USD_TO_BUY, parseFloat(amount_SOL), row.address, row.symbol);
                         if (!result) {
                             all_transactions_succeed = false;
                         }
-                        await delay(1000); // Ensure a pause before processing the next token
                     } catch (error) {
                         console.error('Error during buy operation:', error);
+                        all_transactions_succeed = false;
                     }
                 }
             } else {
-                console.log("INFO: Wallet already holds that token, not Buying.");
-                await delay(1000);
+                console.log("INFO: Wallet already holds that token, not buying.");
             }
+
+            // Delay to ensure a pause before processing the next token
+            await delay(1000);
         }
     } catch (error) {
         console.error('Error fetching balances or reading CSV:', error);
         return false;
     }
 
-    if (all_transactions_succeed) {
-        console.log('All transactions processed.');
-        return true;
-    } else {
-        console.log('Some transactions failed.');
-        return false;
-    }
+    console.log(all_transactions_succeed ? 'All transactions processed.' : 'Some transactions failed.');
+    return all_transactions_succeed;
 }
 
 
@@ -238,7 +257,7 @@ function makePositive(num: number): number {
 
             const result = await buy_all_from_filtered(excludedAddresses);
             if (result === true) {
-                setTimeout(buyTokens, 40 * 1000); // Retry after 5 minutes
+                setTimeout(buyTokens, 60 * 1000); // Retry after 5 minutes
             } else {
                 setTimeout(buyTokens, 10 * 1000); // Retry after 1 minute
             }
@@ -250,6 +269,9 @@ function makePositive(num: number): number {
     buyTokens();
 }
 
+
+
+
 function sellWrapper() {
     async function sellTokens() {
         try {
@@ -257,7 +279,7 @@ function sellWrapper() {
             await printTokenBalancesInUSD();
             // Set the timeout only if the result is explicitly false
             if (result === true) {
-                setTimeout(sellTokens, 10 * 1000); // Call again after 5 minutes
+                setTimeout(sellTokens, 20 * 1000); // Call again after 5 minutes
             }else {
                 setTimeout(sellTokens, 1 * 1000);
             }
@@ -301,7 +323,7 @@ function refresh_balance_in_telegram() {
             if (telegram_message) {
                 await send_message(telegram_message);
             }
-            setTimeout(refreshBalance, 250 * 1000);
+            setTimeout(refreshBalance, 300 * 1000);
             
         } catch (error) {
             console.error("Error calling update_account_PNL:", error);
@@ -337,7 +359,11 @@ switch (arg1) {
 
     case "tg-balance":
         refresh_balance_in_telegram();
-        break;    
+        break;
+        
+    case "tg-bot-start":
+        start_bot();
+        break;  
 
     case "buy-from-filtered":
         buyWrapper();

@@ -2,7 +2,7 @@ import pandas as pd
 
 def add_column_to_csv(csv_path):
     """
-    Adds a new column 'amount_to_sell' right after the column 'TP_price_2' in a CSV file.
+    Adds a new column 'token_amount_sold' between the columns 'message' and 'usd_spent' in a CSV file.
 
     Args:
     csv_path (str): Path to the CSV file.
@@ -10,20 +10,26 @@ def add_column_to_csv(csv_path):
     # Load the CSV file into a DataFrame
     df = pd.read_csv(csv_path)
 
-    # Check if 'TP_price_2' exists in the DataFrame
-    if 'TP_price_2' in df.columns:
-        # Get the index of 'TP_price_2' and add 1 to point to the next position
-        index_of_TP_price_2 = df.columns.get_loc('TP_price_2') + 1
-        
-        # Insert the new column at the calculated position
-        df.insert(loc=index_of_TP_price_2, column='amount_to_sell', value=pd.NA)
+    # Check if 'message' and 'usd_spent' exists in the DataFrame
+    if 'message' in df.columns and 'usd_spent' in df.columns:
+        # Get the index of 'message' and add 1 to point to the next position
+        index_of_message = df.columns.get_loc('message') + 1
+
+        # Check if the next column is actually 'usd_spent'
+        if df.columns[index_of_message] == 'usd_spent':
+            # Insert the new column at the calculated position
+            df.insert(loc=index_of_message, column='token_amount_sold', value=pd.NA)
+        else:
+            print(f"Column 'usd_spent' is not immediately after 'message'. Expected at index {index_of_message}, but found at index {df.columns.get_loc('usd_spent')}. No changes made.")
+            return
     else:
-        print("Column 'TP_price_2' not found in the CSV file. No changes made.")
+        missing_columns = [col for col in ['message', 'usd_spent'] if col not in df.columns]
+        print(f"Column(s) {', '.join(missing_columns)} not found in the CSV file. No changes made.")
         return
 
     # Write the updated DataFrame back to the CSV file
     df.to_csv(csv_path, index=False)
-    print("Column 'amount_to_sell' added successfully.")
+    print("Column 'token_amount_sold' added successfully.")
 
-# Example usage
-add_column_to_csv('data/open_trades.csv')
+# Example usagecd ..
+add_column_to_csv('data/sell_tracker_v2.csv')

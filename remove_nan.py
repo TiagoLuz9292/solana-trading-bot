@@ -1,21 +1,14 @@
-import csv
+import pandas as pd
 
-def clear_csv_data(file_path):
-    # Read the headers from the CSV file
-    with open(file_path, mode='r', newline='') as file:
-        reader = csv.reader(file)
-        headers = next(reader, None)  # Read the first line and use as headers
+def remove_record_by_address(csv_file, specific_address, output_csv):
+    # Read the CSV file into a pandas dataframe
+    df = pd.read_csv(csv_file)
 
-    # Check if headers were found
-    if headers:
-        # Write only the headers back to the CSV file
-        with open(file_path, mode='w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(headers)
-        print("CSV file has been cleared except for the column headers.")
-    else:
-        print("No data found in the CSV file.")
+    # Filter the dataframe to remove rows with the specific address
+    df = df[df['address'] != specific_address]
 
-# Specify the path to your CSV file
-file_path = 'data/open_orders_v2.csv'
-clear_csv_data(file_path)
+    # Save the updated dataframe to a new CSV file
+    df.to_csv(output_csv, index=False)
+
+# Example usage:
+remove_record_by_address('data/sell_tracker_v2.csv', 'CveCBpy6Hf5LjQXFz78vm4fTkwTV2fUHMtWwzpTzXke8', 'data/sell_tracker_v2.csv')

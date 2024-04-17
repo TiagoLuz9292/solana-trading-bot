@@ -480,7 +480,7 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
     
 
         console.log(`\nSucessfull SELL: ${token_amount} of ${symbol}-${token_address}; Received $${usdc_received} USDC`);
-        await send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold:   ${token_amount.toFixed(2)} ${symbol}\nUSDC result:   $${((usdc_received * pnl) / 100).toFixed(2)} USDC\n\nToken address:\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n@Furymuse`);
+        await send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold:   ${token_amount.toFixed(2)} ${symbol}\nUSDC received:   $${((usdc_received) / 100).toFixed(2)} USDC\n\nToken address:\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n\nSell link:\nhttps://jup.ag/swap/${token_address}-USDC\n\n@Furymuse`);
         return signature;
     } catch (error) {
         console.error("Error during swap operation:", error);
@@ -532,7 +532,7 @@ async function pre_and_post_buy_operations(amount_usd: number, amount_sol: numbe
 
 
         console.log(`\nSucessfull BUY: ${tokenAmountReceived} of ${symbol}-${token_address}`);
-        await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${amount_usd.toFixed(2)} USDC (${amount_sol} SOL)\nGot: ${tokenAmountReceived.toFixed(2)} ${symbol}\n\nToken address\n\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n@Furymuse`);
+        await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${amount_usd.toFixed(2)} USDC (${amount_sol} SOL)\nGot: ${tokenAmountReceived.toFixed(2)} ${symbol}\n\nToken address\n\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n\nBuy link:\nhttps://jup.ag/swap/USDC-${token_address}\n\n@Furymuse`);
         return signature;
     } catch (error) {
         console.error("Error during pre and post buy operations:", error);

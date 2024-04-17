@@ -68,10 +68,11 @@ interface DestinationRecord {
     symbol: String;
     entryPrice: string;
     exitPrice: string;
+    message: String;
+    token_amount_sold: string;
     usd_spent: number;
     usd_received: string;
     result_usd: string;
-    message: String;
 }
 
 interface TokenToSell {
@@ -91,12 +92,12 @@ interface SourceRecord {
     token_amount_received: string;
 }
 
-const STOP_LOSS = -30;
+const STOP_LOSS = -25;
 const BREAKEVEN = 20;
 
-const TP_1_PRICE = 1.65;
-const TP_2_PRICE = 2.35;
-const TP_3_PRICE = 4.6;
+const TP_1_PRICE = 1.70;
+const TP_2_PRICE = 2.45;
+const TP_3_PRICE = 4.65;
 
 const TP_1_AMOUNT = 0.70;
 const TP_2_AMOUNT = 0.65;
@@ -178,6 +179,7 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
             throw new Error(`No matching record found for address: ${sellData.address}`);
         }
 
+        
         const exitPrice = sellData.profit_in_usd / parseFloat(sellData.token_amount_sold.toFixed(2));
         const percentChangeFromEntry = ((exitPrice - parseFloat(sourceRecord.entryPrice)) / parseFloat(sourceRecord.entryPrice)) * 100;
         
@@ -185,9 +187,17 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
 
         const usdReceived = sellData.profit_in_usd;
         const usdSpent = parseFloat(sourceRecord.usd_spent);
-        const resultUsd = (usdSpent * percentChangeFromEntry) / 100;
-        
         const message = sellData.message;
+        let resultUsd = 0;
+        if (message.includes("% SL reached!!")) {
+            resultUsd = usdReceived - usdSpent;
+        } else {
+            resultUsd = usdReceived - ((sellData.token_amount_sold * usdSpent) / parseFloat(sourceRecord.token_amount_received));
+        }
+
+    
+        
+        
 
         return {
             buy_date: sourceRecord.tx_date,
@@ -196,17 +206,19 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
             symbol: sellData.symbol,
             entryPrice: sourceRecord.entryPrice,
             exitPrice: exitPrice.toFixed(9),
+            message: message,
+            token_amount_sold: sellData.token_amount_sold.toFixed(2),
             usd_spent: usdSpent,
             usd_received: usdReceived.toString(),
-            result_usd: resultUsd.toFixed(2),
-            message: message
+            result_usd: resultUsd.toFixed(2)
+    
         };
     });
 
     // Check if the destination file exists and write accordingly
     if (!existsSync(dest_csv_path)) {
         // Create the file with headers
-        const csvHeaders = ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'usd_spent', 'usd_received', 'result_usd',];
+        const csvHeaders = ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'token_amount_sold', 'usd_spent', 'usd_received', 'result_usd',];
         const csvData = stringify(newRecords, {
             header: true,
             columns: csvHeaders
@@ -216,7 +228,7 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
         // Append the new records without headers
         const csvData = stringify(newRecords, {
             header: false,
-            columns: ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'usd_spent', 'usd_received', 'result_usd']
+            columns: ['buy_date', 'sell_date', 'address', 'symbol', 'entryPrice', 'exitPrice', 'message', 'token_amount_sold', 'usd_spent', 'usd_received', 'result_usd']
         });
         await fsPromises.appendFile(dest_csv_path, csvData, { encoding: 'utf-8' });
     }
@@ -276,7 +288,7 @@ async function update_pnl_after_buy_v2(data: TransactionData[]) {
 
   
 
-async function updateDestinationFile(sourcePath: string, destinationPath: string): Promise<void> {
+  async function updateDestinationFile(sourcePath: string, destinationPath: string): Promise<void> {
     try {
         const sourceData = await readCsv(sourcePath);
         let destinationData = await readCsv(destinationPath);
@@ -289,7 +301,27 @@ async function updateDestinationFile(sourcePath: string, destinationPath: string
         });
 
         if (newRecords.length > 0) {
-            destinationData = destinationData.concat(newRecords);
+            // Sort destinationData by tx_date in descending order to get the most recent records first
+            destinationData.sort((a, b) => {
+                const dateA = new Date(a.tx_date).getTime();
+                const dateB = new Date(b.tx_date).getTime();
+                return dateB - dateA;
+            });
+
+            // Iterate through newRecords and add only the latest record for each address
+            newRecords.forEach(newRecord => {
+                const existingIndex = destinationData.findIndex(destRecord => destRecord.address === newRecord.address);
+                if (existingIndex !== -1) {
+                    const existingDate = new Date(destinationData[existingIndex].tx_date).getTime();
+                    const newDate = new Date(newRecord.tx_date).getTime();
+                    if (newDate > existingDate) {
+                        destinationData[existingIndex] = newRecord;
+                    }
+                } else {
+                    destinationData.push(newRecord);
+                }
+            });
+
             await writeCsv(destinationData, destinationPath);
             console.log(`${newRecords.length} new records appended.`);
         } else {
@@ -375,7 +407,8 @@ async function update_account_PNL_v3() {
                 record.TP_price_2 = '';
             }
 
-            if (!record.TP_price_1 && record.PNL <= BREAKEVEN) {
+            if (!record.TP_price_1 && pnl <= BREAKEVEN) {
+                console.log(`\n***** Token at BREAKEVEN, SELLING ${currentBalance} of ${record.address} *****\n`);
                 const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "Breakeaven SL reached!!", pnl)
                 if (!result) {
                     all_transactions_succeed = false;
@@ -414,7 +447,7 @@ async function update_account_PNL_v3() {
 
             
             
-            if (pnl < STOP_LOSS) {
+            if (pnl <= STOP_LOSS) {
                 console.log(`\n***** PNL below ${STOP_LOSS}%, SELLING ENTIRE BALANCE of ${record.address} *****\n`);
                 const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, `${STOP_LOSS}% SL reached!!`, pnl)
                 if (!result) {

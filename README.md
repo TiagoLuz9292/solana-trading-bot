@@ -151,18 +151,34 @@ Remember, while this strategy provides a guideline, it’s critical to factor in
 
 
 
+4hnNazffpUU3MRTVk9tPhzYzXZgiSNMwM9V8e7KPJM4C69GhypcBSYuW7aqK8vDC  bug for this token
 
 
 
+CryptoPulseTrading
+SnipeCryptoLab
+BlockSniperElite
+CryptoSnipeNetwork
+SnipeTradeHub
+QuantumCryptoSnipe
+SnipeSphereTraders
+EliteCryptoTactics
+SnipeVaultCrypto
+CryptoSnipeVerse
+SolSnipeX
+SolanaSniperClub
+MemeCoinMarksman
+SolShotCrypto
+SnipeSolTraders
+SolanaSnipeStation
+SnipeMemeElite
+SolSniperGuild
+CryptoSolShot
+SolanaSnipeSphere
 
-https://dexscreener.com/solana/8jyzhsgiilrffmzzf1gfwq2hdr2bmoebgt9hisp9jf5k     
+
+30541.91   -    3
+9162.57
 
 
-$0.0105824
-
-
-ELiFuznR6bzAgbadjsWKqd1rf9BTzyAZ8MoxMA5Lw1yo
-$0.00001768
-
-https://dexscreener.com/solana/6hrjjhcnixt94nenrlrbwjna9swg5f2hhyhaug7wgwsv
-$0.058984
+usd_received - ((token_amount_sold * usd_spent) / token_amount_received)
