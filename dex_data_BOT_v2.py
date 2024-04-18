@@ -159,7 +159,7 @@ def reload():
         level_2_filter.fetch_audit_data() 
 
         print("Filter complete.")
-        time.sleep(45)
+        time.sleep(60)
 
     #end_time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
     # Log the completion of the reload function
