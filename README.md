@@ -182,3 +182,7 @@ SolanaSnipeSphere
 
 
 usd_received - ((token_amount_sold * usd_spent) / token_amount_received)
+
+
+
+git token: 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
