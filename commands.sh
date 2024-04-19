@@ -1,0 +1,12 @@
+#!/bin/bash
+echo "List of commands:"
+echo ""
+echo "bot-full-start"
+echo ""
+echo "start-pnl - Start the Seller and trade management"
+echo "start-buyer - Start the Buyer"
+echo "start-reload - Start the Reload script"
+echo "start-initial-list - Start the Initial List script"
+echo "start-OHLCV-check - Start the OHLCV Check api"
+echo "start-tg-balance - Start the Telegram Balance script"
+echo "start-tg-bot - Start the Telegram Bot with commands"

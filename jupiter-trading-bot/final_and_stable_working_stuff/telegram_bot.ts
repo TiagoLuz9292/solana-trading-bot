@@ -3,7 +3,7 @@
 // Group ID: -1002006874152
 // BOT name: SMS_trading_Bot
 
-import {printTokenBalancesInUSD} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
+import {printTokenBalancesInUSD} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
 export {send_message, start_bot};
@@ -19,12 +19,7 @@ interface buy {
     PNL: string;
 }
 
-interface sell {
-    symbol: string;
-    address: string;
-    usd_received: number;
-    usd_spent: number;
-}
+
 
 async function start_bot() {
     const BOT = new TelegramBot(TOKEN, { polling: true });
@@ -54,7 +49,7 @@ async function start_bot() {
 
 function get_sells(): void {
     const results: Map<string, number> = new Map();
-    const filePath = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/sell_tracker_v2.csv";
+    const filePath = "/root/project/solana-trading-bot/data/sell_tracker_v2.csv";
     const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
     let totalResultUSD = 0; // Variable to accumulate the total result_usd
 
@@ -92,7 +87,7 @@ function get_sells(): void {
 
 function get_open_trades(): void {
     const results: buy[] = [];
-    const filePath = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2.csv"
+    const filePath = "/root/project/solana-trading-bot/data/open_orders_v2.csv"
 
     fs.createReadStream(filePath)
         .pipe(csv())

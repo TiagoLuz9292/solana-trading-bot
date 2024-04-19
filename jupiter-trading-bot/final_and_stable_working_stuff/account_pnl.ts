@@ -4,13 +4,14 @@ import axios from 'axios';
 import { parse } from 'csv-parse/sync';
 import { format } from 'date-fns';
 export {get_token_price, get_token_prices, update_account_PNL_v3, update_pnl_after_buy_v2, update_sell_tracker_after_sell};
-import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
-import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
+import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
+import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import { off } from 'process';
 import { promises as fsPromises } from 'fs'; 
 import { appendFile, writeFile, stat } from 'fs/promises';
 import { stringify } from 'csv-stringify/sync';
 import { log } from 'console';
+import {send_message} from './telegram_bot';
 
 
 
@@ -164,8 +165,8 @@ async function get_token_prices(tokenAddresses: string[]): Promise<Map<string, n
 
 
 async function update_sell_tracker_after_sell(data: TokenToSell[]) {
-    const src_csv_path = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2.csv';
-    const dest_csv_path = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/sell_tracker_v2.csv';
+    const src_csv_path = '/root/project/solana-trading-bot/data/open_orders_v2.csv';
+    const dest_csv_path = '/root/project/solana-trading-bot/data/sell_tracker_v2.csv';
 
     const fileContent = readFileSync(src_csv_path, { encoding: 'utf-8' });
     const records: SourceRecord[] = parse(fileContent, {
@@ -173,6 +174,11 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
         skip_empty_lines: true
     });
 
+    let symbol: String;
+    let message: String = "";
+    let token_amount = "";
+    let usdc_result = 0;
+    let token_address: String;
     const newRecords: DestinationRecord[] = data.map(sellData => {
         const sourceRecord = records.find(record => record.address === sellData.address);
         if (!sourceRecord) {
@@ -187,17 +193,20 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
 
         const usdReceived = sellData.profit_in_usd;
         const usdSpent = parseFloat(sourceRecord.usd_spent);
-        const message = sellData.message;
-        let resultUsd = 0;
-        if (message.includes("% SL reached!!")) {
-            resultUsd = usdReceived - usdSpent;
+        
+        
+        if (message && typeof message === "string" && message.includes("% SL reached!!")) {
+            usdc_result = usdReceived - usdSpent;
         } else {
-            resultUsd = usdReceived - ((sellData.token_amount_sold * usdSpent) / parseFloat(sourceRecord.token_amount_received));
+            usdc_result = usdReceived - ((sellData.token_amount_sold * usdSpent) / parseFloat(sourceRecord.token_amount_received));
         }
 
-    
+        symbol = sellData.symbol;
+        message = sellData.message;
+        token_amount = sellData.token_amount_sold.toFixed(2);
+        token_address = sellData.address;
         
-        
+        send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold:   ${token_amount} ${symbol}\nUSDC received:   $${(usdc_result).toFixed(2)} USDC\n\nToken address:\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n\nSell link:\nhttps://jup.ag/swap/${token_address}-USDC\n\n@Furymuse`);
 
         return {
             buy_date: sourceRecord.tx_date,
@@ -210,7 +219,7 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
             token_amount_sold: sellData.token_amount_sold.toFixed(2),
             usd_spent: usdSpent,
             usd_received: usdReceived.toString(),
-            result_usd: resultUsd.toFixed(2)
+            result_usd: usdc_result.toFixed(2)
     
         };
     });
@@ -232,13 +241,13 @@ async function update_sell_tracker_after_sell(data: TokenToSell[]) {
         });
         await fsPromises.appendFile(dest_csv_path, csvData, { encoding: 'utf-8' });
     }
-
+    
     console.log('Sell tracker updated successfully.');
 }
 
 
 async function update_pnl_after_buy_v2(data: TransactionData[]) {
-    const csvFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2_inbound.csv';
+    const csvFilePath = '/root/project/solana-trading-bot/data/open_orders_v2_inbound.csv';
   
     // Generate the CSV data with two decimal places for monetary values
     const csvData = data.map(d => ({
@@ -359,8 +368,8 @@ async function writeCsv(data: any[], filePath: string): Promise<void> {
 
 
 async function update_account_PNL_v3() {
-    const src_csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2_inbound.csv";
-    const dest_csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2.csv";
+    const src_csv_file = "/root/project/solana-trading-bot/data/open_orders_v2_inbound.csv";
+    const dest_csv_file = "/root/project/solana-trading-bot/data/open_orders_v2.csv";
 
     // First, update the destination file with new records from the source file
     await updateDestinationFile(src_csv_file, dest_csv_file);

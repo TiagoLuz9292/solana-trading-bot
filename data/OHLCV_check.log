@@ -1,0 +1,32 @@
+INFO:     Will watch for changes in these directories: ['/root/project/solana-trading-bot']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [7793] using StatReload
+INFO:     Started server process [7796]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for connections to close. (CTRL+C to force quit)
+Request received for pairAddress: 5mNsQMqV1yEJsEJmtM9zrGAYGFYkSy5sf5Yka8NnckSx
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 0 bullish, 3 bearish
+Average price change for periods: 1.0075874482376235
+Average price change for last two frames: 3.9254042100184052
+Average price change for periods: 0.274188693960215
+Average price change for last two frames: -1.7267844618648174
+Average price change for periods: -3.1038101066318196
+Average price change for last two frames: -4.6557151599477296
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: False
+
+Trade quality: 3
+INFO:     127.0.0.1:40480 - "POST /check_ohlcv HTTP/1.1" 200 OK
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [7796]
+INFO:     Stopping reloader process [7793]

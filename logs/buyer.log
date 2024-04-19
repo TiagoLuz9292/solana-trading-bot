@@ -1,0 +1,3671 @@
+Wallet: 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address uuhapQ127n3fAYL4WNeitFHsx54dhrAticUJc9b15BK
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+Error calling FastAPI service: 500
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6",
+  "outAmount": "177640028642220",
+  "otherAmountThreshold": "90596414607533",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "AbJCZ9TAJiby5AY3cHcXS2gUdENC6mtsm6m7XpC2ZMvE",
+        "label": "Phoenix",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6",
+        "inAmount": "3000000",
+        "outAmount": "3238380000",
+        "feeAmount": "1620000",
+        "feeMint": "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "2enaos6QWfyE8fym74xAtQ9V36GxXtu2cPNFeMqFShHt",
+        "label": "Meteora DLMM",
+        "inputMint": "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "3238380000",
+        "outAmount": "20855949",
+        "feeAmount": "33254115",
+        "feeMint": "TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6",
+        "inAmount": "20855949",
+        "outAmount": "177640028642220",
+        "feeAmount": "52139",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261055966,
+  "timeTaken": 0.073143576
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6 owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr
+Waiting for transaction confirmation for signature: 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr
+Transaction 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 USDC for 176103.503831657 LEPEPE',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '2Fsw43NmLsaFafCYvQ3vcgXhj7VzucYP8RExx6dDMwKJfa5eWx3Gq3LfMEzkmUPdEHNhMBTnyq2mJ9RQyRHrZGSr',
+  slot: 261056004,
+  timestamp: 1713535250,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: 'Gjmjory7TWKJXD2Jc6hKzAG991wWutFhtbXudzJqgx3p',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '3QEc1Wx2bwmctJrBEeQrhvWjeTSTiHGJGDxJRuMFDiKG',
+      toTokenAccount: 'J5qzzi58aUSER9YkDhNxbriTT6fVk4Xspp2V33QvDWAT',
+      fromUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      toUserAccount: '2enaos6QWfyE8fym74xAtQ9V36GxXtu2cPNFeMqFShHt',
+      tokenAmount: 3.24,
+      mint: 'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'DgbjZbSBcYCvXzpkMVqdk5vy7m1UtzaXPYBiDCefpzoH',
+      toTokenAccount: '91bUbswo6Di8235jAPwim1At4cPZLbG2pkpneyqKg4NQ',
+      fromUserAccount: '2enaos6QWfyE8fym74xAtQ9V36GxXtu2cPNFeMqFShHt',
+      toUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      tokenAmount: 0.02067544,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'AeQCWRxRLKJkuRfZgF7RV42t9qFUfr96mE3SkDFujuwS',
+      toTokenAccount: 'GTFazvTtTS1MbY9jyZ8EHabStxXtcQ1aG7vootJ6rW2A',
+      fromUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 176103.503831657,
+      mint: 'Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '5FhnYa75QKfMkPjBCrM7iucf2wMBNzHE2chyyTUfJEqj',
+      toTokenAccount: '3QEc1Wx2bwmctJrBEeQrhvWjeTSTiHGJGDxJRuMFDiKG',
+      fromUserAccount: '5FhnYa75QKfMkPjBCrM7iucf2wMBNzHE2chyyTUfJEqj',
+      toUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      tokenAmount: 3.24,
+      mint: 'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'Gjmjory7TWKJXD2Jc6hKzAG991wWutFhtbXudzJqgx3p',
+      toTokenAccount: 'FYgSJ1AxY8Ax2Pczj5mQKuH36Y2eKjrvko7rdyoyXtpx',
+      fromUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      toUserAccount: 'FYgSJ1AxY8Ax2Pczj5mQKuH36Y2eKjrvko7rdyoyXtpx',
+      tokenAmount: 2.99623,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '91bUbswo6Di8235jAPwim1At4cPZLbG2pkpneyqKg4NQ',
+      toTokenAccount: '3dr2ieMGKARcUtBx39vCfGpYehs5gX4f3sF84SbQ1wXf',
+      fromUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.02067544,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '9npmgy4sj1xNT4dudn1J38cgsmVL6KsCVFZGRaNqUcNn',
+      toTokenAccount: 'AeQCWRxRLKJkuRfZgF7RV42t9qFUfr96mE3SkDFujuwS',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      tokenAmount: 176103.503831657,
+      mint: 'Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [
+    {
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: 'GTFazvTtTS1MbY9jyZ8EHabStxXtcQ1aG7vootJ6rW2A',
+      amount: 2039280
+    }
+  ],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -2194280,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3QEc1Wx2bwmctJrBEeQrhvWjeTSTiHGJGDxJRuMFDiKG',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '91bUbswo6Di8235jAPwim1At4cPZLbG2pkpneyqKg4NQ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AeQCWRxRLKJkuRfZgF7RV42t9qFUfr96mE3SkDFujuwS',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'GTFazvTtTS1MbY9jyZ8EHabStxXtcQ1aG7vootJ6rW2A',
+      nativeBalanceChange: 2039280,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'Gjmjory7TWKJXD2Jc6hKzAG991wWutFhtbXudzJqgx3p',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CapuXNQoDviLvU1PxFiizLgPNQCxrsag1uMeyk6zLVps',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3dr2ieMGKARcUtBx39vCfGpYehs5gX4f3sF84SbQ1wXf',
+      nativeBalanceChange: 20675440,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '4MpfRxtpXbTVPGcQBobQLuF25na1UvSjca3YMXALv3cj',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5JhjdkLt2qKqTQu7rr5bEqKPBtj7ymwrwbjTrwaaodnx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Z5yqt398h32RCuWg2VR1HyLjACiZ8ZvZMadVS64Upsr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9hB9FbQi2hGgFJdkRFkFai2SKpPqmDvH2df84PxLmHk3',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9npmgy4sj1xNT4dudn1J38cgsmVL6KsCVFZGRaNqUcNn',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'D8i9RUEJp4UmH1Jq3qgLGMkR5FhAJUUm4WCFHZ8dM2Cz',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Df9nUbiCxzNvUk5BvAuZZXnQQnBRenLZqLo1cNWe3Pv2',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'G3cj2Y2kYvjhc1vHHWCNYZmRwKzi55WF1Sj8h5ZSfmky',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2enaos6QWfyE8fym74xAtQ9V36GxXtu2cPNFeMqFShHt',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2uVY2qtNYbWTeq9N25Aq3LH42saua2vBmHGmuRG4aUuV',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5FhnYa75QKfMkPjBCrM7iucf2wMBNzHE2chyyTUfJEqj',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '67TR7UsgS4Qu1Jm7dhcky3D2SMykVmC6HNzVfspnGzTf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AbJCZ9TAJiby5AY3cHcXS2gUdENC6mtsm6m7XpC2ZMvE',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'DgbjZbSBcYCvXzpkMVqdk5vy7m1UtzaXPYBiDCefpzoH',
+      nativeBalanceChange: -20675440,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'FYgSJ1AxY8Ax2Pczj5mQKuH36Y2eKjrvko7rdyoyXtpx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'J5qzzi58aUSER9YkDhNxbriTT6fVk4Xspp2V33QvDWAT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FWKfXnyrptpEShxDpHu4gxrrPNJftRnVKNx13Y2ozgp6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'PhoeNiXZ8ByJGLkxNfZRnkUfjvmuYqLR89jjFHGqdXY',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'So11111111111111111111111111111111111111112',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'TNSRxcUxoT9xBG3de7PiJyTDYu7kskLqcpddxnEJAS6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7aDTsspkQNGKmrexAN7FLx9oxU3iPczSSvHNggyuqYkR',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'KtdY3Z',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3vRssqhJP1C3',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: [Array]
+    },
+    {
+      accounts: [Array],
+      data: '5n9zLuyvSGkupnS6NLZfGuwv37wJBxwmhu6FrzQ3HViazHE5A6iaxoVgSDFV8j',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 176103.503831657
+DEBUG: Transaction confirmation loop ended. Token amount change: 176103.503831657
+
+Sucessfull BUY: 176103.503831657 of LEPEPE-Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6
+Data successfully appended to the CSV file.
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address Ge3sCTMNudAXjnpJh7x7B9SdaBJHT7qnw2UvfSJvSDJ6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb",
+  "outAmount": "34422951761",
+  "otherAmountThreshold": "17555705399",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "7ZecrakJ3B2NvVxf7hEjCzZy9bNDAW9wXrz9o6wPXbzD",
+        "label": "Whirlpool",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "65nTNuJGHme4PQvKQyJykKp1bJAkK4A8Q66sd2yBWugf",
+        "inAmount": "3000000",
+        "outAmount": "451266293944",
+        "feeAmount": "3900",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "DpKZKyq6Hd1twPZhdhyED19hbdrBPhMto7rv89QoZFU3",
+        "label": "Raydium",
+        "inputMint": "65nTNuJGHme4PQvKQyJykKp1bJAkK4A8Q66sd2yBWugf",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "451266293944",
+        "outAmount": "20777838",
+        "feeAmount": "1128165734",
+        "feeMint": "65nTNuJGHme4PQvKQyJykKp1bJAkK4A8Q66sd2yBWugf"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "2Rnb7xhRJFtgcgjjSoqdkje5mp99ariDAW8nVwJxj2Xf",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb",
+        "inAmount": "20777838",
+        "outAmount": "34422951761",
+        "feeAmount": "51944",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261056384,
+  "timeTaken": 0.07259234
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH
+Waiting for transaction confirmation for signature: 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH
+Transaction 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 USDC for 34422.556646 $KEM',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '48iKNLgjxQV2LNQBcY6KKpjwKHGfJJiCTXWJg98qCnRTVVchb6atMeELnjyZZt3uBAc1RjcZyTGAZ72MeEiTpvdH',
+  slot: 261056420,
+  timestamp: 1713535431,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: '7u7cD7NxcZEuzRCBaYo8uVpotRdqZwez47vvuwzCov43',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '6j32f5MiQGLydUJr6ugv8Lou1himGhxtjJrmA4825qcz',
+      toTokenAccount: 'CAG3BCTb7uBSa9oXnjYNoQkVyFjuDFXPMYTLwsCtjcuB',
+      fromUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 34422.556646,
+      mint: '43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '7u7cD7NxcZEuzRCBaYo8uVpotRdqZwez47vvuwzCov43',
+      toTokenAccount: '3aBFHqXpffej5Z6WbQQpH5ZKrx8oAwmHoAwJRjq7sTQV',
+      fromUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      toUserAccount: '7ZecrakJ3B2NvVxf7hEjCzZy9bNDAW9wXrz9o6wPXbzD',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '5Z1ouNZf6KY1ChREnrua87pkigaAMXdJFDD8Eb1KJsE8',
+      toTokenAccount: 'BAF1JAcE4C6nmAP7zcebqvVxWzsDsWFp22CLJFJG6TgB',
+      fromUserAccount: '7ZecrakJ3B2NvVxf7hEjCzZy9bNDAW9wXrz9o6wPXbzD',
+      toUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      tokenAmount: 451266.293944,
+      mint: '65nTNuJGHme4PQvKQyJykKp1bJAkK4A8Q66sd2yBWugf',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'BAF1JAcE4C6nmAP7zcebqvVxWzsDsWFp22CLJFJG6TgB',
+      toTokenAccount: '8ri5wkpUKPRwJXtboPBxZEXZGJTNEUSYzrqzotDzL3CF',
+      fromUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 451266.293944,
+      mint: '65nTNuJGHme4PQvKQyJykKp1bJAkK4A8Q66sd2yBWugf',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'PnC8Na2qubk5QhFhjase7Ue1PgK8b3Je8RTVGzkSASu',
+      toTokenAccount: '8ctcHN52LY21FEipCjr1MVWtoZa1irJQTPyAaTj72h7S',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      tokenAmount: 0.0207776,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '8ctcHN52LY21FEipCjr1MVWtoZa1irJQTPyAaTj72h7S',
+      toTokenAccount: '867MraZXfk6Ndv4LrnN3meatAvYu1Ab4q98ub2ymXRoi',
+      fromUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.0207776,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'DEXvHsYAEvpiUaj6KVQQCh4xzpzT8nNEWAdixiND5k1V',
+      toTokenAccount: '6j32f5MiQGLydUJr6ugv8Lou1himGhxtjJrmA4825qcz',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      tokenAmount: 34422.556646,
+      mint: '43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [
+    {
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: 'CAG3BCTb7uBSa9oXnjYNoQkVyFjuDFXPMYTLwsCtjcuB',
+      amount: 2039280
+    }
+  ],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -2194280,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6j32f5MiQGLydUJr6ugv8Lou1himGhxtjJrmA4825qcz',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7u7cD7NxcZEuzRCBaYo8uVpotRdqZwez47vvuwzCov43',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8ctcHN52LY21FEipCjr1MVWtoZa1irJQTPyAaTj72h7S',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BAF1JAcE4C6nmAP7zcebqvVxWzsDsWFp22CLJFJG6TgB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CAG3BCTb7uBSa9oXnjYNoQkVyFjuDFXPMYTLwsCtjcuB',
+      nativeBalanceChange: 2039280,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2Rnb7xhRJFtgcgjjSoqdkje5mp99ariDAW8nVwJxj2Xf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3VhfuRi82XdC4jhSpp7i56u2cFSE84N3XFpJAbrvmkca',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '867MraZXfk6Ndv4LrnN3meatAvYu1Ab4q98ub2ymXRoi',
+      nativeBalanceChange: 20777600,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '8zaGNrpG6tv9qq4yeBJtVJaRMJbUjGV3zTFTNY3PH1pE',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AmnuCwLsZEQJtdCoxspMR6PKrx6Xf689ySSEogFMRqiZ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CVi8hEBPrGkPrqGAwqJypAprNw7BJXenBHZAsjKvBCeg',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D86ke4Dy5an1xhVCiYN3z6Xr9uJCJNSreyiaudTxxUq4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'DEXvHsYAEvpiUaj6KVQQCh4xzpzT8nNEWAdixiND5k1V',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'DHthEzhifqVWXQJwbCWeDRyCzq6GL4NQEgtTpx9RJWv2',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ELvpUq667QuiwqMRw2MpvkrSThyJJssaqxqXSpDKSP59',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'PnC8Na2qubk5QhFhjase7Ue1PgK8b3Je8RTVGzkSASu',
+      nativeBalanceChange: -20777600,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '8dMJXUgZhkg1LF9hbxSAo71TcjYTiSZcHucS2pZv1c4S',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8ri5wkpUKPRwJXtboPBxZEXZGJTNEUSYzrqzotDzL3CF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'Acpox4Ffm6aJAnuLpu4wpQZmaVKKv6Kx46gAqrHfQMd9',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'As13aqeWkJBd24QscF4mtostXuSMurdNZD9vQeoYjdga',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CUnZVr3BeVAk6hVxPn8wpgfKxd1FbqZ4nJ1bHWXSzZ9S',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'DpKZKyq6Hd1twPZhdhyED19hbdrBPhMto7rv89QoZFU3',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EKYkmdTF5kBwYs3mr9oz5B9nPhjsbSqmQqFgMufGB5Jc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FXCeVrJPz51pvqvCu8ELTckCxcL9SnMvsDsrpWGzLH4e',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Ff3ej2mxpGkHo995neBBtq7uGizmJKGr2itcpfJsDHfB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3aBFHqXpffej5Z6WbQQpH5ZKrx8oAwmHoAwJRjq7sTQV',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '5Z1ouNZf6KY1ChREnrua87pkigaAMXdJFDD8Eb1KJsE8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '5zoiAUGmbM8s5qLr6oxqqnHz91EafSmD71KcyBP8Huwz',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7ZecrakJ3B2NvVxf7hEjCzZy9bNDAW9wXrz9o6wPXbzD',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AnMwYBfPgAERCuwm6Fytrg3b4jrSn2BdvRymznFEfxXd',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'GHi57vdXsyK2AjgSu5YfanfAihXMN6Kxo58S1XVdqVg4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3p5Mv9NcCLC3MBPTjb1cMzEjM3v4JwqoUAXxnk4aBBuc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '77bvATKobdqhEEzLeHnrXnRbwSFT5wwvCUpEKMkmCKyU',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FLUXqjt8cWgMEoF2H7LcackgFvx84NhR7f16oNhseEKz',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'JWN7R1',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3cQ7Xpez9UoR',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: [Array]
+    },
+    {
+      accounts: [Array],
+      data: '5n9zLuyvSGkuixCZfzTN4QA4bNoNXVrUhRs97KeP39vWYnBG7ga82Q5dtHXuYT',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 34422.556646
+DEBUG: Transaction confirmation loop ended. Token amount change: 34422.556646
+
+Sucessfull BUY: 34422.556646 of $KEM-43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Data successfully appended to the CSV file.
+Performing OHLCV checks on 7gtuZrxJ6v4rTtBbWcNj4n6dhRRJy3NFdqsiJ6b6dQVm. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Performing OHLCV checks on 7gtuZrxJ6v4rTtBbWcNj4n6dhRRJy3NFdqsiJ6b6dQVm. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr",
+  "outAmount": "67214756332",
+  "otherAmountThreshold": "34279525730",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4Ui9QdDNuUaAGqCPcDSp191QrixLzQiLxJ1Gnqvz3szP",
+        "label": "Whirlpool",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+        "inAmount": "3000000",
+        "outAmount": "2840966",
+        "feeAmount": "0",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "Hb4ksMUbnsw5ssXdC1ANf3A49djUnxSLd48HxHwjHVNF",
+        "label": "Meteora DLMM",
+        "inputMint": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "2840966",
+        "outAmount": "20821937",
+        "feeAmount": "5685",
+        "feeMint": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "Xcs9CrFJevRQiXqcyNkijHzBfKPZRB1cFZ1LaTTa2Uk",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr",
+        "inAmount": "20821937",
+        "outAmount": "67214756332",
+        "feeAmount": "52054",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261056856,
+  "timeTaken": 0.06997923
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V
+Waiting for transaction confirmation for signature: 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V
+Transaction 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 USDC for 67317.559285 JURDEN',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '2tE8kgngAttNRaUcHapnkvmTusqkoUGM8epHREGrjp5KxHnXdGF31AnzWPDxriZgEGRxxvR3XWG2PShw4s6kHb9V',
+  slot: 261056899,
+  timestamp: 1713535635,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: 'G4CD7aqqZZ6QKCNHrc1MPdS9Aw8BWmQ5ZkDd54W6mAEG',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '9niMtra2PScgNDxxtev2EeJ3dTKGDvZjmscxvHvEKXXt',
+      toTokenAccount: '9KNfs1KdpTvBgL5emRKCikRb3rgEYSMUh4k54NXr5QFf',
+      fromUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      toUserAccount: 'Hb4ksMUbnsw5ssXdC1ANf3A49djUnxSLd48HxHwjHVNF',
+      tokenAmount: 2.836775,
+      mint: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '7RSsQ5hECmCEnWAuKYnTP2WwCSgU9tPuJRYiH1gDqS8a',
+      toTokenAccount: 'BuqEDKUwyAotZuK37V4JYEykZVKY8qo1zKbpfU9gkJMo',
+      fromUserAccount: 'Hb4ksMUbnsw5ssXdC1ANf3A49djUnxSLd48HxHwjHVNF',
+      toUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      tokenAmount: 0.020791282,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '7GznwcM2oGPrfz5VcBiFcZMpLdr6diqHQAiCGJcsRUaN',
+      toTokenAccount: '5U4KCY376CwbUQtiqqprDi1gTtsJgwYhRS7dXKdJji7F',
+      fromUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 67317.559285,
+      mint: 'HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'G4CD7aqqZZ6QKCNHrc1MPdS9Aw8BWmQ5ZkDd54W6mAEG',
+      toTokenAccount: 'CYcxSC2vmbScHFcTtEM6346uqMN8b9zeSGnP9qZu1E6U',
+      fromUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      toUserAccount: '4Ui9QdDNuUaAGqCPcDSp191QrixLzQiLxJ1Gnqvz3szP',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '9gMRWNfLXNc54ta5LxuM16p72GYap2t6rf455TTBKQW4',
+      toTokenAccount: '9niMtra2PScgNDxxtev2EeJ3dTKGDvZjmscxvHvEKXXt',
+      fromUserAccount: '4Ui9QdDNuUaAGqCPcDSp191QrixLzQiLxJ1Gnqvz3szP',
+      toUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      tokenAmount: 2.836775,
+      mint: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'BuqEDKUwyAotZuK37V4JYEykZVKY8qo1zKbpfU9gkJMo',
+      toTokenAccount: '9ZGi5YkMbPFGxyH4Eowy9b7wGf6JK1keUXjtMLuhcUZ7',
+      fromUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.020791282,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '85kiBFzLEoga5gDAdxtYpvBq5FVSpcjBWxd8nAFbsPuZ',
+      toTokenAccount: '7GznwcM2oGPrfz5VcBiFcZMpLdr6diqHQAiCGJcsRUaN',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      tokenAmount: 67317.559285,
+      mint: 'HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -155000,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5U4KCY376CwbUQtiqqprDi1gTtsJgwYhRS7dXKdJji7F',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '7GznwcM2oGPrfz5VcBiFcZMpLdr6diqHQAiCGJcsRUaN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9niMtra2PScgNDxxtev2EeJ3dTKGDvZjmscxvHvEKXXt',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ABz94BZVneMUeswMUrjo3u4JTxURy4H75N9Q8to4zVDy',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BuqEDKUwyAotZuK37V4JYEykZVKY8qo1zKbpfU9gkJMo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EjPUUp3QQRz2fFeSRXBzEMUh2m9fMn5W7L7hbhHwb9Pb',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Embckc4HPdXvzsTuvgXxPnB3bnFskiWTRWqae13r68AC',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'G4CD7aqqZZ6QKCNHrc1MPdS9Aw8BWmQ5ZkDd54W6mAEG',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6LXutJvKUw8Q5ue2gCgKHQdAN4suWW8awzFVC6XCguFx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8zdY4KAZqeM6AZxtjwwxytvtr55hQQ35PGDWH1rBeEi',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'VHQp8YZxUCaBEAdbbvS1pkVWP7V3F93tVejHj8JwWGQ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Xcs9CrFJevRQiXqcyNkijHzBfKPZRB1cFZ1LaTTa2Uk',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2BeMbfCVEQW8axyPXmKpgH5kfVQ3eaY1ihhYo9yFhQoU',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '33gaSZXC9hi47xNEnuJL9ViPhUEAbDv7TWQY9v7yS535',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '85kiBFzLEoga5gDAdxtYpvBq5FVSpcjBWxd8nAFbsPuZ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '9ZGi5YkMbPFGxyH4Eowy9b7wGf6JK1keUXjtMLuhcUZ7',
+      nativeBalanceChange: 20791282,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'CUnqpahSHbQ6dvqckDHqNdtH3auFjbaM9g6dVf9wUQj1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Enf4EaCrojJETKA5xu7nrVQnphMNhXBrugqV5mwT9zZk',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HBWAN2gjgQLUpFkvirKabiCG7DMaJySzECNmr2qh9KaU',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '4Ui9QdDNuUaAGqCPcDSp191QrixLzQiLxJ1Gnqvz3szP',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9gMRWNfLXNc54ta5LxuM16p72GYap2t6rf455TTBKQW4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'CYcxSC2vmbScHFcTtEM6346uqMN8b9zeSGnP9qZu1E6U',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '5YGfD4PGku58LbsMU3NF4EZoVscxbCUxHdmZA3CwMqhH',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6HjpWj1FpCUGGUzy7XR36uu9G58Ft8iX6H7vdZXXi5kh',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7RSsQ5hECmCEnWAuKYnTP2WwCSgU9tPuJRYiH1gDqS8a',
+      nativeBalanceChange: -20791282,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '9KNfs1KdpTvBgL5emRKCikRb3rgEYSMUh4k54NXr5QFf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'FfzvspVYWAxFhxwQbXiE93PSPTT1rurbX75Byg9ZQkfV',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Hb4ksMUbnsw5ssXdC1ANf3A49djUnxSLd48HxHwjHVNF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'whirLbMiicVdio4qvUfM5KAg6Ct8VwpYzGff3uctyCc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6X8YPtYc9E9TqLdRZ7KmqbPSTjVgqq6QoBCSTSXaYusN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CrkkeqLUo7n6gvzoYMPZ7CHjie1Zua2CHUPe2DFh8mmR',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'So11111111111111111111111111111111111111112',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'JSHJz3',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3h2QwRnXBNGP',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '5n9zLuyvSGkutfvSqEcdBnHjhMWuuMT52P3YAJz9Vfd43wgPNjULSyH4h6K7nP',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 67317.559285
+DEBUG: Transaction confirmation loop ended. Token amount change: 67317.559285
+
+Sucessfull BUY: 67317.559285 of JURDEN-HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+Data successfully appended to the CSV file.
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 43RJr9afARfMguXzKWCCQrF3JmNNksKHQBKVwKyBfuUb
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address HYWB4HkyfDSA1i4t4cQaK9cvLHG4nQBRzGX9tzmEmgDr
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on DEhDXhtUFuz6Uodhde3rznGbVbdiECahp1kTHnFpsna3. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on HzAHz3e6FqZq4HQEcJadJVLRQ8z2m1hs9mLjb1oNaWfj. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+  "outAmount": "5115643431161",
+  "otherAmountThreshold": "2608978149893",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4McViNZyEBBRYad61iz5TMAahLDUzkuoUrWPWCSpHZSx",
+        "label": "Raydium",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "BABYsocP6cB95xvBDXnjXKX96VBNC37dmNWUtaV9Jk6v",
+        "inAmount": "3000000",
+        "outAmount": "7982574510",
+        "feeAmount": "7500",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "33V24GEZWMeNAQmUznje9XWrMLvQZgu4cNn11cJcPq84",
+        "label": "Raydium",
+        "inputMint": "BABYsocP6cB95xvBDXnjXKX96VBNC37dmNWUtaV9Jk6v",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "7982574510",
+        "outAmount": "21114950",
+        "feeAmount": "19956436",
+        "feeMint": "BABYsocP6cB95xvBDXnjXKX96VBNC37dmNWUtaV9Jk6v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+        "inAmount": "21114950",
+        "outAmount": "5115643431161",
+        "feeAmount": "52787",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261060548,
+  "timeTaken": 0.077325369
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6 owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2
+Waiting for transaction confirmation for signature: 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 24 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction confirmation for 2zxR2Gaowuk9HuZ4L5mfsdKk34tMhFWQ5XJp1s4YGabLrkq8gG2KSuNqpwP9ESuE3vLwkoq1viXXTsGQRXHFjUL2 has timed out.
+No tokens received or transaction is not confirmed
+Some transactions failed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+  "outAmount": "5097661329072",
+  "otherAmountThreshold": "2599807277827",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "asdEJnE7osjgnSyQkSZJ3e5YezbmXuDQPiyeyiBxoUm",
+        "label": "Raydium",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "GsNzxJfFn6zQdJGeYsupJWzUAm57Ba7335mfhWvFiE9Z",
+        "inAmount": "3000000",
+        "outAmount": "229320952",
+        "feeAmount": "7500",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "8HPj4GEEWmebi8mhuaZW9CSiBRbfus7TcKegqxWSXr1R",
+        "label": "Dexlab",
+        "inputMint": "GsNzxJfFn6zQdJGeYsupJWzUAm57Ba7335mfhWvFiE9Z",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "229320952",
+        "outAmount": "21040712",
+        "feeAmount": "343980",
+        "feeMint": "GsNzxJfFn6zQdJGeYsupJWzUAm57Ba7335mfhWvFiE9Z"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+        "inAmount": "21040712",
+        "outAmount": "5097661329072",
+        "feeAmount": "52601",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261060904,
+  "timeTaken": 0.074346465
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6 owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E
+Waiting for transaction confirmation for signature: 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 24 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E is not confirmed yet or not found in external API, checking again in 30 seconds...
+Transaction confirmation for 3WWT6mgcYf9uDzoeLwUHF4YWpgENWLNfSMb5GJqn3Wc5VpodCYuY8e7xccoF75NiUDpz4ebyqtEs2DYubomPAp8E has timed out.
+No tokens received or transaction is not confirmed
+Some transactions failed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+  "outAmount": "5173447148684",
+  "otherAmountThreshold": "2638458045829",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "92FncZjjR95J3Edjw71DA8FPgmzLTuCViEPXomt7nDHP",
+        "label": "Whirlpool",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp",
+        "inAmount": "3000000",
+        "outAmount": "79391463",
+        "feeAmount": "7800",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "GH8Ers4yzKR3UKDvgVu8cqJfGzU4cU62mTeg9bcJ7ug6",
+        "label": "Raydium",
+        "inputMint": "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "79391463",
+        "outAmount": "21454487",
+        "feeAmount": "198478",
+        "feeMint": "5mbK36SZ7J19An8jFochhQS4of8g6BwUjbeCSxBSoWdp"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+        "inAmount": "21454487",
+        "outAmount": "5173447148684",
+        "feeAmount": "53636",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261061291,
+  "timeTaken": 1.1957577640000001
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6 owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 4LEju2b6rFBbupqUUrPzJeQBTeHznVXP9T6d6KAgJDPJBuivpQ3nWBCmmFjhCFneviEX3qgJZXJKvE33DBa3jk63
+Waiting for transaction confirmation for signature: 4LEju2b6rFBbupqUUrPzJeQBTeHznVXP9T6d6KAgJDPJBuivpQ3nWBCmmFjhCFneviEX3qgJZXJKvE33DBa3jk63
+An error occurred while fetching transaction details: AxiosError: Request failed with status code 504
+    at settle (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/axios/lib/core/settle.js:19:12)
+    at IncomingMessage.handleStreamEnd (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/axios/lib/adapters/http.js:589:11)
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'ERR_BAD_RESPONSE',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json, text/plain, */*',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.6.8',
+      'Content-Length': '109',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://api.helius.xyz/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+    data: '{"transactions":["4LEju2b6rFBbupqUUrPzJeQBTeHznVXP9T6d6KAgJDPJBuivpQ3nWBCmmFjhCFneviEX3qgJZXJKvE33DBa3jk63"]}'
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '109',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'api.helius.xyz',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'api.helius.xyz',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 10713,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14 HTTP/1.1\r\n' +
+      'Accept: application/json, text/plain, */*\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.6.8\r\n' +
+      'Content-Length: 109\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: api.helius.xyz\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 504,
+      statusMessage: 'Gateway Timeout',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://api.helius.xyz/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 26,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'api.helius.xyz',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 109,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://api.helius.xyz/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 504,
+    statusText: 'Gateway Timeout',
+    headers: Object [AxiosHeaders] {
+      date: 'Fri, 19 Apr 2024 14:40:26 GMT',
+      'content-type': 'application/json',
+      'content-length': '55',
+      connection: 'close',
+      'cf-ray': '876da652bda53150-MAD',
+      'cf-cache-status': 'DYNAMIC',
+      'cf-placement': 'local-MAD',
+      'x-amz-apigw-id': 'WelONExgCYcEI9A=',
+      'x-amzn-errortype': 'InternalServerErrorException',
+      'x-amzn-requestid': '597381a5-c5f7-410f-9e93-d635d8f35aa5',
+      vary: 'Accept-Encoding',
+      server: 'cloudflare',
+      'alt-svc': 'h3=":443"; ma=86400'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://api.helius.xyz/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+      data: '{"transactions":["4LEju2b6rFBbupqUUrPzJeQBTeHznVXP9T6d6KAgJDPJBuivpQ3nWBCmmFjhCFneviEX3qgJZXJKvE33DBa3jk63"]}'
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '109',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14 HTTP/1.1\r\n' +
+        'Accept: application/json, text/plain, */*\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.6.8\r\n' +
+        'Content-Length: 109\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: api.helius.xyz\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/v0/transactions/?api-key=9ba9abe4-5382-46d3-9c67-680bd831ea14',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'api.helius.xyz',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: { error: 'Network error communicating with endpoint' }
+  }
+}
+No tokens received or transaction is not confirmed
+Some transactions failed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+  "outAmount": "5039424701937",
+  "otherAmountThreshold": "2570106597988",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "CxuEpBtUHv4hWgXAKd4mpMiufrMvEHmtfUgWM3st1Tb4",
+        "label": "Meteora",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY",
+        "inAmount": "3000000",
+        "outAmount": "103579181063",
+        "feeAmount": "7500",
+        "feeMint": "AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "EPjmSZkD9kqqWvL4ghS4LzvQzGk71o5iK5advaK2Aegt",
+        "label": "Raydium",
+        "inputMint": "AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "103579181063",
+        "outAmount": "20902998",
+        "feeAmount": "258947952",
+        "feeMint": "AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6",
+        "inAmount": "20902998",
+        "outAmount": "5039424701937",
+        "feeAmount": "52257",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261061337,
+  "timeTaken": 0.081574218
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6 owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh
+Waiting for transaction confirmation for signature: 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh
+Transaction 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v for 5011.875730612 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '4BPZSshpjojxnmkfgf3N8FvAutM3SbruLyq15s1vBtpQ53X6vmmt3GRHZwFWMSbtjBwyXt6smVfAEQ4R57gEJsjh',
+  slot: 261061429,
+  timestamp: 1713537682,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: 'm3BrPbv2TFmZZTPpyB9NgsCXqGNujpXvzvGqj8ksars',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '4bqFbyPjxaU7BR5LY6Szv61vn9CD7HL5S2s9H7Wgojrx',
+      toTokenAccount: 'HmP16gPywH9AdgixJTaNW6VP6q1vBZZ63TzfPYaaW3pm',
+      fromUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 5011.875730612,
+      mint: '7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'm3BrPbv2TFmZZTPpyB9NgsCXqGNujpXvzvGqj8ksars',
+      toTokenAccount: 'C2QoQ111jGHEy5918XkNXQro7gGwC9PKLXd1LqBiYNwA',
+      fromUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      toUserAccount: '3ESUFCnRNgZ7Mn2mPPUMmXYaKU8jpnV9VtA17M7t2mHQ',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'GxtFMdYBYpMVvQnJr31bGDYiiJYzxhqLq6NFLaYKawd9',
+      toTokenAccount: 'HRGrphu6hgwYNj3houJfuNqn2zjPKm81SD8gpNXdWYUk',
+      fromUserAccount: 'BxjRMJPZgfXtrej7sU6DXyUJNxGRrNwWoTCYocVtHtTC',
+      toUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      tokenAmount: 103.527791343,
+      mint: 'AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'HRGrphu6hgwYNj3houJfuNqn2zjPKm81SD8gpNXdWYUk',
+      toTokenAccount: 'DPUsDjdLeTF2aL7igota1ipSyfCXmYJ84jKcJCEvmxxm',
+      fromUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 103.527791343,
+      mint: 'AT79ReYU9XtHUTF5vM6Q4oa9K8w7918Fp5SU7G1MDMQY',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'BfZuAY6Ri33ebvSJzkVfNk7iLygGaqiMaZ8ERmvj3NMD',
+      toTokenAccount: '6zAcFYmxkaH25qWZW5ek4dk4SyQNpSza3ydSoUxjTudD',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      tokenAmount: 0.020891592,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '6zAcFYmxkaH25qWZW5ek4dk4SyQNpSza3ydSoUxjTudD',
+      toTokenAccount: '9SixLxCukGz1oQjDBYukoeLwZbVPGxcqxd3DbNtcaM9F',
+      fromUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.020891592,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'BNNZpu2aWZn9CT9MwAGc1gACYp7n34kFFyLJNFyDVJmY',
+      toTokenAccount: '4bqFbyPjxaU7BR5LY6Szv61vn9CD7HL5S2s9H7Wgojrx',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      tokenAmount: 5011.875730612,
+      mint: '7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '8sRGTAK28huaC1yaAdSTG7aWRS8FBLxmMLf1Ne8b1UmT',
+      toTokenAccount: '',
+      fromUserAccount: '8sRGTAK28huaC1yaAdSTG7aWRS8FBLxmMLf1Ne8b1UmT',
+      toUserAccount: '',
+      tokenAmount: 103.527791343,
+      mint: 'wEF88wjEmFeMJDqG7yS7iJTt7RPmB6S655LV61AKRWe',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '',
+      toTokenAccount: 'D9QMdN3dou5XnpTC1B2L3igHXGE9JPxtYmCBh22sYqUb',
+      fromUserAccount: '',
+      toUserAccount: '8sRGTAK28huaC1yaAdSTG7aWRS8FBLxmMLf1Ne8b1UmT',
+      tokenAmount: 2.869023,
+      mint: '3RpEekjLE5cdcG15YcXJUpxSepemvq2FpmMcgo342BwC',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -155000,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'm3BrPbv2TFmZZTPpyB9NgsCXqGNujpXvzvGqj8ksars',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '4bqFbyPjxaU7BR5LY6Szv61vn9CD7HL5S2s9H7Wgojrx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6zAcFYmxkaH25qWZW5ek4dk4SyQNpSza3ydSoUxjTudD',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'HRGrphu6hgwYNj3houJfuNqn2zjPKm81SD8gpNXdWYUk',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HmP16gPywH9AdgixJTaNW6VP6q1vBZZ63TzfPYaaW3pm',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'wEF88wjEmFeMJDqG7yS7iJTt7RPmB6S655LV61AKRWe',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3ESUFCnRNgZ7Mn2mPPUMmXYaKU8jpnV9VtA17M7t2mHQ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3RpEekjLE5cdcG15YcXJUpxSepemvq2FpmMcgo342BwC',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8sRGTAK28huaC1yaAdSTG7aWRS8FBLxmMLf1Ne8b1UmT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'BxjRMJPZgfXtrej7sU6DXyUJNxGRrNwWoTCYocVtHtTC',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'C2QoQ111jGHEy5918XkNXQro7gGwC9PKLXd1LqBiYNwA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'CLzDnp5gX4rzVYpVzR2XzAEJwWTcHvTv1Pip6fwkTQ9X',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CxuEpBtUHv4hWgXAKd4mpMiufrMvEHmtfUgWM3st1Tb4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D9QMdN3dou5XnpTC1B2L3igHXGE9JPxtYmCBh22sYqUb',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'GxtFMdYBYpMVvQnJr31bGDYiiJYzxhqLq6NFLaYKawd9',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '4Lj8fR5EuuKoznrQRoNSziwTYzikamTj3BzwaHJsHyWn',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '58xaJtYWSE6gExSm6E2Nr3BWY9raWuTRqXPAErR4Yvkv',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AaPdEUWWCRDkPcZCQTksquiX64omcuWremkchqUanjhQ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BTkqPcts96DUwbSR93wm8u7XBuKfn2aJ53C8dDR2esAx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BbKWSaMJLf4JUhXE3oPWaUaMbq2kJ3bqMhGV96QbLFaw',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BfZuAY6Ri33ebvSJzkVfNk7iLygGaqiMaZ8ERmvj3NMD',
+      nativeBalanceChange: -20891592,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'DPUsDjdLeTF2aL7igota1ipSyfCXmYJ84jKcJCEvmxxm',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'DY1ngCdRJFRJw8caNkRDCMf9tcLrUShZNDQ1EtL8goio',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjmSZkD9kqqWvL4ghS4LzvQzGk71o5iK5advaK2Aegt',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HktTVrgn8G9ur4Bp7T7HmDrpKXT9iJ1Qi9e18BgKFu89',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'TWhzSmJaUCHK6vjdYaBKLLf6EuA6kYxEDgqvqchEJgT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '3wXZEFmaM6Y1rwJuypSUDmeL161fPHh1CF8DAyySzoyE',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9SixLxCukGz1oQjDBYukoeLwZbVPGxcqxd3DbNtcaM9F',
+      nativeBalanceChange: 20891592,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '9XGMZaf6jRFEo2PvEq9vmc1kk56ocbm6HXasbqrubU3p',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'A18Le3LKYdAFJSe4WeCYhV2CPVG4UwmZE9TPemWtyWFd',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BNNZpu2aWZn9CT9MwAGc1gACYp7n34kFFyLJNFyDVJmY',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'CD4ZBGwJPHQVRiZrxtZgfTbTArgj68mNUECmEDRr3c4x',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Eksc1ygKrTrAPmrDYn2zCqgJbKQWcpRQpgrwnEiatiHa',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HtVWY7nTRBLnMf9E7dpJgG6R8qxkgM1RJFgBxDsL1ky8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '24Uqj9JCLxUeoC3hGfh5W3s9FM9uCHDS2SG3LYwBpyTi',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6YNQfeScTASaVrGJi4kcSFGHpRWSqDnNuz619ReXLBVD',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5PdzsM5fLbGG1jJCcofUtTg69QPTCRmm59q8zvCTdHMr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'FM4tQf',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3K5TvgHh3pFh',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '25nzQ6CzRJcn3EJCaxdJVvZeBDQtXc7kn3aQxGDZRwUBUkSqao8ubKkgMMw9R',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 5011.875730612
+DEBUG: Transaction confirmation loop ended. Token amount change: 5011.875730612
+
+Sucessfull BUY: 5011.875730612 of LAMBOX-7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Data successfully appended to the CSV file.
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on H89mdwWDXkmfRcn7ksiZ8sKuhdufnujH1kZH7pLjNLqT. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: false
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM",
+  "outAmount": "2681826364838",
+  "otherAmountThreshold": "1367731446068",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "AjoMYCJvK3mfDx2hB2FeWsh62qc52w1vnmfcaHwzvjWr",
+        "label": "Meteora DLMM",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt",
+        "inAmount": "3000000",
+        "outAmount": "4764079821098",
+        "feeAmount": "128313",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "12wp79xN7Cec4d92hsr9Kt96mpQkzp1YDuXb3oxu7NMB",
+        "label": "Raydium",
+        "inputMint": "8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "4764079821098",
+        "outAmount": "20734048",
+        "feeAmount": "11910199552",
+        "feeMint": "8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM",
+        "inAmount": "20734048",
+        "outAmount": "2681826364838",
+        "feeAmount": "51835",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261064781,
+  "timeTaken": 0.06666758
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC
+Waiting for transaction confirmation for signature: 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC
+Transaction 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 USDC for 25593.90713026 OIL',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '3YaX2LVkTsWZ95HfA5tG2TUz5LfUAaRTtBsT1UsqUf6x9j9zeeT56QgqjA9gStSezNt5wdCQCPetGEzxbj1W8HVC',
+  slot: 261064846,
+  timestamp: 1713539196,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      toTokenAccount: 'Huc86fchWqYRaktA3P4GbwyoV2qfiCvZZqKbH6ZaGYwn',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: 'AjoMYCJvK3mfDx2hB2FeWsh62qc52w1vnmfcaHwzvjWr',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'CgzQxfrcN7VgPwFkWfZi7VEuRqh5wQSnkf129AJRfgrC',
+      toTokenAccount: 'BbXmkyreGdqCufLUY6KymoncUYoVYkMYwc5AmoJn3ds7',
+      fromUserAccount: 'AjoMYCJvK3mfDx2hB2FeWsh62qc52w1vnmfcaHwzvjWr',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 4603.233155115,
+      mint: '8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'CCvWUAi7dgo9i5SKD8PKaiDBLx9xiEUDXLittMBR4PXx',
+      toTokenAccount: '78PeaoNHEkS9nd9tmRS42aA7VL976KeyaDtmWYrcuX8e',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 25593.90713026,
+      mint: 'APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'BbXmkyreGdqCufLUY6KymoncUYoVYkMYwc5AmoJn3ds7',
+      toTokenAccount: 'HwGbc1iVhNF8rterrxzeBxL5iJHf3mpZfAJ45jrjeP9J',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 4603.233155115,
+      mint: '8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'F1wPp9uTnqavZyXmtFrKJwgWuTpGNEbtWxTVX8edaozN',
+      toTokenAccount: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 0.019320567,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      toTokenAccount: 'qTyECsZRd3zUCwstDemDbFycooDydYcmDbvG3rhNcjL',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.019320567,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'CphtVcXProJ8x4iF5x1HSkgfgMAdVbFk1E6rERQ1jMbp',
+      toTokenAccount: 'CCvWUAi7dgo9i5SKD8PKaiDBLx9xiEUDXLittMBR4PXx',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 25593.90713026,
+      mint: 'APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -155000,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '78PeaoNHEkS9nd9tmRS42aA7VL976KeyaDtmWYrcuX8e',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'BbXmkyreGdqCufLUY6KymoncUYoVYkMYwc5AmoJn3ds7',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CCvWUAi7dgo9i5SKD8PKaiDBLx9xiEUDXLittMBR4PXx',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '12wp79xN7Cec4d92hsr9Kt96mpQkzp1YDuXb3oxu7NMB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2rmQrq5ZJWmaQaFgX7AxFLBdbqaomGfthjTyBfqWNMu4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6FVXipqnBznpXMLzhjLEK9kBv1jEZQRB2tk9y6dHJLNT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'A2dh6jrZAUSUNuxW9YoNE8n7YA8HEVZxjzi8wM64TMfF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CDJXhmF38s6Zstu2y4Nkg2C9eJCo8ozFgT7e1naUyg3R',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EXsGVnpmDHgsbTekTU6XXCqaddoyY91z3GCQhgosusgr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'F1wPp9uTnqavZyXmtFrKJwgWuTpGNEbtWxTVX8edaozN',
+      nativeBalanceChange: -19320567,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'Fpez9aPEJ61uvaXcDwK82wc3vteeM56g2SnYxuF1qfMs',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'GU2mkCJ4amicd4xAkoQrPqG1p2L8qSxyYHG7awYBtF1D',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HwGbc1iVhNF8rterrxzeBxL5iJHf3mpZfAJ45jrjeP9J',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'hmgrkE3qU36rKgKc4HRaNe4hxFK967pjPzsQnhWTKqo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'qTyECsZRd3zUCwstDemDbFycooDydYcmDbvG3rhNcjL',
+      nativeBalanceChange: 19320567,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'ycAvEvwqLXHb3WdZr2cyziF1SJTRScYcmEy8L7Pw6uf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5RzekR4XhnM1c53mJknBfMQJhd3mB34w11wYMSHV9XqF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ApsAHaK2iAdSFE4ZgXk3tCDshmkqG22Zv3j6582RUi1j',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CphtVcXProJ8x4iF5x1HSkgfgMAdVbFk1E6rERQ1jMbp',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'DyMZGQtsw1JPgqSVNcMik7xH74sXVavygmSBbnK8sg2r',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FCsaaPcDFfzrmYfUL1xRmRM7YA67zS38uibyRD2SQHwe',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Hh5d8Y1Tcu6p7QN6qzWXrTzkiwNHcKeTX7C8Tb2NeN8P',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7QQnq5kYRTe5X4Xp2Jf1nicjZphPk2FJpRUuUFwbfw3b',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9UZUanYNtMs9Rr9GcvXYFqiZKy3UR5is7rLPwmd4tQP3',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'AjoMYCJvK3mfDx2hB2FeWsh62qc52w1vnmfcaHwzvjWr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'C77y3vEVsexamX2UR1MjHCXHhQCTpvNMHxN5Q3kxwz8k',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CgzQxfrcN7VgPwFkWfZi7VEuRqh5wQSnkf129AJRfgrC',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'Huc86fchWqYRaktA3P4GbwyoV2qfiCvZZqKbH6ZaGYwn',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2M7McqgN9NAN5fJkhRDtHNhG4n1DJNuuqrPwRdxtKcP4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HmuNM66f7928eKq1zQgRrB5Gc1mq6XPzL8Y28wUZCTjb',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8AntP7Hxft8Yjr52UQ3RnBHU4njTkDFDho97gE4vRzkt',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'Hmgwod',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3ZfyX6qmZhBV',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '25nzQ6CzRJcn47PGKJaojKAEV4SQZbqTKFBQ7VESmCoPGEbAcqCk5uaDm4Ka7',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 25593.90713026
+DEBUG: Transaction confirmation loop ended. Token amount change: 25593.90713026
+
+Sucessfull BUY: 25593.90713026 of OIL-APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM
+Data successfully appended to the CSV file.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address APnUsTJZNkxBaZXTzAqFoY1hLtkJhZCPDBEMtoLEEeiM
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on H1C5T6BnmbkBacLCaYoczxFQ7qB5Ggx85hJFAL2HHNBj. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on 8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on H1C5T6BnmbkBacLCaYoczxFQ7qB5Ggx85hJFAL2HHNBj. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on 8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR. Balance: undefined
+OHLCV check result: true
+INFO: Attempting to perform swap from 3 USDT ($3 USD) to token address 8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR...
+TEST
+DEBUG: Received swap quote: {
+  "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "inAmount": "3000000",
+  "outputMint": "8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR",
+  "outAmount": "110229315273",
+  "otherAmountThreshold": "56216950790",
+  "swapMode": "ExactIn",
+  "slippageBps": 4900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4r1sB7A3nhNiDejk7djkBjg3hyFxPGn7Ad53cTfyfQpS",
+        "label": "Meteora DLMM",
+        "inputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "outputMint": "kiraZUmSnzgfVfhrdvNj6hxHFaPFTTUk8ioY98cbh6G",
+        "inAmount": "3000000",
+        "outAmount": "20864798001",
+        "feeAmount": "30000",
+        "feeMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "2L3DiNa3rZ1qJmZBDufY4oxgiG8uGchr3SWb5vQGKW4n",
+        "label": "Meteora",
+        "inputMint": "kiraZUmSnzgfVfhrdvNj6hxHFaPFTTUk8ioY98cbh6G",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "20864798001",
+        "outAmount": "21361599",
+        "feeAmount": "208647980",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "EJzdYu3xJsFxQC6wAhGSeuRMwf3vGBswTdSCFXZEGLxJ",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR",
+        "inAmount": "21361599",
+        "outAmount": "110229315273",
+        "feeAmount": "53403",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 261065844,
+  "timeTaken": 0.077486933
+}
+Creating associated token account for EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+SOL associated token account created!
+Creating associated token account for 8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR owned by 2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke
+Output token associated token account created!
+Swap from token to SOL successful with signature: 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM
+Waiting for transaction confirmation for signature: 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM
+Transaction 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM is not confirmed yet or not found in external API, checking again in 3 seconds...
+Transaction 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM is not confirmed yet or not found in external API, checking again in 6 seconds...
+Transaction 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM is not confirmed yet or not found in external API, checking again in 12 seconds...
+Transaction 5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM is not confirmed yet or not found in external API, checking again in 24 seconds...
+DEBUG: Transaction details received: {
+  description: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke swapped 3 USDC for 103475.045738 PWIFP',
+  type: 'SWAP',
+  source: 'JUPITER',
+  fee: 155000,
+  feePayer: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+  signature: '5qMRVDV8Km6Bcn1LMWxNkhjetSeft5J2juQpCNotE5K1DtLRK9ws64TJKXdKtnv6Xd25fZ514xH9a43yfTp5WYEM',
+  slot: 261065910,
+  timestamp: 1713539671,
+  tokenTransfers: [
+    {
+      fromTokenAccount: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      toTokenAccount: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      toTokenAccount: 'ApxpZ8oCSZLaMR6Ht993svZ6dZimR5HivjSRd9WYFAkM',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '4r1sB7A3nhNiDejk7djkBjg3hyFxPGn7Ad53cTfyfQpS',
+      tokenAmount: 3,
+      mint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'G27ED49wg9wmGA8zRpvACVX3ZwS6K9xQ2BQqP44WALwF',
+      toTokenAccount: '9RyzwXWbLuhWRJRojgWFbQfaW9bwgWBBJAgKsS2Zh3B3',
+      fromUserAccount: '4r1sB7A3nhNiDejk7djkBjg3hyFxPGn7Ad53cTfyfQpS',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 20.864798001,
+      mint: 'kiraZUmSnzgfVfhrdvNj6hxHFaPFTTUk8ioY98cbh6G',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'CKigLC64HFdh9ESBex1skGNHYQoHsdA75MpqZjiEVu6o',
+      toTokenAccount: 'HwpqqqKtrtabcSCNDvr1uKt6B8xpSCs7KxkeKBF8a9GD',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      tokenAmount: 103475.045738,
+      mint: '8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '9RyzwXWbLuhWRJRojgWFbQfaW9bwgWBBJAgKsS2Zh3B3',
+      toTokenAccount: 'EEN4kiEeXtrX9HfsrQe5Sb8LEEXQowvFxEUNovta1JC9',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '5PE1LuhHsz3m3V46RmwGVou8wBzb76D8cSyFzVXqpEkQ',
+      tokenAmount: 20.864798001,
+      mint: 'kiraZUmSnzgfVfhrdvNj6hxHFaPFTTUk8ioY98cbh6G',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'HZeLxbZ9uHtSpwZC3LBr4Nubd14iHwz7bRSghRZf5VCG',
+      toTokenAccount: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      fromUserAccount: 'FERjPVNEa7Udq8CEv68h6tPL46Tq7ieE49HrE2wea3XT',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 0.019968029,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      toTokenAccount: '4wHVXWqU4oRU3q5g1C9TkqEKtkeQkf9yqyikXFEVqmDS',
+      fromUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      toUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      tokenAmount: 0.019968029,
+      mint: 'So11111111111111111111111111111111111111112',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '4ccQUJRJzstNqbZXQr5Ddo98PrHTS9gyaejbARTScoD1',
+      toTokenAccount: 'CKigLC64HFdh9ESBex1skGNHYQoHsdA75MpqZjiEVu6o',
+      fromUserAccount: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      toUserAccount: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      tokenAmount: 103475.045738,
+      mint: '8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '6uvxpnZfwzEoCsboCLrCJQd3abayVtzkLWA2RJ9kk2pB',
+      toTokenAccount: '',
+      fromUserAccount: 'JDaHskT8HTjg7bkXa1WQBAUxkpRrHUhS8jAMaHx9fYzJ',
+      toUserAccount: '',
+      tokenAmount: 0.018883063,
+      mint: 'FZN7QZ8ZUUAxMPfxYEYkH3cXUASzH8EqA6B4tyCL8f1j',
+      tokenStandard: 'Fungible'
+    },
+    {
+      fromTokenAccount: '',
+      toTokenAccount: 'JDaHskT8HTjg7bkXa1WQBAUxkpRrHUhS8jAMaHx9fYzJ',
+      fromUserAccount: '',
+      toUserAccount: 'JDaHskT8HTjg7bkXa1WQBAUxkpRrHUhS8jAMaHx9fYzJ',
+      tokenAmount: 20.864798001,
+      mint: 'Bh4fW5stHSGLQsjD9ZyB1xm9u5iW7Eo55jN9nDm21odt',
+      tokenStandard: 'Fungible'
+    }
+  ],
+  nativeTransfers: [
+    {
+      fromUserAccount: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      toUserAccount: 'HwpqqqKtrtabcSCNDvr1uKt6B8xpSCs7KxkeKBF8a9GD',
+      amount: 2039280
+    }
+  ],
+  accountData: [
+    {
+      account: '2Y8kvYrfUQjpsskRHdg1iAGiAALdz6XHPrR4JMn1eWke',
+      nativeBalanceChange: -2194280,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '4HRsnsfvzrkKxKpMq96d1paeDu4zgxB5NB93PaN3TTtr',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9RyzwXWbLuhWRJRojgWFbQfaW9bwgWBBJAgKsS2Zh3B3',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'A8kEy5wWgdW4FG593fQJ5QPVbqx1wkfXw9c4L9bPo2CN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'CKigLC64HFdh9ESBex1skGNHYQoHsdA75MpqZjiEVu6o',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EXrqY7jLTLp83H38L8Zw3GvGkk1KoQbYTckPGBghwD8X',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FefXx5C1rX5k1CRcjxksmFPZHEsypNzqbBxtfLbC2Khc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'HwpqqqKtrtabcSCNDvr1uKt6B8xpSCs7KxkeKBF8a9GD',
+      nativeBalanceChange: 2039280,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '11111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ComputeBudget111111111111111111111111111111',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9nnLbotNTcUhvbrsA6Mdkx45Sm82G35zo28AqUvjExn8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D8cy77BBepLMngZx6ZukaTff5hCt1HrWyKk3Hnd9oitf',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '9ScujVvaZD8TfxLKvhSa6Dk4TCAdBhsL1JA4L2mJUsN',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'kv7AngqkYWMiFfANKhncafcksgGY8Pe1YaHdXx9qWQF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ygquL5GvHiacM9bzHzGC5mZJ6izaAdDaApmDrh6PAEV',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2cmC3bhut5aMk6RWtuNRd1Jda51vhPK81uR3KFzQzPMa',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '4ccQUJRJzstNqbZXQr5Ddo98PrHTS9gyaejbARTScoD1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '4wHVXWqU4oRU3q5g1C9TkqEKtkeQkf9yqyikXFEVqmDS',
+      nativeBalanceChange: 19968029,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'EJzdYu3xJsFxQC6wAhGSeuRMwf3vGBswTdSCFXZEGLxJ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'F5mAkA5QbZDaBu5jbikuqxnzmmQBNnM3oSf4vX6dp71p',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HjMESPg5iJ2SpcDnL7nYn36qYj3CCToPddrfBa9qaHGc',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HzytzGqfPXqAgtjSTr7vgibRmy7yhYETBGHyj28BgZsP',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '2L3DiNa3rZ1qJmZBDufY4oxgiG8uGchr3SWb5vQGKW4n',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5PE1LuhHsz3m3V46RmwGVou8wBzb76D8cSyFzVXqpEkQ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6uvxpnZfwzEoCsboCLrCJQd3abayVtzkLWA2RJ9kk2pB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'Bh4fW5stHSGLQsjD9ZyB1xm9u5iW7Eo55jN9nDm21odt',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EEN4kiEeXtrX9HfsrQe5Sb8LEEXQowvFxEUNovta1JC9',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'FERjPVNEa7Udq8CEv68h6tPL46Tq7ieE49HrE2wea3XT',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'FZN7QZ8ZUUAxMPfxYEYkH3cXUASzH8EqA6B4tyCL8f1j',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HZeLxbZ9uHtSpwZC3LBr4Nubd14iHwz7bRSghRZf5VCG',
+      nativeBalanceChange: -19968029,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'HtVXdutfgw2WzkKewkpzaNqvccqaEZJvWexfSfWtxwTq',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'JDaHskT8HTjg7bkXa1WQBAUxkpRrHUhS8jAMaHx9fYzJ',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: '4r1sB7A3nhNiDejk7djkBjg3hyFxPGn7Ad53cTfyfQpS',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '6AbQjiHSNQLD1NmexfRod36MeDQdoSXKGwQZ8e8VPePK',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '7tHhkLWqBTQxUWUoMD1TWutM9FaFj5Br8A6rvMGQL93Q',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'ApxpZ8oCSZLaMR6Ht993svZ6dZimR5HivjSRd9WYFAkM',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'D27LBRm9197Kqgxifw15AjDRLXcWLxyqwdSkwtDqmAwe',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'G27ED49wg9wmGA8zRpvACVX3ZwS6K9xQ2BQqP44WALwF',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: [Array]
+    },
+    {
+      account: 'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'srmqPvymJeFKQ4zGQed1GFppgkRHL9kaELCbyksJtPX',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '5Q544fKrFoe6tsEbD7S8EmxGTJYAKtTVhAW5Q5pge4j1',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'HHydzs4NXaAyBseU94c95yDkCJcy19QxUZztK3RWBKZg',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: '24Uqj9JCLxUeoC3hGfh5W3s9FM9uCHDS2SG3LYwBpyTi',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'Eo7WjKq67rjJQSZxS6z3YkapzY3eMj6Xy8X5EQVn5UaB',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'LBUZKhRxPF3XUpBCjp4YzTKgLccjZhTSDM9YuVaPwxo',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'kiraZUmSnzgfVfhrdvNj6hxHFaPFTTUk8ioY98cbh6G',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'D1ZN9Wj1fRSUQfCjhvnu1hqDMT7hzjzBBpi12nVniYD6',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    },
+    {
+      account: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+      nativeBalanceChange: 0,
+      tokenBalanceChanges: []
+    }
+  ],
+  transactionError: null,
+  instructions: [
+    {
+      accounts: [],
+      data: 'GZq7hy',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [],
+      data: '3wScg9qkpzR5',
+      programId: 'ComputeBudget111111111111111111111111111111',
+      innerInstructions: []
+    },
+    {
+      accounts: [Array],
+      data: '2',
+      programId: 'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL',
+      innerInstructions: [Array]
+    },
+    {
+      accounts: [Array],
+      data: '25nzQ6CzRJcn47PGKJaojKAEWgWLLYUdwd3av6ncZCX7htxmm9WNREfAspa2B',
+      programId: 'JUP6LkbZbjS1jKKwapdHNy74zcZ3tLUZoi5QNyVTaV4',
+      innerInstructions: [Array]
+    }
+  ],
+  events: {
+    swap: {
+      nativeInput: null,
+      nativeOutput: null,
+      tokenInputs: [Array],
+      tokenOutputs: [Array],
+      nativeFees: [],
+      tokenFees: [],
+      innerSwaps: [Array]
+    }
+  }
+}
+Token amount change: 103475.045738
+DEBUG: Transaction confirmation loop ended. Token amount change: 103475.045738
+
+Sucessfull BUY: 103475.045738 of PWIFP-8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR
+Data successfully appended to the CSV file.
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on VvgeRQNHRHdYubKC9K2GN567LXTzSVcB7mpu7b1VF4r. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+OHLCV check result: false
+Performing OHLCV checks on VvgeRQNHRHdYubKC9K2GN567LXTzSVcB7mpu7b1VF4r. Balance: undefined
+OHLCV check result: false
+All transactions processed.
+DEBUG: starting buy_all_from_filtered()
+Skipping row with invalid address.
+Skipping purchase for excluded or open order address 7XHyZL3754hUDKJfibQyUP5Sys3oacUJnKJz72dcsmH6
+Performing OHLCV checks on 6Vp1zvJNz3mXqFZF71CWXLHZaU3wbmCRsixPzxBeAG4v. Balance: undefined
+Error calling FastAPI service: 500
+OHLCV check result: false
+Skipping purchase for excluded or open order address 8R3cbFyNmqHZN4iPhhdGWWSpVQUVnEt7iXZg28Y4NTCR
+All transactions processed.

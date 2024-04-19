@@ -15,8 +15,8 @@ def delete_file(csv_file):
         print(f"File {csv_file} does not exist.")
 
 def fetch_audit_data():
-    csv_file = "data/level_1_filter.csv"
-    output_file = "data/level_2_filter.csv"
+    csv_file = "/root/project/solana-trading-bot/data/level_1_filter.csv"
+    output_file = "/root/project/solana-trading-bot/data/level_2_filter.csv"
 
     if not os.path.exists(csv_file) or os.path.getsize(csv_file) == 0:
         print("Source file is empty or does not exist.")
@@ -73,8 +73,8 @@ def fetch_audit_data():
         return None
 
 def filter_dextools_holders():
-    csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/hyper_filtered_dextools.csv"
-    output_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/hyper_filtered_dextools_FINAL.csv"
+    csv_file = "/root/project/solana-trading-bot/data/hyper_filtered_dextools.csv"
+    output_file = "/root/project/solana-trading-bot/data/hyper_filtered_dextools_FINAL.csv"
 
     # Check if the file exists and is not empty before processing
     if not os.path.exists(csv_file) or os.path.getsize(csv_file) == 0:
@@ -117,7 +117,7 @@ def filter_dextools_holders():
         print("No data found with holders more than 100.")
 
 def get_dexTools_list():
-    csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/new_launch_list.csv"
+    csv_file = "/root/project/solana-trading-bot/data/new_launch_list.csv"
 
     X = 24 # Hours ago
     now = datetime.utcnow()
@@ -174,8 +174,8 @@ def get_dexTools_list():
     
         
 def add_audit_info_to_list():
-    src_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_1_filter.csv.csv"
-    dest_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_2_filter.csv.csv"
+    src_file = "/root/project/solana-trading-bot/data/level_1_filter.csv.csv"
+    dest_file = "/root/project/solana-trading-bot/data/level_2_filter.csv.csv"
 
     if not os.path.exists(src_file) or os.path.getsize(src_file) == 0:
         print("The source file is empty or does not exist.")
@@ -229,7 +229,7 @@ def add_audit_info_to_list():
     print(f"Updated data saved to {dest_file}")
 
 def get_dexTools_DEGENERATE_list(tokens_to_fetch):
-    csv_file = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/dexTools_DEGENERATE_token_list.csv"
+    csv_file = "/root/project/solana-trading-bot/data/dexTools_DEGENERATE_token_list.csv"
 
     X = 1  # Minutes ago
     now = datetime.utcnow()

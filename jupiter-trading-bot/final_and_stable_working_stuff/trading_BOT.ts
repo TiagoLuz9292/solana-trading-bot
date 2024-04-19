@@ -1,29 +1,36 @@
+/*
+
+* IMPORTANT *
+
+For buys and sells, this script calls the buy and sell entry point for the code that works with the actual blochchain transactions;
+The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION.ts  , and the buy and sell entry points that are called from here are:
+    -pre_and_post_buy_operations()
+    -pre_and_post_sell_operations()
+
+
+ List of arguments for this script:
+
+    "pnl":                      - Starts the seller  ->  trading_BOT.ts pnl
+    "buy-from-filtered":        - Starts the buyer   ->  trading_BOT.ts buy-from-filtered
+    "tg-balance":               - Starts the account ballance refresh on TG  ->  trading_BOT.ts tg-balance
+    "tg-bot-start":             - Starts the TG bot for the TG chat commands  ->  trading_BOT.ts tg-bot-start
+    "buy":                      - Buy manually   ->  trading_BOT.ts buy <tokenAddress> <usd_amount_toSpend>
+    "sell":                     - Sell manually  ->  trading_BOT.ts sell <tokenAddress> <token_mount_toSell>
+    "sell-all":                 - Start the process swaping all the tokens in the wallet into USDC (Except Sol) ->  trading_BOT.ts sell-all
+    "balance-in-usd":           - Prints the ballance for all tokens, Sol, USDC, USDC + tokens, and total balances ->  balance-in-usd
+    
+*/
+
+
 import axios from 'axios';
-import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
-import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
-import { removePendingTransactions, repeatProcessTransactions } from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/trade_manager';
-import { amountToUiAmount } from '@solana/spl-token';
+import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
+import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
-import { parse } from 'csv-parse/sync';
-import { Parser } from 'json2csv';
-import {update_account_PNL_v3} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
-import {checkOHLCVConditions} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
-import {get_token_price, get_token_prices} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
-import { format } from 'date-fns';
+import {update_account_PNL_v3} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
+import {checkOHLCVConditions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
+import {get_token_price, get_token_prices} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import {send_message, start_bot} from './telegram_bot';
-import { stringify } from 'csv-stringify/sync';
-import { log } from 'console';
-
-
-
-
-
-interface CsvRow {
-    address: string;
-    pairAddress: string;
-    symbol: string;
-}
 
 
 
@@ -53,6 +60,8 @@ async function getAmountInSOL(usdAmount: number): Promise<string> {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
+
 async function getAmountInUSD(solAmount: number): Promise<number> {
     //const url = "https://public-api.birdeye.so/public/price?address=So11111111111111111111111111111111111111112";
     //const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
@@ -73,6 +82,10 @@ async function getAmountInUSD(solAmount: number): Promise<number> {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
+// Manual buy
+//-----------------------------------------------------------------------------------------------------------------------------
+
 async function buy_manual(amount_usd: number, token_address: String) {
 
     //const amount_USD = await getAmountInUSD(amount_sol);
@@ -81,12 +94,16 @@ async function buy_manual(amount_usd: number, token_address: String) {
     
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
+// Called by buyWrapper loop
+//-----------------------------------------------------------------------------------------------------------------------------
+
 async function buy_all_from_filtered(excludedAddresses = new Set()) {
     console.log("DEBUG: starting buy_all_from_filtered()");
 
     let all_transactions_succeed = true;
-    const filePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/level_2_filter.csv';
-    const openOrdersFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2.csv'; // Path to open orders CSV file
+    const filePath = '/root/project/solana-trading-bot/data/level_2_filter.csv';
+    const openOrdersFilePath = '/root/project/solana-trading-bot/data/open_orders_v2.csv'; // Path to open orders CSV file
     const csvHeaders = [
       'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
       'buys_1h', 'buys_6h', 'buys_24h', 'sells_5m', 'sells_1h',
@@ -164,21 +181,29 @@ async function buy_all_from_filtered(excludedAddresses = new Set()) {
     return all_transactions_succeed;
 }
 
-
+//-----------------------------------------------------------------------------------------------------------------------------
+//  Currently not used, but will be usefull for more control and flexibility
+//-----------------------------------------------------------------------------------------------------------------------------
 
 async function sell_all_for_address(tokenAddress: String, symbol: String) {
     const token_balance = await getTokenBalance(tokenAddress);
 
-    //if (token_balance === undefined) {
-    //    console.error('Token balance is undefined.');
-     //   return; // Handle the undefined case appropriately
-    //}
     if (token_balance) {
         await pre_and_post_sell_operations(token_balance, tokenAddress, "", "", 100);
     }
     
 }
-
+//-----------------------------------------------------------------------------------------------------------------------------
+//
+//  Print list of token balances and:
+//  
+//  Sol balance
+//  Sol total in USD
+//  Total USDC
+//  Total USD Invested
+//  Trading total in USD
+//
+//-----------------------------------------------------------------------------------------------------------------------------
 
 async function printTokenBalancesInUSD() {
     const balances = (await getAllBalances() || {}) as { [address: string]: number };
@@ -238,14 +263,14 @@ async function printTokenBalancesInUSD() {
     
 }
 
-function makePositive(num: number): number {
-    return Math.abs(num);
-  }
+//-----------------------------------------------------------------------------------------------------------------------------
+// Entry point for BUY logic
+//-----------------------------------------------------------------------------------------------------------------------------
 
-  async function buyWrapper() {
+async function buyWrapper() {
     async function buyTokens() {
         try {
-            const exclusionFilePath = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/open_orders_v2_inbound.csv';
+            const exclusionFilePath = '/root/project/solana-trading-bot/data/open_orders_v2_inbound.csv';
             const excludedAddresses = new Set();
 
             if (fs.existsSync(exclusionFilePath)) {
@@ -269,8 +294,9 @@ function makePositive(num: number): number {
     buyTokens();
 }
 
-
-
+//-----------------------------------------------------------------------------------------------------------------------------
+// Entry point for SELL logic
+//-----------------------------------------------------------------------------------------------------------------------------
 
 function sellWrapper() {
     async function sellTokens() {
@@ -291,7 +317,11 @@ function sellWrapper() {
     sellTokens();
 }
 
-async function processBalances() {
+//-----------------------------------------------------------------------------------------------------------------------------
+// Swaps ALL tokens in the wallet to USDC (Escept Solana)
+//-----------------------------------------------------------------------------------------------------------------------------
+
+async function full_liquidation() {
     try {
         const allBalances = await getAllBalances();
 
@@ -316,6 +346,10 @@ async function processBalances() {
     }
 }
 
+//-----------------------------------------------------------------------------------------------------------------------------
+// Uses send_message from telegram_bot.ts
+//-----------------------------------------------------------------------------------------------------------------------------
+
 function refresh_balance_in_telegram() {
     async function refreshBalance() {
         try {
@@ -332,9 +366,9 @@ function refresh_balance_in_telegram() {
     refreshBalance();
 }
 
-//-----------------------------------------------------------------------------------------------------------------------------
+//#######################################################################################################################
 // Command line Args logic
-
+//#######################################################################################################################
 
 const args = process.argv.slice(2);
 
@@ -384,7 +418,7 @@ switch (arg1) {
         }
         break;
     case "sell-all":
-        processBalances();
+        full_liquidation();
         break;
     
    

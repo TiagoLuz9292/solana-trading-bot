@@ -16,7 +16,7 @@ def get_token_list() -> None:
     fetched_tokens = 0
     itt = 0
     tokens_to_fetch = 27000
-    csv_filename = '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/initial_list_fresh.csv'
+    csv_filename = '/root/project/solana-trading-bot/data/initial_list_fresh.csv'
 
     # Open the CSV file in write mode to overwrite existing data or create a new file
     with open(csv_filename, 'w', newline='') as file:

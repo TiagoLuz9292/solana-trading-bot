@@ -72,8 +72,8 @@ MIN_LIQUIDITY = 400
 # Check if the required columns exist in the DataFrame
 
 def get_filtered_dexscreener():
-    csvPathToSave = 'data/level_1_filter.csv'
-    source_file = 'data/token_overview_list.csv'
+    csvPathToSave = '/root/project/solana-trading-bot/data/level_1_filter.csv'
+    source_file = '/root/project/solana-trading-bot/data/token_overview_list.csv'
 
     df = pd.read_csv(source_file)
 

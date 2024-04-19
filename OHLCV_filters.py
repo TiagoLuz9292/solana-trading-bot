@@ -1,17 +1,32 @@
+"""
+
+
+ analyze_conditions() is the ENTRY POINT.
+
+
+ The function * analyze_conditions() * acts as an https application, that receives requests from the typescript part of the code, 
+ for the last check to decide if it enters the trade for that token or not.
+
+
+
+"""
+
+
 import time
 import pandas as pd
 import requests
 from fastapi import FastAPI
 from pydantic import BaseModel
 
+
+#############################################################################################
+
+#  These functions are not being used currently, maybe in the future
+
+#############################################################################################
+
 def calculate_rsi(data, period=14):
-    """
-    Calculate the Relative Strength Index (RSI) for a given pandas DataFrame.
-    
-    :param data: pandas DataFrame with 'close' column containing closing prices
-    :param period: The period over which to calculate RSI (typically 14)
-    :return: pandas DataFrame with 'RSI' column
-    """
+   
     delta = data['close'].diff()
     gain = ((delta + delta.abs()) / 2).fillna(0)
     loss = ((delta - delta.abs()) / 2).abs().fillna(0)
@@ -27,16 +42,9 @@ def calculate_rsi(data, period=14):
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
+
 def calculate_macd(data, n_fast=12, n_slow=26, n_signal=9):
-    """
-    Calculate the Moving Average Convergence Divergence (MACD) for a pandas DataFrame.
     
-    :param data: pandas DataFrame with 'close' column containing closing prices
-    :param n_fast: The short-term period for the exponential moving average (typically 12)
-    :param n_slow: The long-term period for the exponential moving average (typically 26)
-    :param n_signal: The signal line period for the exponential moving average (typically 9)
-    :return: pandas DataFrame with 'MACD', 'Signal' and 'Hist' (MACD Histogram) columns
-    """
     exp1 = data['close'].ewm(span=n_fast, adjust=False).mean()
     exp2 = data['close'].ewm(span=n_slow, adjust=False).mean()
     macd = exp1 - exp2
@@ -54,7 +62,31 @@ class TokenData(BaseModel):
     address: str
     # Add other necessary fields
 
+#-------------------------------------------------------------------------------------------------------------------------------------------------
 
+def has_bullish_engulfing(ohlcv_data):
+    if len(ohlcv_data) < 2:
+        return False
+
+    # Get the last two candles
+    previous_ohlcv = ohlcv_data.iloc[-2]
+    recent_ohlcv = ohlcv_data.iloc[-1]
+
+    # Conditions for a bullish engulfing pattern
+    is_previous_red = previous_ohlcv['close'] < previous_ohlcv['open']
+    is_recent_green = recent_ohlcv['close'] > recent_ohlcv['open']
+    is_engulfing = (recent_ohlcv['open'] < previous_ohlcv['close']) and (recent_ohlcv['close'] > previous_ohlcv['open'])
+
+    return is_previous_red and is_recent_green and is_engulfing
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+
+def is_stable(ohlcv_data, threshold=0.3):
+    recent_bar = ohlcv_data.iloc[-1]  # Get the last row of the DataFrame
+    range_ = recent_bar['high'] - recent_bar['low']
+    midpoint = (recent_bar['high'] + recent_bar['low']) / 2
+
+    return (range_ / midpoint) <= threshold
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------
@@ -69,7 +101,31 @@ def is_pullback(ohlcv_data, pullback_percentage):
     return abs(pullback) <= pullback_percentage
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------
+
+def has_sufficient_volume(ohlcv_data, min_volume):
+    recent_volume = ohlcv_data.iloc[-1]['volume']
+    print("has_sufficient_volume", recent_volume >= min_volume)
+    return recent_volume >= min_volume    
+
 #-------------------------------------------------------------------------------------------------------------------------------------------------
+
+def is_increasing_volume(ohlcv_data, threshold=0.20, periods=12):
+    if len(ohlcv_data) < periods + 1:
+        return False
+
+    # Calculate the average volume of the last 'periods' periods
+    average_volume = ohlcv_data['volume'].iloc[-periods-1:-1].mean()
+    recent_volume = ohlcv_data['volume'].iloc[-1]
+
+    volume_increase = (recent_volume - average_volume) / average_volume if average_volume != 0 else 0
+
+    return volume_increase > threshold    
+
+#############################################################################################
+
+#  Currently used functions for the checks
+
+#############################################################################################
 
 def is_uptrend(ohlcv_data, periods, bullish_percentage=0.62):
     data_length = len(ohlcv_data)
@@ -90,43 +146,6 @@ def is_uptrend(ohlcv_data, periods, bullish_percentage=0.62):
     # Check if the bullish ratio meets or exceeds the required bullish percentage
     return bullish_ratio >= bullish_percentage
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def is_stable(ohlcv_data, threshold=0.3):
-    recent_bar = ohlcv_data.iloc[-1]  # Get the last row of the DataFrame
-    range_ = recent_bar['high'] - recent_bar['low']
-    midpoint = (recent_bar['high'] + recent_bar['low']) / 2
-
-    return (range_ / midpoint) <= threshold
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def has_sufficient_volume(ohlcv_data, min_volume):
-    recent_volume = ohlcv_data.iloc[-1]['volume']
-    print("has_sufficient_volume", recent_volume >= min_volume)
-    return recent_volume >= min_volume
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def has_bullish_engulfing(ohlcv_data):
-    if len(ohlcv_data) < 2:
-        return False
-
-    # Get the last two candles
-    previous_ohlcv = ohlcv_data.iloc[-2]
-    recent_ohlcv = ohlcv_data.iloc[-1]
-
-    # Conditions for a bullish engulfing pattern
-    is_previous_red = previous_ohlcv['close'] < previous_ohlcv['open']
-    is_recent_green = recent_ohlcv['close'] > recent_ohlcv['open']
-    is_engulfing = (recent_ohlcv['open'] < previous_ohlcv['close']) and (recent_ohlcv['close'] > previous_ohlcv['open'])
-
-    return is_previous_red and is_recent_green and is_engulfing
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
 #-------------------------------------------------------------------------------------------------------------------------------------------------
 
 def has_positive_momentum(ohlcv_data, periods, min_avg_price_change_percentage=5):
@@ -153,23 +172,11 @@ def has_positive_momentum(ohlcv_data, periods, min_avg_price_change_percentage=5
     is_positive_momentum = avg_price_change_for_last_two > avg_price_change_for_periods and avg_price_change_for_last_two >= 0
     return is_positive_momentum
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
+#############################################################################################
 
-def is_increasing_volume(ohlcv_data, threshold=0.20, periods=12):
-    if len(ohlcv_data) < periods + 1:
-        return False
+#  Application entry point, and ohlcv data fetch from GeckoTerminal API
 
-    # Calculate the average volume of the last 'periods' periods
-    average_volume = ohlcv_data['volume'].iloc[-periods-1:-1].mean()
-    recent_volume = ohlcv_data['volume'].iloc[-1]
-
-    volume_increase = (recent_volume - average_volume) / average_volume if average_volume != 0 else 0
-
-    return volume_increase > threshold
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
+#############################################################################################
 
 def fetch_pool_data(poolAddress, minuteOrHour, timeFrame, frameAmount):
     url = f"https://api.geckoterminal.com/api/v2/networks/solana/pools/{poolAddress}/ohlcv/{minuteOrHour}?aggregate={timeFrame}&limit={frameAmount}"
@@ -265,77 +272,3 @@ def analyze_conditions(data: PoolAddress):
         return False
     
 
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def analyze_and_trade_5m():
-    src_file_path = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/hyper_filtered_dextools_FINAL.csv"
-    df = pd.read_csv(src_file_path)
-    filtered_records = []
-
-    for _, record in df.iterrows():
-        ohlcv_data = fetch_pool_data(record['poolAddress'], 5)
-        print(f"Results for {record['poolAddress']} on 5 min timeframe")
-        if len(ohlcv_data) >= 4:
-            recent_ohlcv = ohlcv_data[-1]
-            if (is_uptrend(recent_ohlcv) and
-                is_stable(recent_ohlcv) and
-                has_sufficient_volume(recent_ohlcv, 1000) and
-                has_positive_momentum(recent_ohlcv)):
-               
-                filtered_records.append(record)
-
-    filtered_df = pd.DataFrame(filtered_records)
-    filtered_df.to_csv('/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/OHLCV_5m_filtered.csv', index=False)
-    print('Filtered records saved to OHLCV_filtered.csv')
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def analyze_and_trade_1m():
-    src_file_path = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/hyper_filtered_dextools_FINAL.csv"
-    df = pd.read_csv(src_file_path)
-    filtered_records = []
-
-    for _, record in df.iterrows():
-        ohlcv_data = fetch_pool_data(record['poolAddress'], 1)
-        print(f"Results for {record['poolAddress']} on 1 min timeframe")
-        if len(ohlcv_data) >= 4:
-            recent_ohlcv = ohlcv_data[-1]
-            if (is_uptrend(recent_ohlcv) and
-                is_stable(recent_ohlcv) and
-                has_sufficient_volume(recent_ohlcv, 200) and
-                has_positive_momentum(recent_ohlcv)):
-             
-                filtered_records.append(record)
-
-    filtered_df = pd.DataFrame(filtered_records)
-    filtered_df.to_csv('/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/OHLCV_1m_filtered.csv', index=False)
-    print('Filtered records saved to OHLCV_filtered.csv')
-
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-#-------------------------------------------------------------------------------------------------------------------------------------------------
-
-def analyze_and_trade_test_1m(poolAddress):
-    ohlcv_data = fetch_pool_data(poolAddress)
-    if len(ohlcv_data) >= 4:
-        recent_ohlcv = ohlcv_data[-1]
-        
-        # All these functions should work with 'recent_ohlcv' because they only need the last record to work
-        uptrend_result = is_uptrend(recent_ohlcv)
-        stable_result = is_stable(recent_ohlcv)
-        sufficient_volume_result = has_sufficient_volume(recent_ohlcv, 10000)
-        positive_momentum_result = has_positive_momentum(recent_ohlcv)
-        
-        # These functions need the full ohlcv_data list
-    
-
-        if (uptrend_result and stable_result and sufficient_volume_result and positive_momentum_result):
-            print("OHLCV result is True")
-        else:
-            print("OHLCV result is False")
-
-         
-#fetch_pool_data("Cr7z6x8zuV3xLmuLj5bMNhnRB7FoCg88mKNL6BcxknW1", 15, 2)
-
-#analyze_and_trade_test("9YZVgXphk7Go1siP7AUr5csC36bgDyCob3ktdfyne1g3")

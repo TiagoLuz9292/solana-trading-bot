@@ -186,3 +186,12 @@ usd_received - ((token_amount_sold * usd_spent) / token_amount_received)
 
 
 git token: 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
+
+
+
+alias start-pnl='$trading_BOT/start-pnl.sh'
+alias start-buyer='$trading_BOT/start-buyer.sh'
+alias start-tg-balance='$trading_BOT/start-tg-balance.sh'
+alias start-reload='$dex_BOT/start-reload.sh'
+alias start-initial-list='$dex_BOT/start-initial-list.sh'
+alias start-OHLCV-check='$dex_BOT/start-OHLCV-check.sh'

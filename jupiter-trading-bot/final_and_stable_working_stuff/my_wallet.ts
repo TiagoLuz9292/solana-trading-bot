@@ -3,14 +3,14 @@ getTokenBalance(tokenAddress: String)
 getAllBalances()
 
 */
+import dotenv from "dotenv";
 import csv from 'csv-parser';
-import {get_token_price, get_token_prices} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
+import {get_token_price, get_token_prices} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import { writeFile, access } from 'fs/promises';
 import { promises as fs } from 'fs';
 import { parse } from 'csv-parse/sync';
 import { Parser } from 'json2csv';
 export { getAllBalances, getTokenBalance, refresh_SOL_balance as refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance, printTokenBalancesInUSD};
-import { config } from 'dotenv';
 import { Keypair, Connection, PublicKey, LAMPORTS_PER_SOL, TokenAccountsFilter } from "@solana/web3.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { time } from 'console';
@@ -51,7 +51,7 @@ interface Balance {
 }
 
 // Load environment variables from .env file
-config();
+dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
 // Initialize the Solana connection
 const web3 = require('@solana/web3.js');

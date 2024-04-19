@@ -1,0 +1,1832 @@
+INFO:     Will watch for changes in these directories: ['/root/project/solana-trading-bot']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [2292] using StatReload
+INFO:     Started server process [2294]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Request received for pairAddress: rUonDDbjbBRWMjHVL2nLQcuH6zD1Z3EnriAWfG9pW2T
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -3.809559269405097
+Average price change for last two frames: 1.2856756135824157
+Average price change for periods: 7.680137760958769
+Average price change for last two frames: 8.26947921860373
+Average price change for periods: 18.33704080405534
+Average price change for last two frames: 28.016642088119777
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:44124 - "POST /check_ohlcv HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [2294]
+INFO:     Started server process [6104]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Request received for pairAddress: 9o79w1hQNM1vq8uDG31RyGwjQxkgH88wFVMPX3yeJCMH
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 22.45410198149532
+Average price change for last two frames: -0.7515501871400656
+Average price change for periods: 5.708589364069162
+Average price change for last two frames: 7.679740784252903
+Average price change for periods: 11.526706948117562
+Average price change for last two frames: 15.50187407356611
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:46500 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 6.435161944613455
+Average price change for last two frames: 5.408220138304774
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:39144 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 9o79w1hQNM1vq8uDG31RyGwjQxkgH88wFVMPX3yeJCMH
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 22.45410198149532
+Average price change for last two frames: -0.7515501871400656
+Average price change for periods: 5.708589364069162
+Average price change for last two frames: 7.679740784252903
+Average price change for periods: 11.526706948117562
+Average price change for last two frames: 15.50187407356611
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:53610 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 6.435161944613455
+Average price change for last two frames: 5.408220138304774
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:35624 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 9o79w1hQNM1vq8uDG31RyGwjQxkgH88wFVMPX3yeJCMH
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 22.55356813935848
+Average price change for last two frames: -0.7515501871400656
+Average price change for periods: 5.708589364069162
+Average price change for last two frames: 7.679740784252903
+Average price change for periods: 11.526706948117562
+Average price change for last two frames: 15.50187407356611
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:46640 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 6.435161944613455
+Average price change for last two frames: 5.408220138304774
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:46644 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 6.435161944613455
+Average price change for last two frames: 5.408220138304774
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:54836 - "POST /check_ohlcv HTTP/1.1" 200 OK
+/root/project/solana-trading-bot/OHLCV_filters.py:87: RuntimeWarning: invalid value encountered in scalar divide
+  bullish_ratio = bullish_count / periods
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 0 periods, 0 bullish, 0 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:43542 - "POST /check_ohlcv HTTP/1.1" 200 OK
+/root/project/solana-trading-bot/OHLCV_filters.py:87: RuntimeWarning: invalid value encountered in scalar divide
+  bullish_ratio = bullish_count / periods
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 0 periods, 0 bullish, 0 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.143635184979107
+Average price change for last two frames: 2.101561145461406
+Average price change for periods: 3.64622479930639
+Average price change for last two frames: 5.576422323306529
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:34082 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 4.069182317326527
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+Average price change for periods: 6.966994416256206
+Average price change for last two frames: 10.557576748731252
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:40260 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 4.069182317326527
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+Average price change for periods: 6.966994416256206
+Average price change for last two frames: 10.557576748731252
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:36512 - "POST /check_ohlcv HTTP/1.1" 200 OK
+/root/project/solana-trading-bot/OHLCV_filters.py:87: RuntimeWarning: invalid value encountered in scalar divide
+  bullish_ratio = bullish_count / periods
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 0 periods, 0 bullish, 0 bearish
+Average price change for periods: 3.8965946156962223
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: False
+
+Trade quality: 6
+INFO:     127.0.0.1:55148 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.8965946156962223
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+Average price change for periods: 6.966994416256206
+Average price change for last two frames: 10.557576748731252
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:42108 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.8965946156962223
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+Average price change for periods: 6.966994416256206
+Average price change for last two frames: 10.557576748731252
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:46848 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+INFO:     127.0.0.1:49592 - "POST /check_ohlcv HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 700, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 383, in _make_request
+    self._validate_conn(conn)
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 1017, in _validate_conn
+    conn.connect()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 411, in connect
+    self.sock = ssl_wrap_socket(
+  File "/usr/lib/python3/dist-packages/urllib3/util/ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "/usr/lib/python3/dist-packages/urllib3/util/ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/usr/lib/python3.10/ssl.py", line 513, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/usr/lib/python3.10/ssl.py", line 1100, in _create
+    self.do_handshake()
+  File "/usr/lib/python3.10/ssl.py", line 1371, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 756, in urlopen
+    retries = retries.increment(
+  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 574, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.geckoterminal.com', port=443): Max retries exceeded with url: /api/v2/networks/solana/pools/36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx/ohlcv/minute?aggregate=15&limit=5 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/uvicorn/protocols/http/h11_impl.py", line 407, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/usr/local/lib/python3.10/dist-packages/uvicorn/middleware/proxy_headers.py", line 69, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/exceptions.py", line 65, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 756, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 776, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/routing.py", line 278, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "/usr/local/lib/python3.10/dist-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/usr/local/lib/python3.10/dist-packages/anyio/_backends/_asyncio.py", line 2144, in run_sync_in_worker_thread
+    return await future
+  File "/usr/local/lib/python3.10/dist-packages/anyio/_backends/_asyncio.py", line 851, in run
+    result = context.run(func, *args)
+  File "/root/project/solana-trading-bot/OHLCV_filters.py", line 222, in analyze_conditions
+    ohlcv_data_15m = fetch_pool_data(pairAddress, "minute", 15, 5)
+  File "/root/project/solana-trading-bot/OHLCV_filters.py", line 181, in fetch_pool_data
+    response = requests.get(url)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 544, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 657, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.geckoterminal.com', port=443): Max retries exceeded with url: /api/v2/networks/solana/pools/36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx/ohlcv/minute?aggregate=15&limit=5 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 3.452505830914663
+Average price change for last two frames: 7.01961591454843
+Average price change for periods: 8.403239988568654
+Average price change for last two frames: 6.563291493613131
+Average price change for periods: 9.837750429265041
+Average price change for last two frames: 14.863710768244504
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:38130 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 36mFgg4WYbSzcHdjMVChSKdjALq3LaM7BWfKay2jtUCx
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 4.324790587709616
+Average price change for last two frames: 8.040909647631864
+Average price change for periods: 9.95369642553329
+Average price change for last two frames: 10.439432586024722
+Average price change for periods: 9.837750429265041
+Average price change for last two frames: 14.863710768244504
+
+***** Uptrend 5m: True
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 16
+INFO:     127.0.0.1:44050 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 2Rnb7xhRJFtgcgjjSoqdkje5mp99ariDAW8nVwJxj2Xf
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.5904678569178885
+Average price change for last two frames: 2.6763048333420203
+Average price change for periods: 3.145351707206699
+Average price change for last two frames: 3.477269326382782
+Average price change for periods: 5.072531648734909
+Average price change for last two frames: 8.320160829062306
+
+***** Uptrend 5m: True
+***** Uptrend 15m: True
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 14
+INFO:     127.0.0.1:45974 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 3EVv3To1KKc33hjmjRSxNoeLGZbPVQFeYTXroV1xNnWn
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: -2.4091022121288965
+Average price change for last two frames: 4.076357275521568
+Average price change for periods: -3.9110530157858436
+Average price change for last two frames: 4.076357275521568
+Average price change for periods: 9.806011542591953
+Average price change for last two frames: 3.8486266038615717
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: False
+
+Trade quality: 8
+INFO:     127.0.0.1:53220 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 3EVv3To1KKc33hjmjRSxNoeLGZbPVQFeYTXroV1xNnWn
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: -3.418818375824513
+Average price change for last two frames: -5.29595717925123
+Average price change for periods: 5.357842398394272
+Average price change for last two frames: 17.113002305022057
+Average price change for periods: 9.806011542591953
+Average price change for last two frames: 3.8486266038615717
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: False
+
+Trade quality: 5
+INFO:     127.0.0.1:52110 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Xcs9CrFJevRQiXqcyNkijHzBfKPZRB1cFZ1LaTTa2Uk
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -2.4104586584165952
+Average price change for last two frames: 4.521622992699848
+Average price change for periods: 4.238484476906261
+Average price change for last two frames: 8.611248475744922
+Average price change for periods: 3.8613877275765227
+Average price change for last two frames: 6.984641533074528
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:42284 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0449909180373045
+Average price change for last two frames: -0.30262255165745855
+Average price change for periods: 4.048084766782897
+Average price change for last two frames: 5.740558769963705
+Average price change for periods: 8.740909339015529
+Average price change for last two frames: 11.14664297721179
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:56134 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0386799764617467
+Average price change for last two frames: -0.33417725953524713
+Average price change for periods: 4.035299628102611
+Average price change for last two frames: 5.708595923262991
+Average price change for periods: 8.720389145697538
+Average price change for last two frames: 11.115862687234806
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:57544 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0386799764617467
+Average price change for last two frames: -0.33417725953524713
+Average price change for periods: 4.035299628102611
+Average price change for last two frames: 5.708595923262991
+Average price change for periods: 8.720389145697538
+Average price change for last two frames: 11.115862687234806
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:36794 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0933914416032247
+Average price change for last two frames: -0.33417725953524713
+Average price change for periods: 2.4180269989423175
+Average price change for last two frames: 0.074986440968486
+Average price change for periods: 8.64343253423247
+Average price change for last two frames: 11.000427770037204
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:40328 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0695103187849455
+Average price change for last two frames: -0.5659539697100758
+Average price change for periods: 2.4180269989423175
+Average price change for last two frames: 0.074986440968486
+Average price change for periods: 8.64343253423247
+Average price change for last two frames: 11.000427770037204
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:47988 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Drpx8oiz6q7jVwsaRoMqEkpwXu1GyruBNshWC8acK2Sf
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.3737566540531696
+Average price change for last two frames: 0.9552777066310452
+Average price change for periods: 3.026519669478766
+Average price change for last two frames: 1.596218117309607
+Average price change for periods: 9.623862440777161
+Average price change for last two frames: 12.471072629854241
+
+***** Uptrend 5m: True
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:45694 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: -7.068210535967195
+Average price change for last two frames: 1.4315669076398092
+Average price change for periods: 1.2830747524111912
+Average price change for last two frames: -2.052238424785176
+Average price change for periods: -9.776218379526359
+Average price change for last two frames: -4.412148626594426
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: False
+
+Trade quality: 3
+INFO:     127.0.0.1:47616 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.059107298067083
+Average price change for last two frames: 1.477083097140367
+Average price change for periods: 2.5039225802936116
+Average price change for last two frames: 1.264006880745041
+Average price change for periods: 2.88764537711146
+Average price change for last two frames: 6.6142367816828465
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:59518 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -6.951306952108018
+Average price change for last two frames: 2.0160848269356872
+Average price change for periods: 2.7224119842283097
+Average price change for last two frames: 1.8102303905817863
+Average price change for periods: 3.2501637905813134
+Average price change for last two frames: 7.158014401887627
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:38880 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 32.518479095469914
+Average price change for last two frames: -5.003126125025694
+Average price change for periods: 6.531528748580627
+Average price change for last two frames: 7.85907569440127
+Average price change for periods: 12.345967828751427
+Average price change for last two frames: 25.723193947609225
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:54464 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -6.951306952108018
+Average price change for last two frames: 2.0160848269356872
+Average price change for periods: 2.7224119842283097
+Average price change for last two frames: 1.8102303905817863
+Average price change for periods: 3.2501637905813134
+Average price change for last two frames: 7.158014401887627
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:50252 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 35.58516511973882
+Average price change for last two frames: -3.7458239566578038
+Average price change for periods: 6.958380946604228
+Average price change for last two frames: 8.926206189460274
+Average price change for periods: 13.240171403728723
+Average price change for last two frames: 27.06449931007517
+
+***** Uptrend 5m: True
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:41276 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -6.951306952108018
+Average price change for last two frames: 2.0160848269356872
+Average price change for periods: 2.7224119842283097
+Average price change for last two frames: 1.8102303905817863
+Average price change for periods: 3.2501637905813134
+Average price change for last two frames: 7.158014401887627
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:58468 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 35.462728202137704
+Average price change for last two frames: -4.35800854466337
+Average price change for periods: 6.733986401223521
+Average price change for last two frames: 8.365219826008506
+Average price change for periods: 12.770092051639415
+Average price change for last two frames: 26.359380281941203
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:37054 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -6.951306952108018
+Average price change for last two frames: 2.0160848269356872
+Average price change for periods: 2.7224119842283097
+Average price change for last two frames: 1.8102303905817863
+Average price change for periods: 3.2501637905813134
+Average price change for last two frames: 7.158014401887627
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:37058 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 35.462728202137704
+Average price change for last two frames: -4.35800854466337
+Average price change for periods: 6.733986401223521
+Average price change for last two frames: 8.365219826008506
+Average price change for periods: 12.434156931317537
+Average price change for last two frames: 25.85547760145839
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:50854 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.371615336934826
+Average price change for last two frames: 1.0349757750662285
+Average price change for periods: 2.5928731371548546
+Average price change for last two frames: 1.4863832728981485
+Average price change for periods: 3.035232464493673
+Average price change for last two frames: 6.835617412756165
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:46726 - "POST /check_ohlcv HTTP/1.1" 200 OK
+/root/project/solana-trading-bot/OHLCV_filters.py:87: RuntimeWarning: invalid value encountered in scalar divide
+  bullish_ratio = bullish_count / periods
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 0 periods, 0 bullish, 0 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 6.573626223166352
+Average price change for last two frames: 7.964319380865584
+Average price change for periods: 12.434156931317537
+Average price change for last two frames: 25.85547760145839
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:34542 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.386518741340623
+Average price change for last two frames: 0.9604587530372459
+Average price change for periods: 2.561853715045957
+Average price change for last two frames: 1.4088347176259042
+Average price change for periods: 2.983764926539154
+Average price change for last two frames: 6.758416105824387
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:47716 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 41.50644320827491
+Average price change for last two frames: -0.1476123801851687
+Average price change for periods: 6.783271752857492
+Average price change for last two frames: -4.302255623973848
+Average price change for periods: 12.90688037678151
+Average price change for last two frames: 26.56456276965435
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:50106 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.386518741340623
+Average price change for last two frames: 0.9604587530372459
+Average price change for periods: 2.561853715045957
+Average price change for last two frames: 1.4088347176259042
+Average price change for periods: -2.074310200993496
+Average price change for last two frames: 4.197718750860321
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:50120 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 41.55566324656998
+Average price change for last two frames: 0.09848781129018125
+Average price change for periods: 7.163191917801487
+Average price change for last two frames: -4.056155432498498
+Average price change for periods: 13.094635570394843
+Average price change for last two frames: 26.84619556007435
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:57914 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.7587007549272275
+Average price change for last two frames: -1.0692092652089484
+Average price change for periods: 2.112669603078383
+Average price change for last two frames: 0.9492206545626586
+Average price change for periods: 2.515322295535545
+Average price change for last two frames: 6.055752159318974
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:59794 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 41.58800234243443
+Average price change for last two frames: 0.26018329061243484
+Average price change for periods: 7.2278701095303886
+Average price change for last two frames: -3.8944599531762445
+Average price change for periods: 13.217996571638077
+Average price change for last two frames: 27.0312370619392
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:49464 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: Dbqmgy66ZxMvDq8VJxpbL2Gs4o8YJFZerRkBanUt3Sve
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.808767508407676
+Average price change for last two frames: -1.3195430326111883
+Average price change for periods: 2.012536096117487
+Average price change for last two frames: 0.6988868871604187
+Average price change for periods: 2.343755134598875
+Average price change for last two frames: 5.7984014179139685
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 4
+INFO:     127.0.0.1:48948 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0261664052010306
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 2.165010874364913
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 3.1672513848291977
+Average price change for last two frames: 5.430350069162491
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:60376 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0268384728272557
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 2.165010874364913
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 3.1672513848291977
+Average price change for last two frames: 5.430350069162491
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:38320 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0268384728272557
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 2.165010874364913
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 3.1672513848291977
+Average price change for last two frames: 5.430350069162491
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:43534 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: CdxkqMy9mKHX9ah6vsNvNHoAsDGzGH4Trg9mdE4uuAoT
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 1.0268384728272557
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 2.165010874364913
+Average price change for last two frames: 5.050159921185062
+Average price change for periods: 3.1672513848291977
+Average price change for last two frames: 5.430350069162491
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:45040 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.970195383160103
+Average price change for last two frames: -27.717893212311616
+Average price change for periods: 2.776933604863971
+Average price change for last two frames: 7.5357455308799715
+Average price change for periods: 4.259618817895002
+Average price change for last two frames: 8.39603353716726
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:40430 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.970195383160103
+Average price change for last two frames: -27.717893212311616
+Average price change for periods: 3.3043789439385556
+Average price change for last two frames: 5.890310083583403
+Average price change for periods: 4.259618817895002
+Average price change for last two frames: 8.39603353716726
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:33262 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.970195383160103
+Average price change for last two frames: -27.717893212311616
+Average price change for periods: 3.3043789439385556
+Average price change for last two frames: 5.890310083583403
+Average price change for periods: 4.259618817895002
+Average price change for last two frames: 8.39603353716726
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:46622 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 0.8561078417906295
+Average price change for last two frames: -0.6032403617391741
+Average price change for periods: 7.866623203453261
+Average price change for last two frames: 4.15570778887089
+Average price change for periods: 16.868559900878534
+Average price change for last two frames: 31.179043442796715
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:44162 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.9776365587150881
+Average price change for last two frames: 9.985539556692116
+Average price change for periods: 2.565411332472418
+Average price change for last two frames: 10.889017942814124
+Average price change for periods: -8.266055097348838
+Average price change for last two frames: -10.130889368115888
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: False
+
+Trade quality: 6
+INFO:     127.0.0.1:48034 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.970195383160103
+Average price change for last two frames: -27.717893212311616
+Average price change for periods: 3.3043789439385556
+Average price change for last two frames: 5.890310083583403
+Average price change for periods: 4.6931685643827885
+Average price change for last two frames: 8.39603353716726
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:41308 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 0.8371758378744676
+Average price change for last two frames: -0.6032403617391741
+Average price change for periods: 7.866623203453261
+Average price change for last two frames: 4.15570778887089
+Average price change for periods: 16.868559900878534
+Average price change for last two frames: 31.179043442796715
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:38776 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.6800875503188866
+Average price change for last two frames: 6.9838716789118
+Average price change for periods: 2.770621100918293
+Average price change for last two frames: 9.187902029808102
+Average price change for periods: -8.049022357205958
+Average price change for last two frames: 6.5693964388135235
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 8
+INFO:     127.0.0.1:38788 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.970195383160103
+Average price change for last two frames: -27.717893212311616
+Average price change for periods: 3.3043789439385556
+Average price change for last two frames: 5.890310083583403
+Average price change for periods: 4.6931685643827885
+Average price change for last two frames: 8.39603353716726
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:51340 - "POST /check_ohlcv HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'OHLCV_filters.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [6104]
+INFO:     Started server process [18872]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: 0.4973334599484069
+Average price change for last two frames: -0.6032403617391741
+Average price change for periods: 7.866623203453261
+Average price change for last two frames: 4.15570778887089
+Average price change for periods: 16.868559900878534
+Average price change for last two frames: 31.179043442796715
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:49186 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.6876316594722944
+Average price change for last two frames: 7.021592224678839
+Average price change for periods: 2.7857093192251083
+Average price change for last two frames: 9.22562257557514
+Average price change for periods: -8.023875326694599
+Average price change for last two frames: 6.607116984580562
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 8
+INFO:     127.0.0.1:33948 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: r6dhbPHPbazrBV59FfU4QWzUDUe53dj4HZ1HZuC6iBo
+In the last 10 periods, 3 bullish, 7 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: -5.824290422486052
+Average price change for last two frames: -27.008177110013964
+Average price change for periods: 4.063671182233991
+Average price change for last two frames: 7.379992692098336
+Average price change for periods: 7.37142220318592
+Average price change for last two frames: 8.661965694068696
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:51730 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 0.8094913895320834
+Average price change for last two frames: 5.594064007882713
+Average price change for periods: 6.386906729246948
+Average price change for last two frames: 5.814136730368785
+Average price change for periods: 24.159464364431926
+Average price change for last two frames: 17.093709012472267
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: False
+
+Trade quality: 8
+INFO:     127.0.0.1:53350 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: DHC7zXaSess1wJ5doaPEo2ggH556BQYMyr9YH5zkbbp7
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 2.086429863505485
+Average price change for last two frames: 10.45163892325118
+Average price change for periods: 8.71774728323643
+Average price change for last two frames: 11.641238115342487
+Average price change for periods: 28.044198621081062
+Average price change for last two frames: 22.92081039744597
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: False
+
+Trade quality: 11
+INFO:     127.0.0.1:57002 - "POST /check_ohlcv HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [18872]
+INFO:     Started server process [19842]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19842]
+INFO:     Started server process [19895]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [19895]
+INFO:     Started server process [20071]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20071]
+INFO:     Started server process [20098]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20098]
+INFO:     Started server process [20179]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20179]
+INFO:     Started server process [20237]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'dex_data_BOT_v2.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [20237]
+INFO:     Started server process [20722]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.44425365385419
+Average price change for last two frames: -3.0519917089665363
+Average price change for periods: 2.341974640439858
+Average price change for last two frames: 8.116285878612015
+Average price change for periods: -8.763433124670017
+Average price change for last two frames: 5.497780287617435
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:56962 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: A8SAu2qKhxP5FDEs6UFCDwTNz4XxeLyAhhoiu3BCV2yV
+In the last 10 periods, 3 bullish, 7 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -7.61377755800027
+Average price change for last two frames: -32.35429156033032
+Average price change for periods: 7.175242349669186
+Average price change for last two frames: 13.196806875401004
+Average price change for periods: 8.797871250267336
+Average price change for last two frames: 13.196806875401004
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:56970 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: EJzdYu3xJsFxQC6wAhGSeuRMwf3vGBswTdSCFXZEGLxJ
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 4.283380783579683
+Average price change for last two frames: 9.216064946391885
+Average price change for periods: 4.730563752084837
+Average price change for last two frames: 3.4137597260270622
+Average price change for periods: 17.328716589993203
+Average price change for last two frames: 25.335070783568977
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 7
+INFO:     127.0.0.1:37414 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.4528643870147515
+Average price change for last two frames: -0.6112818556630636
+Average price change for periods: 2.4358756861651103
+Average price change for last two frames: 8.351038492925145
+Average price change for periods: -8.606931381794597
+Average price change for last two frames: 5.732532901930566
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:56130 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: A8SAu2qKhxP5FDEs6UFCDwTNz4XxeLyAhhoiu3BCV2yV
+In the last 10 periods, 2 bullish, 8 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -8.562007650975108
+Average price change for last two frames: -37.09544202520451
+Average price change for periods: 4.835506737069769
+Average price change for last two frames: 7.347467843902457
+Average price change for periods: 4.898311895934971
+Average price change for last two frames: 7.347467843902457
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: False
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:51230 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: EJzdYu3xJsFxQC6wAhGSeuRMwf3vGBswTdSCFXZEGLxJ
+In the last 10 periods, 4 bullish, 6 bearish
+In the last 5 periods, 4 bullish, 1 bearish
+In the last 3 periods, 3 bullish, 0 bearish
+Average price change for periods: 4.195408430036944
+Average price change for last two frames: 8.776203178678191
+Average price change for periods: 4.677689865579932
+Average price change for last two frames: 11.328344533823186
+Average price change for periods: 8.215726624677044
+Average price change for last two frames: 11.66558583559474
+
+***** Uptrend 5m: False
+***** Uptrend 15m: True
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 13
+INFO:     127.0.0.1:43818 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 6 bullish, 4 bearish
+In the last 5 periods, 1 bullish, 4 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.5269342894506719
+Average price change for last two frames: -0.2080743177480685
+Average price change for periods: 2.848468820854098
+Average price change for last two frames: -3.2461036684416325
+Average price change for periods: -8.896762472262628
+Average price change for last two frames: 5.2977862662285204
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 2
+INFO:     127.0.0.1:36238 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.8702902013481275
+Average price change for last two frames: 1.5087052417392095
+Average price change for periods: 3.5351806446490093
+Average price change for last two frames: -1.5293241089543546
+Average price change for periods: -7.81275931384054
+Average price change for last two frames: 6.923791003861653
+
+***** Uptrend 5m: True
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:55252 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.8702902013481275
+Average price change for last two frames: 1.5087052417392095
+Average price change for periods: 3.5351806446490093
+Average price change for last two frames: -1.5293241089543546
+Average price change for periods: -7.81275931384054
+Average price change for last two frames: 6.923791003861653
+
+***** Uptrend 5m: True
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:37372 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.886862083382749
+Average price change for last two frames: 1.591564651912317
+Average price change for periods: 3.568324408718252
+Average price change for last two frames: -1.446464698781247
+Average price change for periods: -7.7604405045698455
+Average price change for last two frames: 7.002269217767694
+
+***** Uptrend 5m: True
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:48504 - "POST /check_ohlcv HTTP/1.1" 200 OK
+/root/project/solana-trading-bot/OHLCV_filters.py:143: RuntimeWarning: invalid value encountered in scalar divide
+  bullish_ratio = bullish_count / periods
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 0 periods, 0 bullish, 0 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 3.568324408718252
+Average price change for last two frames: -1.446464698781247
+Average price change for periods: -7.7604405045698455
+Average price change for last two frames: 7.002269217767694
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 2
+INFO:     127.0.0.1:45372 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 5bd6FppupWxRnknkc9ZB5PUsFqEe5wjQNJtCWCZ2XDKj
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: -5.249532885382956
+Average price change for last two frames: 21.819164604126723
+Average price change for periods: 2.8281129060825525
+Average price change for last two frames: 21.96904879179558
+Average price change for periods: 32.13591896584492
+Average price change for last two frames: -25.39869742626588
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: False
+
+Trade quality: 6
+INFO:     127.0.0.1:37382 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+In the last 10 periods, 7 bullish, 3 bearish
+In the last 5 periods, 2 bullish, 3 bearish
+In the last 3 periods, 1 bullish, 2 bearish
+Average price change for periods: 1.9490609259969158
+Average price change for last two frames: 1.591564651912317
+Average price change for periods: 3.568324408718252
+Average price change for last two frames: -1.446464698781247
+Average price change for periods: -7.7604405045698455
+Average price change for last two frames: 7.002269217767694
+
+***** Uptrend 5m: True
+***** Uptrend 15m: False
+***** Uptrend 1h: False
+***** Price momentum 5m: False
+***** Price momentum 15m: False
+***** Price momentum 1h: True
+
+Trade quality: 5
+INFO:     127.0.0.1:56320 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: 5bd6FppupWxRnknkc9ZB5PUsFqEe5wjQNJtCWCZ2XDKj
+In the last 10 periods, 5 bullish, 5 bearish
+In the last 5 periods, 3 bullish, 2 bearish
+In the last 3 periods, 2 bullish, 1 bearish
+Average price change for periods: -5.764152239422646
+Average price change for last two frames: 19.24606783392827
+Average price change for periods: 7.612406043799586
+Average price change for last two frames: 17.752742362464613
+Average price change for periods: 12.497630682855993
+Average price change for last two frames: 19.027539379637616
+
+***** Uptrend 5m: False
+***** Uptrend 15m: False
+***** Uptrend 1h: True
+***** Price momentum 5m: True
+***** Price momentum 15m: True
+***** Price momentum 1h: True
+
+Trade quality: 10
+INFO:     127.0.0.1:54136 - "POST /check_ohlcv HTTP/1.1" 200 OK
+Request received for pairAddress: ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV
+INFO:     127.0.0.1:33208 - "POST /check_ohlcv HTTP/1.1" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 700, in urlopen
+    httplib_response = self._make_request(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 383, in _make_request
+    self._validate_conn(conn)
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 1017, in _validate_conn
+    conn.connect()
+  File "/usr/lib/python3/dist-packages/urllib3/connection.py", line 411, in connect
+    self.sock = ssl_wrap_socket(
+  File "/usr/lib/python3/dist-packages/urllib3/util/ssl_.py", line 449, in ssl_wrap_socket
+    ssl_sock = _ssl_wrap_socket_impl(
+  File "/usr/lib/python3/dist-packages/urllib3/util/ssl_.py", line 493, in _ssl_wrap_socket_impl
+    return ssl_context.wrap_socket(sock, server_hostname=server_hostname)
+  File "/usr/lib/python3.10/ssl.py", line 513, in wrap_socket
+    return self.sslsocket_class._create(
+  File "/usr/lib/python3.10/ssl.py", line 1100, in _create
+    self.do_handshake()
+  File "/usr/lib/python3.10/ssl.py", line 1371, in do_handshake
+    self._sslobj.do_handshake()
+ssl.SSLEOFError: [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/usr/lib/python3/dist-packages/urllib3/connectionpool.py", line 756, in urlopen
+    retries = retries.increment(
+  File "/usr/lib/python3/dist-packages/urllib3/util/retry.py", line 574, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.geckoterminal.com', port=443): Max retries exceeded with url: /api/v2/networks/solana/pools/ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV/ohlcv/minute?aggregate=15&limit=5 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.10/dist-packages/uvicorn/protocols/http/h11_impl.py", line 407, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/usr/local/lib/python3.10/dist-packages/uvicorn/middleware/proxy_headers.py", line 69, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/applications.py", line 123, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/errors.py", line 186, in __call__
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/errors.py", line 164, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/middleware/exceptions.py", line 65, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 756, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 776, in app
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 297, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 77, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 64, in wrapped_app
+    raise exc
+  File "/usr/local/lib/python3.10/dist-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    await app(scope, receive, sender)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/routing.py", line 72, in app
+    response = await func(request)
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/routing.py", line 278, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/local/lib/python3.10/dist-packages/fastapi/routing.py", line 193, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/usr/local/lib/python3.10/dist-packages/starlette/concurrency.py", line 42, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "/usr/local/lib/python3.10/dist-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/usr/local/lib/python3.10/dist-packages/anyio/_backends/_asyncio.py", line 2144, in run_sync_in_worker_thread
+    return await future
+  File "/usr/local/lib/python3.10/dist-packages/anyio/_backends/_asyncio.py", line 851, in run
+    result = context.run(func, *args)
+  File "/root/project/solana-trading-bot/OHLCV_filters.py", line 229, in analyze_conditions
+    ohlcv_data_15m = fetch_pool_data(pairAddress, "minute", 15, 5)
+  File "/root/project/solana-trading-bot/OHLCV_filters.py", line 188, in fetch_pool_data
+    response = requests.get(url)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 76, in get
+    return request('get', url, params=params, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 544, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/usr/lib/python3/dist-packages/requests/sessions.py", line 657, in send
+    r = adapter.send(request, **kwargs)
+  File "/usr/lib/python3/dist-packages/requests/adapters.py", line 514, in send
+    raise SSLError(e, request=request)
+requests.exceptions.SSLError: HTTPSConnectionPool(host='api.geckoterminal.com', port=443): Max retries exceeded with url: /api/v2/networks/solana/pools/ATEggug56PWPCRTqfuAwyKSvGqLEzWhffiqJseiamWxV/ohlcv/minute?aggregate=15&limit=5 (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1007)')))

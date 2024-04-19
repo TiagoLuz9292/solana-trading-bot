@@ -1,0 +1,9 @@
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+python3: can't open file '/root/project/solana-trading-bot/logs/dex_data_BOT_v2.py': [Errno 2] No such file or directory
+/usr/local/lib/python3.10/dist-packages/numpy/core/fromnumeric.py:59: FutureWarning: 'Series.swapaxes' is deprecated and will be removed in a future version. Please use 'Series.transpose' instead.
+  return bound(*args, **kwds)

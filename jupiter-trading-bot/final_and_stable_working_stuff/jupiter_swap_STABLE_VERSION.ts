@@ -5,6 +5,7 @@ NOW IT SAVES TRANSACTIONS TO FILES, AND MY WALLET SCRIPT CHECKS IF IT WAS COMPLE
 THIS IS THE MAIN ONE
 
 */
+
 import { BigNumber } from 'bignumber.js';
 import { promises as fs } from 'fs';
 import { Parser } from 'json2csv';
@@ -21,14 +22,14 @@ import path from 'path';
 import fetch from 'node-fetch';
 import { format } from 'date-fns';
 import {send_message} from './telegram_bot';
-import {update_pnl_after_buy_v2, update_account_PNL_v3, update_sell_tracker_after_sell} from '/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
+import {update_pnl_after_buy_v2, update_account_PNL_v3, update_sell_tracker_after_sell} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 
 
 
 
 
 
-dotenv.config();
+dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
 function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -480,7 +481,7 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
     
 
         console.log(`\nSucessfull SELL: ${token_amount} of ${symbol}-${token_address}; Received $${usdc_received} USDC`);
-        await send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\n${message}\n\nSold:   ${token_amount.toFixed(2)} ${symbol}\nUSDC received:   $${((usdc_received) / 100).toFixed(2)} USDC\n\nToken address:\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n\nSell link:\nhttps://jup.ag/swap/${token_address}-USDC\n\n@Furymuse`);
+        
         return signature;
     } catch (error) {
         console.error("Error during swap operation:", error);
