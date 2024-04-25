@@ -121,6 +121,52 @@ def is_increasing_volume(ohlcv_data, threshold=0.20, periods=12):
 
     return volume_increase > threshold    
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+# TESTING
+#-------------------------------------------------------------------------------------------------------------------------------------------------
+def check_moving_averages(ohlcv_data):
+    print("Checking moving averages for DataFrame with rows:", len(ohlcv_data))
+    
+    if ohlcv_data.empty:
+        print("DataFrame is empty.")
+        return
+    
+    if 'close' not in ohlcv_data.columns:
+        print("No 'close' column in DataFrame.")
+        return
+    
+    # Calculate moving averages
+    ohlcv_data['MA20'] = ohlcv_data['close'].rolling(window=20).mean()
+    ohlcv_data['MA40'] = ohlcv_data['close'].rolling(window=40).mean()
+
+    # Drop rows where MA40 is NaN
+    ohlcv_data = ohlcv_data.dropna(subset=['MA40'])
+    if ohlcv_data.empty:
+        print("Not enough data to perform moving averages analysis after dropping NaN.")
+        return
+
+    # Drop rows where MA40 is NaN because we can't make comparisons for the first 39 rows
+    ohlcv_data = ohlcv_data.dropna(subset=['MA40'])
+
+    # Check conditions for the last row (most recent data)
+    latest = ohlcv_data.iloc[-1]
+    
+    # Condition 1: Is the current close price above MA20?
+    price_above_ma20 = latest['close'] > latest['MA20']
+    print(f"Price above MA20: {price_above_ma20}")
+
+    # Condition 2: Is the current close price above MA40?
+    price_above_ma40 = latest['close'] > latest['MA40']
+    print(f"Price above MA40: {price_above_ma40}")
+
+    # Condition 3: Is MA20 above MA40?
+    ma20_above_ma40 = latest['MA20'] > latest['MA40']
+    print(f"MA20 above MA40: {ma20_above_ma40}")
+
+    return (price_above_ma20 or price_above_ma40 or ma20_above_ma40)
+
+
 #############################################################################################
 
 #  Currently used functions for the checks
@@ -224,7 +270,9 @@ def analyze_conditions(data: PoolAddress):
       # Last 10 frames
     
     # Fetch OHLCV data
-    ohlcv_data_5m = fetch_pool_data(pairAddress, "minute", 5, 10)
+    ohlcv_data_1m = fetch_pool_data(pairAddress, "minute", 1, 40)
+    time.sleep(1)
+    ohlcv_data_5m = fetch_pool_data(pairAddress, "minute", 5, 40)
     time.sleep(1)
     ohlcv_data_15m = fetch_pool_data(pairAddress, "minute", 15, 5)
     time.sleep(1)
@@ -240,6 +288,83 @@ def analyze_conditions(data: PoolAddress):
     has_positive_momentum_1h = has_positive_momentum(ohlcv_data_1h, 3)
 
     trade_quality = 0
+
+
+
+
+    if (is_uptrend_5m):
+        trade_quality = trade_quality + 3
+    if (is_uptrend_15m):
+        trade_quality = trade_quality + 2
+    if (is_uptrend_1h):
+        trade_quality = trade_quality + 1
+    if (has_positive_momentum_5m):
+        trade_quality = trade_quality + 3
+    if (has_positive_momentum_15m):
+        trade_quality = trade_quality + 2
+    if (has_positive_momentum_1h):
+        trade_quality = trade_quality + 1     
+
+
+    print("\n***** Uptrend 5m: " + str(is_uptrend_5m))
+    print("***** Uptrend 15m: " + str(is_uptrend_15m))
+    print("***** Uptrend 1h: " + str(is_uptrend_1h))
+    print("***** Price momentum 5m: " + str(has_positive_momentum_5m))
+    print("***** Price momentum 15m: " + str(has_positive_momentum_15m))
+    print("***** Price momentum 1h: " + str(has_positive_momentum_1h) + "\n") 
+        
+    
+
+    print("")
+    print("DEBUG: Doing checks with ma20 and ma40 1 MINUTE\n")
+    ma_check_1m = check_moving_averages(ohlcv_data_1m)
+   
+    print("DEBUG: Doing checks with ma20 and ma40 5 MINUTE\n")
+    ma_check_5m = check_moving_averages(ohlcv_data_5m)
+    
+    
+
+    print("Trade quality: " + str(trade_quality))
+    # If all conditions are met
+    if (trade_quality >= 9 and (ma_check_1m or ma_check_5m)):
+        return True
+    else:
+        return False
+
+
+def test_ma(pairAddress):
+    
+    print("Request received for pairAddress:", pairAddress)
+    
+    # Define your time frame and number of frames you want to fetch
+      # For example, 5 minutes
+      # Last 10 frames
+    
+    # Fetch OHLCV data
+    ohlcv_data_1m = fetch_pool_data(pairAddress, "minute", 1, 40)
+    print("Data received for 1-minute frame:")
+   
+    time.sleep(1)
+    ohlcv_data_5m = fetch_pool_data(pairAddress, "minute", 5, 40)
+    print("Data received for 5-minute frame:")
+    
+    time.sleep(1)
+    ohlcv_data_15m = fetch_pool_data(pairAddress, "minute", 15, 5)
+    time.sleep(1)
+    ohlcv_data_1h = fetch_pool_data(pairAddress, "hour", 1, 3)
+    time.sleep(1)
+    
+    is_uptrend_5m = is_uptrend(ohlcv_data_5m, 10)
+    is_uptrend_15m = is_uptrend(ohlcv_data_15m, 5)
+    is_uptrend_1h = is_uptrend(ohlcv_data_1h, 3)
+
+    has_positive_momentum_5m = has_positive_momentum(ohlcv_data_5m, 10)
+    has_positive_momentum_15m = has_positive_momentum(ohlcv_data_15m, 5)
+    has_positive_momentum_1h = has_positive_momentum(ohlcv_data_1h, 3)
+
+    trade_quality = 0
+
+
 
 
     if (is_uptrend_5m):
@@ -265,10 +390,11 @@ def analyze_conditions(data: PoolAddress):
         
     print("Trade quality: " + str(trade_quality))
 
-    # If all conditions are met
-    if (trade_quality >= 11):
-        return True
-    else:
-        return False
+    print("")
+    print("DEBUG: Doing checks with ma20 and ma40 1 MINUTE\n")
+    check_moving_averages(ohlcv_data_1m)
+    print("DEBUG: Doing checks with ma20 and ma40 5 MINUTE\n")
+    check_moving_averages(ohlcv_data_5m)
+
     
 

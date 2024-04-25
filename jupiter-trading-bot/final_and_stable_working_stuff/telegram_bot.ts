@@ -3,6 +3,7 @@
 // Group ID: -1002006874152
 // BOT name: SMS_trading_Bot
 
+import {getAllOpenOrders, getSellTrackerRecordsByQuery} from './mongoDB_connection'
 import {printTokenBalancesInUSD} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
@@ -35,6 +36,7 @@ async function start_bot() {
         }
     });
 
+    
     BOT.onText(/\/sells/, async (msg) => {
         try {
             get_sells();
@@ -48,58 +50,70 @@ async function start_bot() {
 }
 
 function get_sells(): void {
-    const results: Map<string, number> = new Map();
-    const filePath = "/root/project/solana-trading-bot/data/sell_tracker_v2.csv";
-    const today = new Date().toISOString().slice(0, 10); // Format: YYYY-MM-DD
-    let totalResultUSD = 0; // Variable to accumulate the total result_usd
-
-    fs.createReadStream(filePath)
-        .pipe(csv())
-        .on('data', (data: any) => {
-            // Convert "dd-mm-yyyy hh:mm:ss" to "yyyy-mm-dd" for comparison
-            const sellDateParts = data.sell_date.split(' ')[0].split('-');
-            const sellDateFormatted = `${sellDateParts[2]}-${sellDateParts[1]}-${sellDateParts[0]}`;
-
-            if (sellDateFormatted === today) {
-                const symbol = data.symbol;
-                const resultUSD = parseFloat(data.result_usd);
-
-                // Create string and add to results map
-                const entryString = `${symbol} -> ${resultUSD.toFixed(2)}$`;
-                results.set(entryString, resultUSD); // Corrected: Use entryString as the key and resultUSD as the value
-
-                // Accumulate result_usd for total calculation
-                totalResultUSD += resultUSD;
-            }
-        })
-        .on('end', () => {
-            // Concatenate strings and send formatted message
-            const formattedString = Array.from(results.keys()).join('\n');
-            send_message(formattedString);
-
-            // Send total result_usd
-            send_message(`Total result_usd: ${totalResultUSD.toFixed(2)}$`);
-        })
-        .on('error', (error: Error) => {
-            console.error('Error reading and processing CSV file:', error);
+    // Format today's date to match the format in the MongoDB collection (yyyy-mm-dd)
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0]; // Converts to "yyyy-mm-dd" format
+    
+    const query = {
+      sell_date: {
+        // Use a regular expression to match the date part of the sell_date string
+        $regex: new RegExp(`^${dateString}`)
+      }
+    };
+  
+    getSellTrackerRecordsByQuery(query).then(records => {
+      if (records.length > 0) {
+        // Calculate the sum of profit_and_loss for each symbol
+        const symbolSumMap = new Map<string, number>();
+        records.forEach(record => {
+          const symbol = record.symbol;
+          const profitLoss = record.profit_and_loss ?? 0; // Use 0 if profit_and_loss is undefined
+          if (symbolSumMap.has(symbol)) {
+            symbolSumMap.set(symbol, symbolSumMap.get(symbol)! + profitLoss);
+          } else {
+            symbolSumMap.set(symbol, profitLoss);
+          }
         });
-}
 
-function get_open_trades(): void {
-    const results: buy[] = [];
-    const filePath = "/root/project/solana-trading-bot/data/open_orders_v2.csv"
-
-    fs.createReadStream(filePath)
-        .pipe(csv())
-        .on('data', (data: any) => results.push({ symbol: data.symbol, PNL: data.PNL }))
-        .on('end', () => {
-            const formattedString = results.map(record => `${record.symbol} ->    ${record.PNL}`).join('\n');
-            send_message(formattedString);
-        })
-        .on('error', (error: Error) => {
-            console.error('Error reading and processing CSV file:', error);
+        // Format the output message with symbol-wise profit/loss sums
+        let message = '';
+        symbolSumMap.forEach((sum, symbol) => {
+          // Round the sum to two decimal places
+          const roundedSum = sum.toFixed(2);
+          message += `${symbol} -> ${roundedSum}\n`;
         });
-}
+
+        // Calculate the total sum of profit_and_loss for all records
+        const totalSum = records.reduce((total, record) => total + (record.profit_and_loss ?? 0), 0);
+        const roundedTotalSum = totalSum.toFixed(2); // Round the total sum to two decimal places
+
+        // Append the total sum message to the output message
+        message += `\nTotal Profit/Loss: ${roundedTotalSum}`;
+
+        // Send the message using the existing send_message function
+        send_message(message);
+      } else {
+        send_message("No sell records found for today.");
+      }
+    }).catch(error => {
+      console.error('Failed to fetch records:', error);
+      send_message(`Error retrieving records: ${error.message}`);
+    });
+  }
+
+async function get_open_trades(): Promise<void> {
+    try {
+      const openOrders = await getAllOpenOrders(); // Retrieve all open orders
+      for (const order of openOrders) {
+        // Format the message with symbol, price change percent, and profit and loss
+        const message = `${order.symbol} -> ${order.price_change_percent}% -> ${order.profit_and_loss}`;
+        send_message(message); // Send the formatted message to Telegram
+        await delayy(1000);
+      }
+    } catch (error) {
+      console.error('Error getting open trades:', error);
+    }
+  }
 
 const send_message = async (message: string) => {
     const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
@@ -115,4 +129,7 @@ const send_message = async (message: string) => {
     }
 };
 
+function delayy(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 //send_message(`🟢‼️✅ NEW SELL 🚨🟢🔥\n\nSold: 159208.1397508 BONKO\nReceived:  0.03508191 SOL ($6.118859383681223 USD)\n\nToken address\n\nDbHuNmijFmK7F7peCSYZmF6yoi9Q3njBAdb3FCAkXNhS\n\n`);

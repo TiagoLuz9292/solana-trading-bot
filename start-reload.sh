@@ -4,6 +4,8 @@
 SCRIPT_NAME="dex_data_BOT_v2.py"
 SCRIPT_ARG="reload"
 SCREEN_NAME="reload"
+LOG_DIR="/root/project/solana-trading-bot/logs"
+LOG_FILE="$LOG_DIR/reload.log"
 ENV_PATH="/root/project/solana-trading-bot/jupiter-trading-bot/.env"
 
 # Full command to check and run

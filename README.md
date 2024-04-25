@@ -1,3 +1,30 @@
+
+
+OHLCV checks update PLAN
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+###################################################################################
+
+
 YT link: https://www.youtube.com/watch?v=Q2kSA1Ns8oQ&list=PLXrNVMjRZUJjzGvQLXOKv2D-Pbfa0H_CH&index=4&ab_channel=MoonDev
 watched until 2:51:18
 This video shows how to use the premium birdeye API for token security and token creation GOLD info!

@@ -26,7 +26,7 @@ def reload():
         level_2_filter.fetch_audit_data() 
 
         print("Filter complete.")
-        time.sleep(60)
+        time.sleep(15)
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,10 +35,12 @@ def reload_initial_list():
     start_time = datetime.datetime.now().strftime("%d-%m-%y %H:%M:%S")
 
    
-
-    initial_list.get_token_list()
-    token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/initial_list_fresh.csv")
-    token_overview_list.filter_recent_tokens()
+    while(True):
+        initial_list.get_token_list()
+        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/initial_list_fresh.csv")
+        token_overview_list.filter_recent_tokens()
+        print("Initial list complete.")
+        time.sleep(15)
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 

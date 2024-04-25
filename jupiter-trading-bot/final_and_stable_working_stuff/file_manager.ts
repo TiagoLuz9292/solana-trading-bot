@@ -117,7 +117,7 @@ async function create_sell_tracker_file() {
 }
 
 async function create_sell_tracker_file_v2() {
-    const filePath = "/home/tluz/project/ON-CHAIN-SOLANA-TRADING-BOT/data/buy_BOT/sell_tracker_v3.csv";
+    const filePath = "/root/project/solana-trading-bot/data/sell_tracker_v2.csv";
     
     // Define the header fields
     const fields = ['date_time', 'address', 'token_amount_sold', 'sol_received', 'profit_in_usd'];

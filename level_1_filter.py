@@ -25,15 +25,15 @@ from datetime import datetime, timedelta
 import pandas as pd
 
 # price change
-MIN_PRICE_CHANGE_5M = 10
-MIN_PRICE_CHANGE_1H = 10
-MIN_PRICE_CHANGE_6H = 10
-MIN_PRICE_CHANGE_24H = 0
+MIN_PRICE_CHANGE_5M = 0
+MIN_PRICE_CHANGE_1H = -10
+MIN_PRICE_CHANGE_6H = -20
+MIN_PRICE_CHANGE_24H = -20
 
 MAX_PRICE_CHANGE_5M = 35
-MAX_PRICE_CHANGE_1H = 35
-MAX_PRICE_CHANGE_6H = 80
-MAX_PRICE_CHANGE_24H = -20
+MAX_PRICE_CHANGE_1H = 50
+MAX_PRICE_CHANGE_6H = 200
+MAX_PRICE_CHANGE_24H = 200
 
 # volume
 MIN_VOLUME_5M = 1000
@@ -56,7 +56,7 @@ MAX_SELLS_24H = 1000
 # market cap
 
 MIN_MARKET_CAP = 1
-MAX_MARKET_CAP = 125000
+MAX_MARKET_CAP = 130000
 
 # liquidity
 
@@ -111,7 +111,7 @@ def get_filtered_dexscreener():
             (df['buys_6h'] > df['buys_1h']) &
             #(df['buys_24h'] > MIN_BUYS_24H) &
             #(df['sells_5m'] <= df['buys_5m'] * 0.6) &
-            (df['sells_1h'] <= df['buys_1h'] * 0.7) &
+            (df['sells_1h'] <= df['buys_1h'] * 0.8) &
             #(df['sells_6h'] <= df['buys_6h'] * 0.6) &
             #(df['sells_24h'] <= df['buys_24h'] * 0.7) &
             (df['marketCap'] >= MIN_MARKET_CAP) & (df['marketCap'] <= MAX_MARKET_CAP) &

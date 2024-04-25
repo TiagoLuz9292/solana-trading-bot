@@ -5,16 +5,18 @@ NOW IT SAVES TRANSACTIONS TO FILES, AND MY WALLET SCRIPT CHECKS IF IT WAS COMPLE
 THIS IS THE MAIN ONE
 
 */
-
+import { ObjectId } from 'mongodb';
+import {process_sell} from './transaction_manager'
 import { BigNumber } from 'bignumber.js';
+import { insertDocument } from './mongoDB_connection';
 import { promises as fs } from 'fs';
 import { Parser } from 'json2csv';
 import {get_token_price} from './account_pnl';
-export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations};
+export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2};
 import { getAllBalances, getTokenBalance } from './my_wallet';
 import { create_sell_tracker_file, create_sell_tracker_file_v2, create_transactions_file, create_transactions_file_V2 } from './file_manager';
 import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createAssociatedTokenAccountInstruction } from "@solana/spl-token";
+import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, MintLayout } from "@solana/spl-token";
 import dotenv from "dotenv";
 import axios from "axios";
 import { log } from 'console';
@@ -71,22 +73,36 @@ console.log(`Wallet: ${wallet.publicKey.toBase58()}\n`)
 const solMint = new PublicKey("So11111111111111111111111111111111111111112");
 const usdcMint = new PublicKey("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
 
-
-interface NativeTransfer {
-    fromUserAccount: string;
-    toUserAccount: string;
-    amount: number;
-}
+interface mongoDB_buy {
+    _id: ObjectId;
+    tx_date: string;
+    tx_state: string;
+    address: String;
+    signature: string;
+    symbol: String;
+    usd_spent?: number;
+    token_amount_received?: number;
+    entry_price?: number;
+  }
 
 
 interface TransactionData {
     tx_date: string;
     address: String;
+    signature: String;
     symbol: String;
     usd_spent: number;
     sol_spent: number;
     entryPrice: number;
     token_amount_received: number;
+}
+
+
+interface TokenToSellMongo {
+    address: String;
+    token_amount_sold: number;
+    profit_in_usd: number;
+    message: String;
 }
 
 interface TokenToSell {
@@ -134,7 +150,7 @@ async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: 
             wrapAndUnwrapSol: true,
             useSharedAccounts: true,
             //feeAccount: wallet.publicKey.toString(),
-            prioritizationFeeLamports: 150000,
+            prioritizationFeeLamports: 75000,
             asLegacyTransaction: false,
             useTokenLedger: false,
             destinationTokenAccount: destinationTokenAccount.toString(),
@@ -164,7 +180,7 @@ async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: 
 async function swap_from_usdc_to_token(amount_usd : number, token_Address : String) {
     //console.log("INFO: Initiating swap from SOL to token...");
    
-    const amountUSDtoBUY = await getAmountInSmallestUnit(amount_usd, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+    const amountUSDtoBUY = await getAmountInSmallestUnit_v2(amount_usd, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
     
     const tokenMint = new PublicKey(token_Address)
     
@@ -210,7 +226,7 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String)
         const tokenMint = new PublicKey(tokenAddress);
         
 
-        const amountToSwap = await getAmountInSmallestUnit(tokenAmount, tokenAddress);
+        const amountToSwap = await getAmountInSmallestUnit_v2(tokenAmount, tokenAddress);
 
         if (amountToSwap === undefined) {
             console.error("Unable to fetch token decimals for swap.");
@@ -255,10 +271,31 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String)
 }
 
 
+async function getAmountInSmallestUnit_v2(tokenAmount: number, tokenAddress: String): Promise<string | undefined> {
+    const tokenMint = new PublicKey(tokenAddress);
+    const mintAccountInfo = await connection.getAccountInfo(tokenMint);
 
+    let decimals;
+
+    if (mintAccountInfo && mintAccountInfo.data) {
+        // Decode the data using MintLayout from SPL Token library
+        const mintData = MintLayout.decode(mintAccountInfo.data);
+        decimals = mintData.decimals;
+    }
+
+    // If decimals are still undefined after fetching directly, log an error (optional)
+    if (decimals === undefined) {
+        console.error(`Decimals not found for token at address: ${tokenAddress}`);
+        return undefined;
+    }
+
+    // Calculate the smallest unit
+    const amount = new BigNumber(tokenAmount);
+    const factor = new BigNumber(10).pow(decimals);
+    return amount.times(factor).integerValue(BigNumber.ROUND_DOWN).toString();
+}
 
 async function getAmountInSmallestUnit(tokenAmount: number, tokenAddress: String): Promise<string | undefined> {
-    const connection = new Connection("https://api.mainnet-beta.solana.com");
     const tokenMint = new PublicKey(tokenAddress);
     const tokenInfo = await connection.getParsedAccountInfo(tokenMint);
     let decimals;
@@ -313,7 +350,7 @@ async function waitForSellTransactionConfirmation(
     const maxDelay = 30000; // Maximum delay of 30 seconds
     const timeout = 90000; // Set timeout to 1 minute 30 seconds
     const startTime = Date.now(); // Record the start time
-    const apiKey = '9ba9abe4-5382-46d3-9c67-680bd831ea14'; // Your API key
+    const apiKey = '718ea21d-2d9d-49e2-b3f2-46888e0fcb25'; // Your API key
     const url = `https://api.helius.xyz/v0/transactions/?api-key=${apiKey}`;
 
     while (true) {
@@ -323,6 +360,8 @@ async function waitForSellTransactionConfirmation(
         }
 
         try {
+            console.log("ABOUT TO REQUEST FROM HELIUS")
+            await delayy(5000);
             const apiResponse = await axios.post(url, {
                 transactions: [signature]
             }, {
@@ -368,7 +407,9 @@ async function waitForSellTransactionConfirmation(
     console.log(`DEBUG: Sell transaction confirmation loop ended. USDC amount received: ${usdcAmountChange}`);
     return usdcAmountChange;
 }
-
+function delayy(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function waitForTransactionConfirmation(signature: String, tokenAddress: String): Promise<number> {
     console.log(`Waiting for transaction confirmation for signature: ${signature}`);
@@ -377,7 +418,7 @@ async function waitForTransactionConfirmation(signature: String, tokenAddress: S
     const maxDelay = 30000; // Maximum delay of 30 seconds
     const timeout = 120000; // Set timeout to 2 minutes
     const startTime = Date.now(); // Record the start time
-    const apiKey = '9ba9abe4-5382-46d3-9c67-680bd831ea14'; // Helius API key
+    const apiKey = '718ea21d-2d9d-49e2-b3f2-46888e0fcb25'; // Helius API key
     const url = `https://api.helius.xyz/v0/transactions/?api-key=${apiKey}`;
 
     while (true) {
@@ -387,6 +428,8 @@ async function waitForTransactionConfirmation(signature: String, tokenAddress: S
         }
 
         try {
+            console.log("ABOUT TO REQUEST FROM HELIUS")
+            await delayy(5000);
             const apiResponse = await axios.post(url, {
                 transactions: [signature]
             }, {
@@ -434,7 +477,7 @@ async function waitForTransactionConfirmation(signature: String, tokenAddress: S
     return tokenAmountChange;
 }
 
-async function pre_and_post_sell_operations(token_amount: number, token_address: String, symbol: String, message: String, pnl: number) {
+async function pre_and_post_sell_operations(token_amount: number, token_address: String, symbol: String, message: String) {
     try {
         await create_sell_tracker_file_v2();
 
@@ -450,7 +493,7 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
         }
 
         const usdc_received = await waitForSellTransactionConfirmation(signature, connection);
-
+        
         // Get the current date in UTC in ISO format
         const now = new Date();
         const isoDate = now.toISOString();
@@ -463,7 +506,7 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
         let amount_received_in_usd: number | null = null;
         if (!usdc_received) {
             console.log("No tokens received or transaction is not confirmed");
-            return false;
+           return false;
         } 
 
         const data: TokenToSell[] = [{
@@ -490,17 +533,113 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
 
 
 
-async function pre_and_post_buy_operations(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
+
+
+
+
+
+
+
+
+
+
+async function pre_and_post_sell_operations_v2(token_amount: number, token_address: String, symbol: String, message: String) {
+    try {
+        
+
+        console.log("INFO: Performing swap from " + token_amount + " " + token_address + " to SOL ...");
+        const signature = await swap_from_token_to_sol(token_amount, token_address); // Ensure swap_from_token_to_sol is defined
+        console.log("Swap signature:", signature);
+
+        if (!signature) {
+            console.error("No signature returned from swap operation.");
+            return false;
+        } else {
+            console.log("Swap transaction was sent. Signature:", signature);
+        }
+
+        const usdc_received = await waitForSellTransactionConfirmation(signature, connection);
+        
+        // Get the current date in UTC in ISO format
+        const now = new Date();
+        const isoDate = now.toISOString();
+        // Extract the date and time parts from the ISO string
+        const datePart = isoDate.slice(0, 10); // yyyy-mm-dd
+        const timePart = isoDate.slice(11, 19); // hh:mm:ss
+        // Format the date string as needed
+        const currentDateTime = format(new Date(datePart + ' ' + timePart), 'dd-MM-yyyy HH:mm:ss');
+
+        let amount_received_in_usd: number | null = null;
+        if (!usdc_received) {
+            console.log("No tokens received or transaction is not confirmed");
+           return false;
+        } 
+
+        const data: TokenToSellMongo = {
+            address: token_address,
+            token_amount_sold: token_amount,
+            profit_in_usd: usdc_received,
+            message: message
+        };
+
+        await process_sell(data);
+
+
+    
+
+        console.log(`\nSucessfull SELL: ${token_amount} of ${symbol}-${token_address}; Received $${usdc_received} USDC`);
+        
+        return signature;
+    } catch (error) {
+        console.error("Error during swap operation:", error);
+    }
+}
+
+
+
+
+
+
+async function pre_and_post_buy_operations_v2(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
+    try {
+        console.log(`INFO: Attempting to perform swap from ${amount_usd} USDT ($${amount_usd} USD) to token address ${token_address}...`);
+        const signature = await swap_from_usdc_to_token(amount_usd, token_address);
+    
+        // Generate new ObjectId
+        const newId = new ObjectId();
+
+        const now = new Date();
+        const isoDate = now.toISOString();
+        const datePart = isoDate.slice(0, 10); // yyyy-mm-dd
+        const timePart = isoDate.slice(11, 19); // hh:mm:ss
+        const currentDateTime = format(new Date(datePart + ' ' + timePart), 'dd-MM-yyyy HH:mm:ss');
+
+        const mongo_buy: mongoDB_buy = {
+            _id: newId, // Provide new ObjectId
+            tx_date: currentDateTime,
+            tx_state: "pending",
+            address: token_address,
+            signature: signature,
+            symbol: symbol,
+            entry_price: 0,
+            usd_spent: 0,
+            token_amount_received: 0
+        };
+
+        console.log("DEBUG: About to insert buy into MongoDB!")
+        insertDocument(mongo_buy);
+        
+    } catch (error) {
+        console.error("Error during pre and post buy operations:", error);
+    }
+}
+
+/*async function pre_and_post_buy_operations(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
     try {
         
 
         console.log(`INFO: Attempting to perform swap from ${amount_usd} USDT ($${amount_usd} USD) to token address ${token_address}...`);
         const signature = await swap_from_usdc_to_token(amount_usd, token_address);
-        
-
-        // Use the default commitment level without specifying maxSupportedTransactionVersion
-    
-        const tokenAmountReceived = await waitForTransactionConfirmation(signature, token_address);
 
         // Get the current date in UTC in ISO format
         const now = new Date();
@@ -510,6 +649,26 @@ async function pre_and_post_buy_operations(amount_usd: number, amount_sol: numbe
         const timePart = isoDate.slice(11, 19); // hh:mm:ss
         // Format the date string as needed
         const currentDateTime = format(new Date(datePart + ' ' + timePart), 'dd-MM-yyyy HH:mm:ss');
+        
+        const mongo_buy: mongoDB_buy = {
+            tx_date: currentDateTime,
+            tx_state: "pending",
+            address: token_address,
+            signature: signature,
+            symbol: symbol,
+            entry_price: 0,
+            usd_spent: 0,
+            token_amount_received: 0
+        };
+
+        console.log("DEBUG_ About to insert buy into mongoDB!")
+        insertDocument(mongo_buy);
+
+        // Use the default commitment level without specifying maxSupportedTransactionVersion
+    
+        const tokenAmountReceived = await waitForTransactionConfirmation(signature, token_address);
+
+        
         
         let entryPrice: number | null = null;
         if (tokenAmountReceived !== null && tokenAmountReceived > 0) {
@@ -522,12 +681,17 @@ async function pre_and_post_buy_operations(amount_usd: number, amount_sol: numbe
         const data: TransactionData[] = [{
             tx_date: currentDateTime,
             address: token_address,
+            signature: signature,
             symbol: symbol,
             usd_spent: amount_usd,
             sol_spent: amount_sol,
             entryPrice: entryPrice,
             token_amount_received: tokenAmountReceived
         }];
+        
+
+
+
 
         update_pnl_after_buy_v2(data);
 
@@ -539,7 +703,7 @@ async function pre_and_post_buy_operations(amount_usd: number, amount_sol: numbe
         console.error("Error during pre and post buy operations:", error);
     }
 }
-
+*/
 async function sendSol(receiverAddress: string, amountSol: number): Promise<string> {
     
     const receiver = new PublicKey(receiverAddress);

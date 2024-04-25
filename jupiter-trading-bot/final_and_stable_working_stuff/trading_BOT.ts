@@ -23,7 +23,8 @@ The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION
 
 
 import axios from 'axios';
-import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations, pre_and_post_sell_operations} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
+import {manageOpenOrders} from './transaction_manager'
+import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
@@ -31,10 +32,11 @@ import {update_account_PNL_v3} from '/root/project/solana-trading-bot/jupiter-tr
 import {checkOHLCVConditions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
 import {get_token_price, get_token_prices} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import {send_message, start_bot} from './telegram_bot';
+import {get_transaction_by_state, updateTransactionState, createOpenOrder, getOpenOrderRecordByAddress, getBuyTrackerRecordByAddress, getBuyTrackerRecordsByAddress} from "./mongoDB_connection"
+import {processPendingTransactions} from './transaction_manager';
 
 
-
-const AMOUNT_USD_TO_BUY = 3;
+const AMOUNT_USD_TO_BUY = 4;
 const AMOUNT_SOL_TO_BUY = 0.0175;
 
 
@@ -63,14 +65,15 @@ async function getAmountInSOL(usdAmount: number): Promise<string> {
 //-----------------------------------------------------------------------------------------------------------------------------
 
 async function getAmountInUSD(solAmount: number): Promise<number> {
-    //const url = "https://public-api.birdeye.so/public/price?address=So11111111111111111111111111111111111111112";
-    //const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+    const url = "https://public-api.birdeye.so/defi/price?address=So11111111111111111111111111111111111111112";
+    const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+    
     
     try {
-        //const response = await axios.get(url, { headers });
-        //await delay(1000);
-        //const solPrice = response.data.data.value;
-        const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
+        const response = await axios.get(url, { headers });
+        await delay(1000);
+        const solPrice = response.data.data.value;
+        //const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
         console.log(`SOL Price: ${solPrice}`);
 
         // Calculate the amount in USD for the given amount of SOL
@@ -85,7 +88,7 @@ async function getAmountInUSD(solAmount: number): Promise<number> {
 //-----------------------------------------------------------------------------------------------------------------------------
 // Manual buy
 //-----------------------------------------------------------------------------------------------------------------------------
-
+/*
 async function buy_manual(amount_usd: number, token_address: String) {
 
     //const amount_USD = await getAmountInUSD(amount_sol);
@@ -93,16 +96,16 @@ async function buy_manual(amount_usd: number, token_address: String) {
     return pre_and_post_buy_operations(amount_usd, 0.001, token_address, "");
     
 }
-
+*/
 //-----------------------------------------------------------------------------------------------------------------------------
 // Called by buyWrapper loop
 //-----------------------------------------------------------------------------------------------------------------------------
-
+/*
 async function buy_all_from_filtered(excludedAddresses = new Set()) {
     console.log("DEBUG: starting buy_all_from_filtered()");
 
     let all_transactions_succeed = true;
-    const filePath = '/root/project/solana-trading-bot/data/level_2_filter.csv';
+    const filePath = '/root/project/solana-trading-bot/data/level_1_filter.csv';
     const openOrdersFilePath = '/root/project/solana-trading-bot/data/open_orders_v2.csv'; // Path to open orders CSV file
     const csvHeaders = [
       'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
@@ -141,7 +144,7 @@ async function buy_all_from_filtered(excludedAddresses = new Set()) {
                 continue;
             }
 
-            if (excludedAddresses.has(row.address) || openOrdersAddresses.has(row.address)) {
+            if (openOrdersAddresses.has(row.address)) {
                 console.log(`Skipping purchase for excluded or open order address ${row.address}`);
                 continue;
             }
@@ -180,6 +183,85 @@ async function buy_all_from_filtered(excludedAddresses = new Set()) {
     console.log(all_transactions_succeed ? 'All transactions processed.' : 'Some transactions failed.');
     return all_transactions_succeed;
 }
+*/
+async function buy_all_from_filtered_v2() {
+    console.log("DEBUG: starting buy_all_from_filtered_v2()");
+
+    const filePath = '/root/project/solana-trading-bot/data/level_1_filter.csv';
+    const csvHeaders = [
+      'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
+      'buys_1h', 'buys_6h', 'buys_24h', 'sells_5m', 'sells_1h',
+      'sells_6h', 'sells_24h', 'volume_5m', 'volume_1h', 'volume_6h',
+      'volume_24h', 'priceChange_5m', 'priceChange_1h', 'priceChange_6h',
+      'priceChange_24h', 'liquidity', 'marketCap', 'priceUSD', 'website',
+      'twitter', 'telegram'
+    ];
+
+    try {
+        const balances = await getAllBalances();
+
+        if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
+            console.log("The source csv file level_1_filter.csv is empty.\n");
+            return true;
+        }
+
+        const stream = fs.createReadStream(filePath).pipe(csv({ headers: csvHeaders }));
+
+        for await (const row of stream) {
+            if (!row.address || row.address.trim() === '' || row.address === 'address') {
+                console.log("Skipping row with invalid address.");
+                continue;
+            }
+
+            // Check if the address is in buy_tracker with tx_state "completed"
+            const buyTrackerRecords = await getBuyTrackerRecordsByAddress(row.address);
+            if (buyTrackerRecords.some(record => record.tx_state === "completed" || record.tx_state === "pending")) {
+                console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed" or "pending".`);
+                continue; // Skip this iteration if there is any record with the transaction completed or pending
+            }
+
+            // Check if the address is in open_orders
+            const openOrderRecord = await getOpenOrderRecordByAddress(row.address);
+            if (openOrderRecord) {
+                console.log(`Skipping purchase for ${row.address} as it exists in open_orders.`);
+                continue; // Skip this iteration if the token is in open orders
+            }
+
+            const balance = balances[row.address];
+            console.log(`Performing OHLCV checks on ${row.address}. Balance: ${balance}`);
+
+            if ((balance && balance < 1) || balance === undefined) {
+                const canBuy = await checkOHLCVConditions(row.pairAddress);
+                console.log(`OHLCV check result: ${canBuy}`);
+
+                if (canBuy) {
+                    try {
+                        const amount_SOL = await getAmountInSOL(AMOUNT_USD_TO_BUY); // Make sure AMOUNT_USD_TO_BUY is defined
+                        const result = await pre_and_post_buy_operations_v2(AMOUNT_USD_TO_BUY, parseFloat(amount_SOL), row.address, row.symbol);
+                        console.log(`Buy operation result for ${row.address}:`, result);
+                    } catch (error) {
+                        console.error('Error during buy operation:', error);
+                    }
+                }
+            } else {
+                console.log("INFO: Wallet already holds that token, not buying.");
+            }
+
+            // Delay to ensure a pause before processing the next token
+            await delay(1000);
+        }
+
+        console.log("\n*** Processing pending transactions... ***\n")
+        await processPendingTransactions();
+
+
+    } catch (error) {
+        console.error('Error fetching balances or reading CSV:', error);
+        return false;
+    }
+}
+
+
 
 //-----------------------------------------------------------------------------------------------------------------------------
 //  Currently not used, but will be usefull for more control and flexibility
@@ -189,7 +271,7 @@ async function sell_all_for_address(tokenAddress: String, symbol: String) {
     const token_balance = await getTokenBalance(tokenAddress);
 
     if (token_balance) {
-        await pre_and_post_sell_operations(token_balance, tokenAddress, "", "", 100);
+        await pre_and_post_sell_operations(token_balance, tokenAddress, "", "");
     }
     
 }
@@ -270,22 +352,11 @@ async function printTokenBalancesInUSD() {
 async function buyWrapper() {
     async function buyTokens() {
         try {
-            const exclusionFilePath = '/root/project/solana-trading-bot/data/open_orders_v2_inbound.csv';
-            const excludedAddresses = new Set();
 
-            if (fs.existsSync(exclusionFilePath)) {
-                const data = fs.createReadStream(exclusionFilePath).pipe(csv({ headers: true }));
-                for await (const row of data) {
-                    excludedAddresses.add(row.address);
-                }
-            }
-
-            const result = await buy_all_from_filtered(excludedAddresses);
-            if (result === true) {
-                setTimeout(buyTokens, 60 * 1000); // Retry after 5 minutes
-            } else {
-                setTimeout(buyTokens, 10 * 1000); // Retry after 1 minute
-            }
+            const result = await buy_all_from_filtered_v2();
+           
+            setTimeout(buyTokens, 15 * 1000); // Retry after 5 minutes
+        
         } catch (error) {
             console.error("Error calling buy_all_from_filtered:", error);
             setTimeout(buyTokens, 15 * 1000); // Retry after 1.5 minutes
@@ -301,14 +372,11 @@ async function buyWrapper() {
 function sellWrapper() {
     async function sellTokens() {
         try {
-            const result = await update_account_PNL_v3();
+            const result = await manageOpenOrders();
             await printTokenBalancesInUSD();
             // Set the timeout only if the result is explicitly false
-            if (result === true) {
-                setTimeout(sellTokens, 20 * 1000); // Call again after 5 minutes
-            }else {
-                setTimeout(sellTokens, 1 * 1000);
-            }
+            
+            setTimeout(sellTokens, 10 * 1000); // Call again after 5 minutes
         } catch (error) {
             console.error("Error calling update_account_PNL:", error);
             setTimeout(sellTokens, 10 * 1000);
@@ -336,7 +404,7 @@ async function full_liquidation() {
             }
 
             if (balance && balance > 0) {  // Check if the balance is greater than zero and is defined
-                pre_and_post_sell_operations(balance, address, "", "full liquidation" , 100);
+                pre_and_post_sell_operations(balance, address, "", "full liquidation");
                 await delay(1000);
             }
         }
@@ -381,6 +449,8 @@ const arg1 = args[0];
 
 // Switch case to call specific functions based on the argument value
 switch (arg1) {
+
+    /*
     case "buy":
         if (args.length >= 3) {
             const tokenAddress = args[1];
@@ -390,7 +460,7 @@ switch (arg1) {
             console.log("Error: Insufficient arguments for 'sell'");
         }
         break;
-
+*/
     case "tg-balance":
         refresh_balance_in_telegram();
         break;
@@ -412,7 +482,7 @@ switch (arg1) {
         if (args.length >= 3) {
             const tokenAddress = args[1];
             const amountToken = parseFloat(args[2]);
-            pre_and_post_sell_operations(amountToken, tokenAddress, "", "manual sell", 100);
+            pre_and_post_sell_operations(amountToken, tokenAddress, "", "manual sell");
         } else {
             console.log("Error: Insufficient arguments for 'sell'");
         }

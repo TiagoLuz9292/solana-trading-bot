@@ -34,12 +34,12 @@ const timePart = isoDate.slice(11, 19); // hh:mm:ss
 const currentDateTime = format(new Date(datePart + ' ' + timePart), 'dd-MM-yyyy HH:mm:ss');
 
 
-const address= "FBghWHZYrd9XwtqVf6wW1eiqLmwAZX1dcS7w6jYtjmTE";
-const symbol= "PEACE";
-const usd_spent= 3;
+const address= "ERdrYNW9f5BPimEh4vtSguuFFY4Texvvz2y4wwaPgbRb";
+const symbol= "TFB";
+const usd_spent= 4.5;
 const sol_spent= 0;
-const entryPrice= 0.0001667;
-const token_amount_received= 17988;
+const entryPrice= 0.0001586;
+const token_amount_received= 28378;
 
     const data: TransactionData[] = [{
         tx_date: currentDateTime,

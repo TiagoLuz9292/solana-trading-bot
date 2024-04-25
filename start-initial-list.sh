@@ -4,6 +4,8 @@
 SCRIPT_NAME="dex_data_BOT_v2.py"
 SCRIPT_ARG="initial-list"
 SCREEN_NAME="initial-list"
+LOG_DIR="/root/project/solana-trading-bot/logs"
+LOG_FILE="$LOG_DIR/initial-list.log"
 ENV_PATH="/root/project/solana-trading-bot/jupiter-trading-bot/.env"
 
 # Full command to check and run

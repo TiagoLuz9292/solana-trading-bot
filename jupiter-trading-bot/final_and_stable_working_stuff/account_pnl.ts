@@ -100,9 +100,9 @@ const TP_1_PRICE = 1.70;
 const TP_2_PRICE = 2.45;
 const TP_3_PRICE = 4.65;
 
-const TP_1_AMOUNT = 0.70;
+const TP_1_AMOUNT = 0.65;
 const TP_2_AMOUNT = 0.65;
-const TP_3_AMOUNT = 1;
+const TP_3_AMOUNT = 0.65;
 
 function delay(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -408,27 +408,34 @@ async function update_account_PNL_v3() {
             const usdValue = ((currentBalance * currentPrice) * pnl) / 100;
             record.USD_value = usdValue.toFixed(2);
             
-
-            if (record.TP_price_1 && currentBalance < record.token_amount_received * 0.7) {
+            
+            if (currentBalance < ((record.token_amount_received * 0.35))) {
                 record.TP_price_1 = '';
             }
-            if (record.TP_price_2 && currentBalance < ((record.token_amount_received * 0.3)) * 0.4) {
+           
+            if (currentBalance < ((record.token_amount_received * 0.35) * 0.35)) {
                 record.TP_price_2 = '';
+            }
+
+            if (currentBalance < (((record.token_amount_received * 0.35)) * 0.35) * 0.35) {
+                record.TP_price_3 = '';
             }
 
             if (!record.TP_price_1 && pnl <= BREAKEVEN) {
                 console.log(`\n***** Token at BREAKEVEN, SELLING ${currentBalance} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "Breakeaven SL reached!!", pnl)
+                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, "Breakeaven SL reached!!")
                 if (!result) {
                     all_transactions_succeed = false;
                 }else {
                     continue;
                 }
             }    
+            
+            console.log(`\n***** current price of ${record.address} -> ${currentPrice} ; TP price : ${record.TP_1_PRICE} *****\n`);
 
             if (record.TP_price_1 && currentPrice >= parseFloat(record.TP_price_1)) {
-                console.log(`\n***** Token at TP_price_1, SELLING ${currentBalance * TP_1_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_1_AMOUNT), record.address, record.symbol, "TP 1 Reached!!" , pnl)
+                console.log(`\n***** Token at TP_price_1, SELLING ${currentBalance * TP_1_AMOUNT} of ${record.address} ***** PRICE= ${currentPrice}, TP_price= ${record.TP_price_1} \n`);
+                const result = await pre_and_post_sell_operations((currentBalance * TP_1_AMOUNT), record.address, record.symbol, "TP 1 Reached!!")
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -437,7 +444,7 @@ async function update_account_PNL_v3() {
             }
             if (!record.TP_price_1 && record.TP_price_2 && currentPrice >= parseFloat(record.TP_price_2)) {
                 console.log(`\n***** Token at TP_price_2, SELLING ${currentBalance * TP_2_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_2_AMOUNT), record.address, record.symbol, "TP 2 Reached!!", pnl)
+                const result = await pre_and_post_sell_operations((currentBalance * TP_2_AMOUNT), record.address, record.symbol, "TP 2 Reached!!")
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -446,7 +453,7 @@ async function update_account_PNL_v3() {
             }
             if (!record.TP_price_1 && !record.TP_price_2 && record.TP_price_3 && currentPrice >= parseFloat(record.TP_price_3)) {
                 console.log(`\n***** Token at TP_price_3, SELLING ${currentBalance * TP_3_AMOUNT} of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations((currentBalance * TP_3_AMOUNT), record.address, record.symbol, "TP 3 Reached!!", pnl)
+                const result = await pre_and_post_sell_operations((currentBalance * TP_3_AMOUNT), record.address, record.symbol, "TP 3 Reached!!")
                     if (!result) {
                         all_transactions_succeed = false;
                     }else {
@@ -458,7 +465,7 @@ async function update_account_PNL_v3() {
             
             if (pnl <= STOP_LOSS) {
                 console.log(`\n***** PNL below ${STOP_LOSS}%, SELLING ENTIRE BALANCE of ${record.address} *****\n`);
-                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, `${STOP_LOSS}% SL reached!!`, pnl)
+                const result = await pre_and_post_sell_operations(currentBalance, record.address, record.symbol, `${STOP_LOSS}% SL reached!!`)
                 if (!result) {
                     all_transactions_succeed = false;
                 }else {
