@@ -1,4 +1,3 @@
-
 /*
 NOW IT SAVES TRANSACTIONS TO FILES, AND MY WALLET SCRIPT CHECKS IF IT WAS COMPLETED AND UPDATES IT
 
@@ -12,7 +11,7 @@ import { insertDocument } from './mongoDB_connection';
 import { promises as fs } from 'fs';
 import { Parser } from 'json2csv';
 import {get_token_price} from './account_pnl';
-export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2};
+export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations_for_buy_manual, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2};
 import { getAllBalances, getTokenBalance } from './my_wallet';
 import { create_sell_tracker_file, create_sell_tracker_file_v2, create_transactions_file, create_transactions_file_V2 } from './file_manager';
 import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
@@ -150,7 +149,7 @@ async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: 
             wrapAndUnwrapSol: true,
             useSharedAccounts: true,
             //feeAccount: wallet.publicKey.toString(),
-            prioritizationFeeLamports: 75000,
+            prioritizationFeeLamports: 50000,
             asLegacyTransaction: false,
             useTokenLedger: false,
             destinationTokenAccount: destinationTokenAccount.toString(),
@@ -172,6 +171,93 @@ async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: 
         }
     } else {
         console.error("Invalid quote response or empty route plan");
+    }
+}
+
+
+async function ensureAssociatedTokenAccount_v2(mint: PublicKey, owner: PublicKey): Promise<PublicKey> {
+    await sleep(5000); // Might want to adjust this based on actual needs
+    const associatedTokenAddress = await getAssociatedTokenAddress(mint, owner);
+    const accountInfo = await connection.getAccountInfo(associatedTokenAddress);
+
+    if (!accountInfo) {
+        console.log(`Creating associated token account for ${mint.toString()} owned by ${owner.toString()}`);
+        const transaction = new Transaction().add(
+            createAssociatedTokenAccountInstruction(owner, associatedTokenAddress, owner, mint)
+        );
+        try {
+            // Now we catch potential errors during transaction send
+            await sendAndConfirmTransaction(connection, transaction, [wallet], {
+                preflightCommitment: 'confirmed'
+            });
+        } catch (error) {
+            console.error(`Error creating associated token account: ${error}`);
+            throw error; // Rethrowing the error after logging it
+        }
+    } else {
+        console.log(`Associated token account ${associatedTokenAddress.toString()} already exists.`);
+    }
+
+    return associatedTokenAddress;
+}
+
+async function swap_v2(quoteResponse: any, sourceMint: PublicKey, destinationMint: PublicKey) {
+    const sourceTokenAccount = await ensureAssociatedTokenAccount_v2(sourceMint, wallet.publicKey);
+    console.log("SOL associated token account created:", sourceTokenAccount.toString());
+    const destinationTokenAccount = await ensureAssociatedTokenAccount_v2(destinationMint, wallet.publicKey);
+    console.log("Output token associated token account created:", destinationTokenAccount.toString());
+
+    if (!quoteResponse || !quoteResponse.routePlan || quoteResponse.routePlan.length === 0) {
+        throw new Error("Invalid quote response or empty route plan");
+    }
+    
+    const payload = {
+        userPublicKey: wallet.publicKey.toString(),
+        wrapAndUnwrapSol: true,
+        useSharedAccounts: true,
+        prioritizationFeeLamports: 50000,
+        asLegacyTransaction: false,
+        useTokenLedger: false,
+        destinationTokenAccount: destinationTokenAccount.toString(),
+        dynamicComputeUnitLimit: true,
+        skipUserAccountsRpcCalls: true,
+        quoteResponse: quoteResponse
+    };
+
+    try {
+        const response = await axios.post("https://quote-api.jup.ag/v6/swap", payload, {
+            headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }
+        });
+
+        if (response.data.error) {
+            console.error("Error from Jupiter API:", response.data.error);
+            throw new Error(`Error from Jupiter API: ${response.data.error}`);
+        }
+
+        if (!response.data.swapTransaction) {
+            console.error("Swap transaction is missing in API response.");
+            throw new Error("Swap transaction is missing");
+        }
+
+        const serializedTransaction = Buffer.from(response.data.swapTransaction, 'base64');
+        const transaction = VersionedTransaction.deserialize(serializedTransaction);
+        transaction.sign([wallet]);
+
+        const simulationResult = await connection.simulateTransaction(transaction);
+        if (simulationResult.value.err) {
+            console.error("Simulation error:", JSON.stringify(simulationResult.value.err));
+            throw new Error(`Simulation error: ${JSON.stringify(simulationResult.value.err)}`);
+        }
+
+        const signature = await connection.sendRawTransaction(transaction.serialize());
+        console.log("Transaction sent, signature:", signature);
+
+        
+        return signature;
+        
+    } catch (error) {
+        console.error("Swap failed:", error);
+        throw error;
     }
 }
 
@@ -199,11 +285,15 @@ async function swap_from_usdc_to_token(amount_usd : number, token_Address : Stri
 
         console.log(`DEBUG: Received swap quote: ${JSON.stringify(quoteResponse, null, 2)}`);
         
-        const swapResponse = await swap(quoteResponse, usdcMint, tokenMint); // Corrected the parameters here
+        const signature = await swap_v2(quoteResponse, usdcMint, tokenMint); // Corrected the parameters here
+        
+        /*
         if (!swapResponse || !swapResponse.swapTransaction) {
             console.error("Swap failed or swap transaction is missing");
             return;
         }
+
+        /*
 
         //console.log("swap response: " + swapResponse)
         const serializedTransaction = Buffer.from(swapResponse.swapTransaction, 'base64');
@@ -214,6 +304,8 @@ async function swap_from_usdc_to_token(amount_usd : number, token_Address : Stri
         const signature = await connection.sendRawTransaction(transaction.serialize(), {
             skipPreflight: true,  // Assume Jupiter has already pre-checked the transaction
         });
+
+        */
         console.log("Swap from token to SOL successful with signature:", signature);
         return signature;
     } catch (error) {
@@ -249,7 +341,9 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String)
         console.log("DEBUG: PRINTING QUOTE RESPONSE");
         console.log(JSON.stringify(quoteResponse, null, 2));
 
-        const swapResponse = await swap(quoteResponse, tokenMint, usdcMint);
+        const signature = await swap_v2(quoteResponse, tokenMint, usdcMint);
+
+        /*
         if (!swapResponse || !swapResponse.swapTransaction) {
             console.error("Swap failed or swap transaction is missing");
             return;
@@ -264,6 +358,8 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String)
         });
 
         console.log("Swap from token to SOL successful with signature:", signature);
+
+        */
         return signature;
     } catch (error) {
         console.error("Error during token to SOL swap process:", error);
@@ -535,14 +631,6 @@ async function pre_and_post_sell_operations(token_amount: number, token_address:
 
 
 
-
-
-
-
-
-
-
-
 async function pre_and_post_sell_operations_v2(token_amount: number, token_address: String, symbol: String, message: String) {
     try {
         
@@ -634,23 +722,22 @@ async function pre_and_post_buy_operations_v2(amount_usd: number, amount_sol: nu
     }
 }
 
-/*async function pre_and_post_buy_operations(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
+async function pre_and_post_buy_operations_for_buy_manual(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
     try {
-        
-
         console.log(`INFO: Attempting to perform swap from ${amount_usd} USDT ($${amount_usd} USD) to token address ${token_address}...`);
         const signature = await swap_from_usdc_to_token(amount_usd, token_address);
+    
+        // Generate new ObjectId
+        const newId = new ObjectId();
 
-        // Get the current date in UTC in ISO format
         const now = new Date();
         const isoDate = now.toISOString();
-        // Extract the date and time parts from the ISO string
         const datePart = isoDate.slice(0, 10); // yyyy-mm-dd
         const timePart = isoDate.slice(11, 19); // hh:mm:ss
-        // Format the date string as needed
         const currentDateTime = format(new Date(datePart + ' ' + timePart), 'dd-MM-yyyy HH:mm:ss');
-        
+
         const mongo_buy: mongoDB_buy = {
+            _id: newId, // Provide new ObjectId
             tx_date: currentDateTime,
             tx_state: "pending",
             address: token_address,
@@ -661,49 +748,15 @@ async function pre_and_post_buy_operations_v2(amount_usd: number, amount_sol: nu
             token_amount_received: 0
         };
 
-        console.log("DEBUG_ About to insert buy into mongoDB!")
+        console.log("DEBUG: About to insert buy into MongoDB!")
         insertDocument(mongo_buy);
-
-        // Use the default commitment level without specifying maxSupportedTransactionVersion
-    
-        const tokenAmountReceived = await waitForTransactionConfirmation(signature, token_address);
-
         
-        
-        let entryPrice: number | null = null;
-        if (tokenAmountReceived !== null && tokenAmountReceived > 0) {
-            entryPrice = amount_usd / tokenAmountReceived;
-        } else {
-            console.log("No tokens received or transaction is not confirmed");
-            return false;
-        }
-
-        const data: TransactionData[] = [{
-            tx_date: currentDateTime,
-            address: token_address,
-            signature: signature,
-            symbol: symbol,
-            usd_spent: amount_usd,
-            sol_spent: amount_sol,
-            entryPrice: entryPrice,
-            token_amount_received: tokenAmountReceived
-        }];
-        
-
-
-
-
-        update_pnl_after_buy_v2(data);
-
-
-        console.log(`\nSucessfull BUY: ${tokenAmountReceived} of ${symbol}-${token_address}`);
-        await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${amount_usd.toFixed(2)} USDC (${amount_sol} SOL)\nGot: ${tokenAmountReceived.toFixed(2)} ${symbol}\n\nToken address\n\n${token_address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${token_address}?t=1713211991329\n\nBuy link:\nhttps://jup.ag/swap/USDC-${token_address}\n\n@Furymuse`);
-        return signature;
     } catch (error) {
         console.error("Error during pre and post buy operations:", error);
     }
 }
-*/
+
+
 async function sendSol(receiverAddress: string, amountSol: number): Promise<string> {
     
     const receiver = new PublicKey(receiverAddress);
@@ -732,6 +785,3 @@ async function sendSol(receiverAddress: string, amountSol: number): Promise<stri
         throw error;
     }
 }
-
-
-

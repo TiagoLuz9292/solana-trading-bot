@@ -50,56 +50,56 @@ async function start_bot() {
 }
 
 function get_sells(): void {
-    // Format today's date to match the format in the MongoDB collection (yyyy-mm-dd)
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0]; // Converts to "yyyy-mm-dd" format
-    
-    const query = {
-      sell_date: {
-        // Use a regular expression to match the date part of the sell_date string
-        $regex: new RegExp(`^${dateString}`)
-      }
-    };
+  // Format today's date to match the format in the MongoDB collection (yyyy-mm-dd)
+  const today = new Date();
+  const dateString = today.toISOString().split('T')[0]; // Converts to "yyyy-mm-dd" format
   
-    getSellTrackerRecordsByQuery(query).then(records => {
-      if (records.length > 0) {
-        // Calculate the sum of profit_and_loss for each symbol
-        const symbolSumMap = new Map<string, number>();
-        records.forEach(record => {
-          const symbol = record.symbol;
-          const profitLoss = record.profit_and_loss ?? 0; // Use 0 if profit_and_loss is undefined
-          if (symbolSumMap.has(symbol)) {
-            symbolSumMap.set(symbol, symbolSumMap.get(symbol)! + profitLoss);
-          } else {
-            symbolSumMap.set(symbol, profitLoss);
-          }
-        });
+  const query = {
+    sell_date: {
+      // Use a regular expression to match the date part of the sell_date string
+      $regex: new RegExp(`^${dateString}`)
+    }
+  };
 
-        // Format the output message with symbol-wise profit/loss sums
-        let message = '';
-        symbolSumMap.forEach((sum, symbol) => {
-          // Round the sum to two decimal places
-          const roundedSum = sum.toFixed(2);
-          message += `${symbol} -> ${roundedSum}\n`;
-        });
+  getSellTrackerRecordsByQuery(query).then(records => {
+    if (records.length > 0) {
+      // Calculate the sum of profit_and_loss for each symbol
+      const symbolSumMap = new Map<string, number>();
+      records.forEach(record => {
+        const symbol = record.symbol;
+        const profitLoss = record.profit_and_loss ?? 0; // Use 0 if profit_and_loss is undefined
+        if (symbolSumMap.has(symbol)) {
+          symbolSumMap.set(symbol, symbolSumMap.get(symbol)! + profitLoss);
+        } else {
+          symbolSumMap.set(symbol, profitLoss);
+        }
+      });
 
-        // Calculate the total sum of profit_and_loss for all records
-        const totalSum = records.reduce((total, record) => total + (record.profit_and_loss ?? 0), 0);
-        const roundedTotalSum = totalSum.toFixed(2); // Round the total sum to two decimal places
+      // Format the output message with symbol-wise profit/loss sums
+      let message = '';
+      symbolSumMap.forEach((sum, symbol) => {
+        // Round the sum to two decimal places
+        const roundedSum = sum.toFixed(2);
+        message += `${symbol} -> ${roundedSum}\n`;
+      });
 
-        // Append the total sum message to the output message
-        message += `\nTotal Profit/Loss: ${roundedTotalSum}`;
+      // Calculate the total sum of profit_and_loss for all records
+      const totalSum = records.reduce((total, record) => total + (record.profit_and_loss ?? 0), 0);
+      const roundedTotalSum = totalSum.toFixed(2); // Round the total sum to two decimal places
 
-        // Send the message using the existing send_message function
-        send_message(message);
-      } else {
-        send_message("No sell records found for today.");
-      }
-    }).catch(error => {
-      console.error('Failed to fetch records:', error);
-      send_message(`Error retrieving records: ${error.message}`);
-    });
-  }
+      // Append the total sum message to the output message
+      message += `\nTotal Profit/Loss: ${roundedTotalSum}`;
+
+      // Send the message using the existing send_message function
+      send_message(message);
+    } else {
+      send_message("No sell records found for today.");
+    }
+  }).catch(error => {
+    console.error('Failed to fetch records:', error);
+    send_message(`Error retrieving records: ${error.message}`);
+  });
+}
 
 async function get_open_trades(): Promise<void> {
     try {

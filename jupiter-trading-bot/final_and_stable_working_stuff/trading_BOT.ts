@@ -24,7 +24,7 @@ The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION
 
 import axios from 'axios';
 import {manageOpenOrders} from './transaction_manager'
-import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
+import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_for_buy_manual, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
@@ -36,7 +36,7 @@ import {get_transaction_by_state, updateTransactionState, createOpenOrder, getOp
 import {processPendingTransactions} from './transaction_manager';
 
 
-const AMOUNT_USD_TO_BUY = 4;
+const AMOUNT_USD_TO_BUY = 5;
 const AMOUNT_SOL_TO_BUY = 0.0175;
 
 
@@ -88,15 +88,15 @@ async function getAmountInUSD(solAmount: number): Promise<number> {
 //-----------------------------------------------------------------------------------------------------------------------------
 // Manual buy
 //-----------------------------------------------------------------------------------------------------------------------------
-/*
+
 async function buy_manual(amount_usd: number, token_address: String) {
 
     //const amount_USD = await getAmountInUSD(amount_sol);
     
-    return pre_and_post_buy_operations(amount_usd, 0.001, token_address, "");
+    return pre_and_post_buy_operations_for_buy_manual(amount_usd, 0.001, token_address, "");
     
 }
-*/
+
 //-----------------------------------------------------------------------------------------------------------------------------
 // Called by buyWrapper loop
 //-----------------------------------------------------------------------------------------------------------------------------
@@ -450,7 +450,7 @@ const arg1 = args[0];
 // Switch case to call specific functions based on the argument value
 switch (arg1) {
 
-    /*
+    
     case "buy":
         if (args.length >= 3) {
             const tokenAddress = args[1];
@@ -460,7 +460,7 @@ switch (arg1) {
             console.log("Error: Insufficient arguments for 'sell'");
         }
         break;
-*/
+
     case "tg-balance":
         refresh_balance_in_telegram();
         break;
@@ -482,7 +482,7 @@ switch (arg1) {
         if (args.length >= 3) {
             const tokenAddress = args[1];
             const amountToken = parseFloat(args[2]);
-            pre_and_post_sell_operations(amountToken, tokenAddress, "", "manual sell");
+            pre_and_post_sell_operations_v2(amountToken, tokenAddress, "", "manual sell");
         } else {
             console.log("Error: Insufficient arguments for 'sell'");
         }

@@ -222,3 +222,6 @@ alias start-tg-balance='$trading_BOT/start-tg-balance.sh'
 alias start-reload='$dex_BOT/start-reload.sh'
 alias start-initial-list='$dex_BOT/start-initial-list.sh'
 alias start-OHLCV-check='$dex_BOT/start-OHLCV-check.sh'
+
+
+

@@ -147,7 +147,7 @@ interface OpenOrder {
       };
 
         if (currentPrice >= order.entry_price * 1.26) {
-            updateFields.stop_loss = order.entry_price * 1.07;
+            updateFields.stop_loss = order.entry_price * 1.10;
         }
         // Handle stop loss and take profit scenarios
         let message = "";
@@ -180,8 +180,8 @@ interface OpenOrder {
 
               const result = await pre_and_post_sell_operations_v2((currentBalance * 0.7), order.address, order.symbol, "TP 2 reached!!");
               if (result) {
-                updateFields.TP_2 = null;  // Clear TP_1
-                updateFields.stop_loss = order.entry_price * 1.20
+                updateFields.TP_2 = null;  // Clear TP_2
+                updateFields.stop_loss = order.entry_price * 1.95
               }
 
           }
