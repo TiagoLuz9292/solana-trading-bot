@@ -3,7 +3,7 @@
 // dbInsert.ts
 import { startOfDay, endOfDay } from 'date-fns';
 import { MongoClient, ObjectId } from 'mongodb';
-export { insertDocument, get_transaction_by_state, getSellTrackerRecordsByQuery, insertSellTrackerDocument,  updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState, createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder };
+export { insertDocument, get_transaction_by_state, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state, insertSellTrackerDocument,  updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState, createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder };
 
 const uri: string = "mongodb+srv://tiagoluz92:F49IQWE3BhCQSQKL@sniperbot.neoqqnn.mongodb.net/?retryWrites=true&w=majority&appName=sniperbot";
 const options = {
@@ -195,6 +195,35 @@ async function get_transaction_by_state(ts_state: String): Promise<buy[]> {
   }
 }
 
+
+async function get_transaction_by_date_and_state(tx_state: string, tx_date: string): Promise<any[]> {
+    // MongoDB connection URL
+
+    try {
+        // Connect to the MongoDB client
+        await client.connect();
+        const database = client.db("sniperbot");
+        const collection = database.collection("buy_tracker");
+
+        // Create a regex to search for dates that contain the tx_date string
+        const dateRegex = new RegExp(tx_date);
+
+        // Query to find records with the matching tx_state and a tx_date containing the tx_date string
+        const query = { tx_state: tx_state, tx_date: { $regex: dateRegex } };
+
+        // Fetching the records from the database
+        const records = await collection.find(query).toArray();
+
+        return records;
+    } catch (error) {
+        console.error("An error occurred while fetching records:", error);
+        throw error;
+    } finally {
+        // Ensuring the MongoDB client closes connection after execution
+        await client.close();
+    }
+}
+
 async function testConnection() {
   try {
     await client.connect();
@@ -280,3 +309,28 @@ async function getSellTrackerRecordsByQuery(query: any): Promise<SellTracker[]> 
     await client.close();
   }
 }
+
+async function deleteAllRecords() {
+  try {
+    
+    
+
+    // Connect to MongoDB
+    await client.connect();
+
+    // Get the database and collection
+    const database = client.db("sniperbot");
+    const collection = database.collection<SellTracker>('buy_tracker');
+
+    // Delete all documents in the collection
+    const deleteResult = await collection.deleteMany({});
+
+    console.log(`${deleteResult.deletedCount} documents deleted from the collection.`);
+
+    // Close the connection
+    await client.close();
+  } catch (error) {
+    console.error('Error deleting documents:', error);
+  }
+}
+

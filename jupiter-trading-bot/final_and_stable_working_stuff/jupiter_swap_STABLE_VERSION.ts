@@ -113,7 +113,7 @@ interface TokenToSell {
     message: String;
 }
 
-
+/*
 async function ensureAssociatedTokenAccount(mint: PublicKey, owner: PublicKey): Promise<PublicKey> {
     sleep(5000);
     const associatedTokenAddress = await getAssociatedTokenAddress(mint, owner);
@@ -136,6 +136,8 @@ async function ensureAssociatedTokenAccount(mint: PublicKey, owner: PublicKey): 
     return associatedTokenAddress;
 }
 
+*/
+/*
 async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: PublicKey) {
     
     const sourceTokenAccount = await ensureAssociatedTokenAccount(sourceMint, wallet.publicKey);
@@ -174,9 +176,12 @@ async function swap(quoteResponse: any, sourceMint: PublicKey, destinationMint: 
     }
 }
 
+*/
+
 
 async function ensureAssociatedTokenAccount_v2(mint: PublicKey, owner: PublicKey): Promise<PublicKey> {
-    await sleep(5000); // Might want to adjust this based on actual needs
+    
+    //await sleep(5000); // Might want to adjust this based on actual needs
     const associatedTokenAddress = await getAssociatedTokenAddress(mint, owner);
     const accountInfo = await connection.getAccountInfo(associatedTokenAddress);
 
@@ -188,7 +193,7 @@ async function ensureAssociatedTokenAccount_v2(mint: PublicKey, owner: PublicKey
         try {
             // Now we catch potential errors during transaction send
             await sendAndConfirmTransaction(connection, transaction, [wallet], {
-                preflightCommitment: 'confirmed'
+                preflightCommitment: 'finalized'
             });
         } catch (error) {
             console.error(`Error creating associated token account: ${error}`);
@@ -215,7 +220,8 @@ async function swap_v2(quoteResponse: any, sourceMint: PublicKey, destinationMin
         userPublicKey: wallet.publicKey.toString(),
         wrapAndUnwrapSol: true,
         useSharedAccounts: true,
-        prioritizationFeeLamports: 50000,
+        //feeAccount: wallet.publicKey.toString(),
+        prioritizationFeeLamports: 25000,
         asLegacyTransaction: false,
         useTokenLedger: false,
         destinationTokenAccount: destinationTokenAccount.toString(),
@@ -444,7 +450,7 @@ async function waitForSellTransactionConfirmation(
     let usdcAmountChange: number = 0;
     let delay = 3000; // Starting delay of 3 seconds
     const maxDelay = 30000; // Maximum delay of 30 seconds
-    const timeout = 90000; // Set timeout to 1 minute 30 seconds
+    const timeout = 120000; // Set timeout to 1 minute 30 seconds
     const startTime = Date.now(); // Record the start time
     const apiKey = '718ea21d-2d9d-49e2-b3f2-46888e0fcb25'; // Your API key
     const url = `https://api.helius.xyz/v0/transactions/?api-key=${apiKey}`;
@@ -722,7 +728,7 @@ async function pre_and_post_buy_operations_v2(amount_usd: number, amount_sol: nu
     }
 }
 
-async function pre_and_post_buy_operations_for_buy_manual(amount_usd: number, amount_sol: number, token_address: String, symbol: String) {
+async function pre_and_post_buy_operations_for_buy_manual(amount_usd: number, token_address: String, symbol: String) {
     try {
         console.log(`INFO: Attempting to perform swap from ${amount_usd} USDT ($${amount_usd} USD) to token address ${token_address}...`);
         const signature = await swap_from_usdc_to_token(amount_usd, token_address);
@@ -749,7 +755,7 @@ async function pre_and_post_buy_operations_for_buy_manual(amount_usd: number, am
         };
 
         console.log("DEBUG: About to insert buy into MongoDB!")
-        insertDocument(mongo_buy);
+        //insertDocument(mongo_buy);
         
     } catch (error) {
         console.error("Error during pre and post buy operations:", error);

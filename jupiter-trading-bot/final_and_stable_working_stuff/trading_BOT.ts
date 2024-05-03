@@ -21,22 +21,22 @@ The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION
     
 */
 
-
+import dotenv from "dotenv";
 import axios from 'axios';
 import {manageOpenOrders} from './transaction_manager'
 import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_for_buy_manual, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
-import {update_account_PNL_v3} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import {checkOHLCVConditions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
 import {get_token_price, get_token_prices} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
 import {send_message, start_bot} from './telegram_bot';
 import {get_transaction_by_state, updateTransactionState, createOpenOrder, getOpenOrderRecordByAddress, getBuyTrackerRecordByAddress, getBuyTrackerRecordsByAddress} from "./mongoDB_connection"
 import {processPendingTransactions} from './transaction_manager';
 
+dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
-const AMOUNT_USD_TO_BUY = 5;
+
 const AMOUNT_SOL_TO_BUY = 0.0175;
 
 
@@ -44,9 +44,14 @@ async function delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+interface TokenBalanceResult {
+    message: string;
+    totalUSDInvested: number;
+}
+
 async function getAmountInSOL(usdAmount: number): Promise<string> {
     const url = "https://public-api.birdeye.so/defi/price?address=So11111111111111111111111111111111111111112";
-    const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+    const headers = { "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f" };
     
     try {
         const response = await axios.get(url, { headers });
@@ -66,7 +71,7 @@ async function getAmountInSOL(usdAmount: number): Promise<string> {
 
 async function getAmountInUSD(solAmount: number): Promise<number> {
     const url = "https://public-api.birdeye.so/defi/price?address=So11111111111111111111111111111111111111112";
-    const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+    const headers = { "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f" };
     
     
     try {
@@ -93,7 +98,7 @@ async function buy_manual(amount_usd: number, token_address: String) {
 
     //const amount_USD = await getAmountInUSD(amount_sol);
     
-    return pre_and_post_buy_operations_for_buy_manual(amount_usd, 0.001, token_address, "");
+    return pre_and_post_buy_operations_for_buy_manual(amount_usd, token_address, "");
     
 }
 
@@ -187,7 +192,7 @@ async function buy_all_from_filtered(excludedAddresses = new Set()) {
 async function buy_all_from_filtered_v2() {
     console.log("DEBUG: starting buy_all_from_filtered_v2()");
 
-    const filePath = '/root/project/solana-trading-bot/data/level_1_filter.csv';
+    const filePath = '/root/project/solana-trading-bot/data/level_2_filter.csv';
     const csvHeaders = [
       'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
       'buys_1h', 'buys_6h', 'buys_24h', 'sells_5m', 'sells_1h',
@@ -198,7 +203,20 @@ async function buy_all_from_filtered_v2() {
     ];
 
     try {
+
+        const sol_balance = await refresh_SOL_balance();
+        if (sol_balance < 0.015) {
+            console.log("\n\nSolana Balance is Low, buying more Solana...\n\n")
+            await buy_manual(4, "So11111111111111111111111111111111111111112");
+        }
+
         const balances = await getAllBalances();
+
+        //const BalanceResult = await printTokenBalancesInUSD_v2();
+        //const { message: telegram_message, totalUSDInvested } = BalanceResult;
+        // Get the percent to invest from environment variable, or use default value if not set
+        //const account_percent_toInvest = parseFloat(process.env.PERCENT_OF_ACCOUNT_TO_INVEST || "0.02");
+        const AMOUNT_USD_TO_BUY = 10;
 
         if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
             console.log("The source csv file level_1_filter.csv is empty.\n");
@@ -215,10 +233,18 @@ async function buy_all_from_filtered_v2() {
 
             // Check if the address is in buy_tracker with tx_state "completed"
             const buyTrackerRecords = await getBuyTrackerRecordsByAddress(row.address);
-            if (buyTrackerRecords.some(record => record.tx_state === "completed" || record.tx_state === "pending")) {
-                console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed" or "pending".`);
+            if (buyTrackerRecords.some(record => record.tx_state === "pending")) {
+                console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "pending".`);
                 continue; // Skip this iteration if there is any record with the transaction completed or pending
             }
+
+            const moment = require('moment'); // Ensure you have 'moment' library installed
+            const threeHoursAgo = moment().subtract(3, 'hours');
+
+            if (buyTrackerRecords.some(record => record.tx_state === "completed")) {
+                    console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed" and recent.`);
+                    continue; // Skip this iteration if there is any record with the transaction completed and date is less than 3 hours ago
+                }
 
             // Check if the address is in open_orders
             const openOrderRecord = await getOpenOrderRecordByAddress(row.address);
@@ -229,6 +255,9 @@ async function buy_all_from_filtered_v2() {
 
             const balance = balances[row.address];
             console.log(`Performing OHLCV checks on ${row.address}. Balance: ${balance}`);
+
+            
+
 
             if ((balance && balance < 1) || balance === undefined) {
                 const canBuy = await checkOHLCVConditions(row.pairAddress);
@@ -286,6 +315,42 @@ async function sell_all_for_address(tokenAddress: String, symbol: String) {
 //  Trading total in USD
 //
 //-----------------------------------------------------------------------------------------------------------------------------
+async function printTokenBalancesInUSD_v2(): Promise<TokenBalanceResult> {
+    const balances = (await getAllBalances() || {}) as { [address: string]: number };
+    const tokenAddresses = Object.keys(balances).filter(address => balances[address] > 0);
+
+    if (tokenAddresses.length === 0) {
+        console.log("No token balances to display.");
+        return { message: "No token balances to display.", totalUSDInvested: 0 };  // Make sure to handle this undefined case in your calling function
+    }
+
+    const priceMap = await get_token_prices(tokenAddresses);
+    let tokenValues: { tokenAddress: string; usdValue: number; balance: number; }[] = [];
+    let tokens_USD_value = 0;
+    let USDC_value = 0;
+    for (const tokenAddress of tokenAddresses) {
+        if (tokenAddress === "USDC_token_address") {  // Replace with actual USDC token address
+            USDC_value = balances[tokenAddress];
+            continue;
+        }
+        const balance = balances[tokenAddress];
+        const price = priceMap.get(tokenAddress);
+        if (balance > 0 && price !== undefined) {
+            const usdValue = balance * price;
+            tokens_USD_value += usdValue;
+            tokenValues.push({ tokenAddress, usdValue, balance });
+        }
+    }
+
+    const sol_balance = await refresh_SOL_balance();
+    const sol_value_in_USD = await getAmountInUSD(sol_balance);
+    const totalUSDInvested = (tokens_USD_value + USDC_value + sol_value_in_USD).toFixed(2);
+
+    const telegram_message = `...`;  // Your previous message formatting here
+
+    return { message: telegram_message, totalUSDInvested: parseFloat(totalUSDInvested) };
+}
+
 
 async function printTokenBalancesInUSD() {
     const balances = (await getAllBalances() || {}) as { [address: string]: number };
@@ -333,14 +398,14 @@ async function printTokenBalancesInUSD() {
 
     console.log(`Sol total in USD: $${sol_value_in_USD.toFixed(2)}`);
     console.log(`Total USDC: $${USDC_value.toFixed(2)}`);
-    console.log(`Total USD Invested: $${totalUSDInvested}\n`);
-    console.log(`Trading total in USD: * $${usdc_plus_tokens} *\n`);
+    console.log(`Total meme tokens: $${tokens_USD_value}\n`);
+    console.log(`Total in USD: * $${totalUSDInvested} *\n`);
     
     //totalUSDInvested += sol_value_in_USD;
     // Print the total amount of USD invested in the wallet
     
     
-    const telegram_message = `Sol balance: ${sol_balance}\nSol total in USD: $${sol_value_in_USD.toFixed(2)}\nTotal USDC: $${USDC_value.toFixed(2)}\nTotal USD Invested: $${totalUSDInvested}\n\n\nTrading total in USD: 🟢 $${usdc_plus_tokens} 🟢`
+    const telegram_message = `Sol balance: ${sol_balance}\nSol total in USD: $${sol_value_in_USD.toFixed(2)}\nTotal USDC: $${USDC_value.toFixed(2)}\nTotal meme tokens: $${tokens_USD_value.toFixed(2)}\n\n\nTotal in USD: 🟢 $${totalUSDInvested} 🟢`
     return telegram_message;
     
 }
@@ -421,14 +486,14 @@ async function full_liquidation() {
 function refresh_balance_in_telegram() {
     async function refreshBalance() {
         try {
-            const telegram_message = await printTokenBalancesInUSD();
-            if (telegram_message) {
-                await send_message(telegram_message);
+            const message = await printTokenBalancesInUSD();
+            
+            if (message) {
+                await send_message(message);
             }
             setTimeout(refreshBalance, 300 * 1000);
-            
         } catch (error) {
-            console.error("Error calling update_account_PNL:", error);
+            console.error("Error in refreshBalance:", error);  // Corrected the error message to reflect the current function name
         }
     }
     refreshBalance();

@@ -9,7 +9,7 @@ from typing import List, Dict
 
 def get_token_list() -> None:
     url = "https://public-api.birdeye.so/defi/tokenlist"
-    headers = {"x-chain": "solana", "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f"}
+    headers = {"x-chain": "solana", "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f"}
 
     limit = 50
     offset = 0

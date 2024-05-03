@@ -1,7 +1,7 @@
 
 
 import axios from "axios";
-import {get_transaction_by_state, updateTransactionState, createOpenOrder, getBuyTrackerRecordsByAddress, getAllOpenOrders, deleteOpenOrder, getBuyTrackerRecordByAddress, updateOpenOrderProfitAndLoss, insertSellTrackerDocument, getOpenOrderRecordByAddress} from "./mongoDB_connection"
+import {get_transaction_by_state, updateTransactionState, createOpenOrder, get_transaction_by_date_and_state, getBuyTrackerRecordsByAddress, getAllOpenOrders, deleteOpenOrder, getBuyTrackerRecordByAddress, updateOpenOrderProfitAndLoss, insertSellTrackerDocument, getOpenOrderRecordByAddress} from "./mongoDB_connection"
 import { getAllBalances, getTokenBalance } from './my_wallet';
 export {processPendingTransactions, processCompleteTransactions, process_sell, manageOpenOrders};
 import {pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from './jupiter_swap_STABLE_VERSION'
@@ -146,13 +146,16 @@ interface OpenOrder {
           profit_and_loss: profitAndLoss.toFixed(2)
       };
 
-        if (currentPrice >= order.entry_price * 1.26) {
-            updateFields.stop_loss = order.entry_price * 1.10;
+        if (currentPrice >= order.entry_price * 1.25) {
+            updateFields.stop_loss = order.entry_price * 1.06;
         }
         // Handle stop loss and take profit scenarios
         let message = "";
         if (currentPrice <= order.stop_loss) {
+
+            
             console.log("Stop loss hit!!");
+            console.log(`\NCURRENT PRICE: ${currentPrice}\nSTOP LOSS PRICE: ${order.stop_loss}`);
             if (currentPrice < order.entry_price) {
               message = `-25% SL reached!!`;
             } else{
@@ -169,7 +172,7 @@ interface OpenOrder {
               const result = await pre_and_post_sell_operations_v2((currentBalance * 0.7), order.address, order.symbol, "TP 1 reached!!");
               if (result) {
                 updateFields.TP_1 = null;  // Clear TP_1
-                updateFields.stop_loss = order.entry_price * 1.20
+                updateFields.stop_loss = order.entry_price * 1.30
               }
 
 
@@ -201,7 +204,7 @@ interface OpenOrder {
         const chunk = tokenAddresses.slice(i, i + MAX_ADDRESSES_PER_CALL);
         const joinedAddresses = chunk.join('%2C');
         const url = `https://public-api.birdeye.so/defi/multi_price?list_address=${joinedAddresses}`;
-        const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+        const headers = { "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f" };
 
         try {
             await delay(2000);
@@ -209,6 +212,7 @@ interface OpenOrder {
             const prices = response.data.data;
 
             console.log("Fetched new prices from API for chunk");
+            console.log(prices);
 
             for (const address of chunk) {
                 const price = prices[address]?.value;
@@ -230,7 +234,7 @@ async function waitForTransactionConfirmation(signature: string, tokenAddress: s
   let tokenAmountReceived: number = 0;
   let usdcAmountSpent: number = 0;
   let error: any = null;
-  let delayTime = 12000; // Starting delay of 11 seconds
+  let delayTime = 13000; // Starting delay of 11 seconds
   const maxAttempts = 6; // Maximum attempts
   let attempts = 0;
 
@@ -311,8 +315,10 @@ async function processPendingTransactions() {
 }
 
 async function processCompleteTransactions() {
+  const today = new Date();
+  const dateString = today.toISOString().split('T')[0];
   try {
-    const completedTransactions = await get_transaction_by_state("completed");
+    const completedTransactions = await get_transaction_by_date_and_state("completed", "03-05-2024");
     const balances = await getAllBalances(); // Assume this returns an object indexed by string addresses
 
     for (const transaction of completedTransactions) {
@@ -344,9 +350,9 @@ async function processCompleteTransactions() {
           usd_spent: transaction.usd_spent || 0,
           entry_price: transaction.entry_price,
           token_amount_received: transaction.token_amount_received || 0,
-          stop_loss: transaction.entry_price * 0.75,
-          TP_1: transaction.entry_price * 1.70,
-          TP_2: transaction.entry_price * 2.60,
+          stop_loss: transaction.entry_price * 0.65,
+          TP_1: transaction.entry_price * 1.95,
+          TP_2: transaction.entry_price * 2.95,
           price_change_percent: "",
           profit_and_loss: ""
         };

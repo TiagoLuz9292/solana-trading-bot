@@ -30,7 +30,7 @@ def fetch_audit_data():
         url = f"https://public-api.dextools.io/trial/v2/token/solana/{address}/audit"
         headers = {
             "accept": "application/json",
-            "x-api-key": "t2UZtgUjAH07OL282qRu7hwNvJAmYik4uWY1E4w0"
+            "x-api-key": "BMyNOinvjU97D2mVfA4FQ6KiyvdxS5xmaEzasgs1"
         }
         time.sleep(2)
         response = requests.get(url, headers=headers)

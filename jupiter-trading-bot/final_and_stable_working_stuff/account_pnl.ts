@@ -139,7 +139,7 @@ async function get_token_prices(tokenAddresses: string[]): Promise<Map<string, n
         const chunk = tokenAddresses.slice(i, i + MAX_ADDRESSES_PER_CALL);
         const joinedAddresses = chunk.join('%2C');
         const url = `https://public-api.birdeye.so/defi/multi_price?list_address=${joinedAddresses}`;
-        const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
+        const headers = { "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f" };
 
         try {
             await delay(2000);

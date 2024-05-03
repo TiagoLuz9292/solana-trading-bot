@@ -326,7 +326,7 @@ def analyze_conditions(data: PoolAddress):
 
     print("Trade quality: " + str(trade_quality))
     # If all conditions are met
-    if (trade_quality >= 9 and (ma_check_1m or ma_check_5m)):
+    if (trade_quality >= 9 and (ma_check_1m and ma_check_5m)):
         return True
     else:
         return False
