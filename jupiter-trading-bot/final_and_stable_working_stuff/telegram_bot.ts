@@ -7,13 +7,14 @@ import {getAllOpenOrders, getSellTrackerRecordsByQuery} from './mongoDB_connecti
 import {printTokenBalancesInUSD} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import TelegramBot from 'node-telegram-bot-api';
 import axios from 'axios';
-export {send_message, start_bot};
+export {send_message, start_bot, send_message_to_private_group};
 import fs from 'fs';
 import csv from 'csv-parser';
 
 
 const TOKEN = "6908427482:AAEa6Rf-ubtu2LhV1K-kFn7GQI6hb_g8Sd8";
 const CHAT_ID = "-1002006874152";
+const PRIVATE_GROUP_ID = "-1002087350809"
 
 interface buy {
     symbol: string;
@@ -114,6 +115,20 @@ async function get_open_trades(): Promise<void> {
       console.error('Error getting open trades:', error);
     }
   }
+
+const send_message_to_private_group = async (message: string) => {
+   const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
+   const data = {
+       chat_id: PRIVATE_GROUP_ID,
+       text: message,
+   };
+
+    try {
+        const response = await axios.post(url, data);
+    } catch (error) {
+        console.error('Error sending message:', error);
+    }
+};
 
 const send_message = async (message: string) => {
     const url = `https://api.telegram.org/bot${TOKEN}/sendMessage`;

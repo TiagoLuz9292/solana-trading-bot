@@ -13,7 +13,7 @@ import { Parser } from 'json2csv';
 import {get_token_price} from './account_pnl';
 export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations_for_buy_manual, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2};
 import { getAllBalances, getTokenBalance } from './my_wallet';
-import { create_sell_tracker_file, create_sell_tracker_file_v2, create_transactions_file, create_transactions_file_V2 } from './file_manager';
+
 import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, MintLayout } from "@solana/spl-token";
 import dotenv from "dotenv";
@@ -581,7 +581,7 @@ async function waitForTransactionConfirmation(signature: String, tokenAddress: S
 
 async function pre_and_post_sell_operations(token_amount: number, token_address: String, symbol: String, message: String) {
     try {
-        await create_sell_tracker_file_v2();
+        
 
         console.log("INFO: Performing swap from " + token_amount + " " + token_address + " to SOL ...");
         const signature = await swap_from_token_to_sol(token_amount, token_address); // Ensure swap_from_token_to_sol is defined
@@ -676,6 +676,7 @@ async function pre_and_post_sell_operations_v2(token_amount: number, token_addre
             message: message
         };
 
+        console.log("About to call process_sell()")
         await process_sell(data);
 
 

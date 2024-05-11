@@ -40,7 +40,7 @@ def reload_initial_list():
         token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/initial_list_fresh.csv")
         token_overview_list.filter_recent_tokens()
         print("Initial list complete.")
-        time.sleep(15)
+        time.sleep(300)
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 

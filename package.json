@@ -3,8 +3,10 @@
     "arg": "^5.0.2",
     "csv-parse": "^5.5.5",
     "csv-stringify": "^6.4.6",
+    "date-fns": "^3.6.0",
     "json2csv": "^6.0.0-alpha.2",
-    "moment": "^2.30.1"
+    "moment": "^2.30.1",
+    "mongodb": "^6.6.1"
   },
   "devDependencies": {
     "@types/json2csv": "^5.0.7"

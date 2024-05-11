@@ -1,5 +1,4 @@
 import csv
-import os
 import time
 import requests
 import json
@@ -14,7 +13,6 @@ def get_token_list() -> None:
     limit = 50
     offset = 0
     fetched_tokens = 0
-    itt = 0
     tokens_to_fetch = 35000
     csv_filename = '/root/project/solana-trading-bot/data/initial_list_fresh.csv'
 
@@ -25,9 +23,9 @@ def get_token_list() -> None:
         writer.writerow(["address"])
 
     while offset < tokens_to_fetch:
-        itt += 1
+    
 
-        print(f"DEBUG: Iteration: {itt}, Offset: {offset}, Total Tokens Fetched: {fetched_tokens}")
+        print(f"DEBUG: Iteration: Offset: {offset}, Total Tokens Fetched: {fetched_tokens}")
         print("*****************************************")
 
         params = {"sort_by": "mc", "sort_type": "desc", "offset": offset, "limit": limit}

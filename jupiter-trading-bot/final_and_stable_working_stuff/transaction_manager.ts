@@ -5,7 +5,7 @@ import {get_transaction_by_state, updateTransactionState, createOpenOrder, get_t
 import { getAllBalances, getTokenBalance } from './my_wallet';
 export {processPendingTransactions, processCompleteTransactions, process_sell, manageOpenOrders};
 import {pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from './jupiter_swap_STABLE_VERSION'
-import {send_message} from './telegram_bot';
+import {send_message, send_message_to_private_group} from './telegram_bot';
 
 
 function delay(ms: number) {
@@ -65,14 +65,16 @@ interface OpenOrder {
 }
 
   async function process_sell(data: TokenToSellMongo): Promise<void> {
+
+    console.log("inside process_sell()")
     try {
       // Get buy tracker record
-      const buyRecord = await getBuyTrackerRecordByAddress(data.address.toString());
+      //const buyRecord = await getBuyTrackerRecordByAddress(data.address.toString());
   
       // Get open order record
       const openOrderRecord = await getOpenOrderRecordByAddress(data.address.toString());
   
-      if (!buyRecord || !openOrderRecord) {
+      if (!openOrderRecord) {
         console.error(`Could not find records for address ${data.address.toString()}`);
         return;
       }
@@ -109,7 +111,6 @@ interface OpenOrder {
 
   async function manageOpenOrders() {
     // Process all completed transactions first
-    await processCompleteTransactions();
 
     // Fetch all open orders
     const openOrders = await getAllOpenOrders();
@@ -146,8 +147,8 @@ interface OpenOrder {
           profit_and_loss: profitAndLoss.toFixed(2)
       };
 
-        if (currentPrice >= order.entry_price * 1.25) {
-            updateFields.stop_loss = order.entry_price * 1.06;
+        if (!order.TP_1) {
+            updateFields.stop_loss = order.entry_price * 1.35;
         }
         // Handle stop loss and take profit scenarios
         let message = "";
@@ -156,6 +157,7 @@ interface OpenOrder {
             
             console.log("Stop loss hit!!");
             console.log(`\NCURRENT PRICE: ${currentPrice}\nSTOP LOSS PRICE: ${order.stop_loss}`);
+            send_message(`Stop Loss, about to sell ${order.address}\n\n@Furymuse`)
             if (currentPrice < order.entry_price) {
               message = `-25% SL reached!!`;
             } else{
@@ -168,7 +170,7 @@ interface OpenOrder {
           if (order.TP_1 && currentPrice >= order.TP_1) {
               
               console.log("TP 1 hit!!!");
-
+              send_message(`TP 1 hit, about to sell ${order.address}\n\n@Furymuse`)
               const result = await pre_and_post_sell_operations_v2((currentBalance * 0.7), order.address, order.symbol, "TP 1 reached!!");
               if (result) {
                 updateFields.TP_1 = null;  // Clear TP_1
@@ -180,7 +182,7 @@ interface OpenOrder {
           if (!order.TP_1 && order.TP_2 && currentPrice >= order.TP_2) {
              
               console.log("TP 2 hit!!!");
-
+              send_message(`TP 2 hit, about to sell ${order.address}\n\n@Furymuse`)
               const result = await pre_and_post_sell_operations_v2((currentBalance * 0.7), order.address, order.symbol, "TP 2 reached!!");
               if (result) {
                 updateFields.TP_2 = null;  // Clear TP_2
@@ -212,7 +214,7 @@ interface OpenOrder {
             const prices = response.data.data;
 
             console.log("Fetched new prices from API for chunk");
-            console.log(prices);
+            
 
             for (const address of chunk) {
                 const price = prices[address]?.value;
@@ -290,6 +292,8 @@ async function waitForTransactionConfirmation(signature: string, tokenAddress: s
 
 
 async function processPendingTransactions() {
+
+  let new_buy = false;
   try {
     const pendingTransactions = await get_transaction_by_state("pending");
     for (const transaction of pendingTransactions) {
@@ -298,6 +302,8 @@ async function processPendingTransactions() {
         let newState = "failed"; // Default state is "failed"
         if (tokenAmountReceived > 0 && usdcAmountSpent > 0 && (!error || error === null || error === undefined || error === "")) {
             newState = "completed";
+            new_buy = true;
+            await send_message_to_private_group(`🟢‼️✅ NEW TOKEN ALERT 🚨🟢🔥\n\nToken Symbol: ${transaction.symbol}\n\nToken address:\n\n${transaction.address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${transaction.address}?t=1713211991329\n\nJupiter link:\nhttps://jup.ag/swap/USDC-${transaction.address}`);
             await send_message(`🟢‼️✅ NEW BUY 🚨🟢🔥\n\nSpent: $${usdcAmountSpent.toFixed(2)} USDC\nGot: ${tokenAmountReceived.toFixed(2)} ${transaction.symbol}\n\nToken address\n\n${transaction.address}\n\nDexTools link:\nhttps://www.dextools.io/app/pt/solana/pair-explorer/${transaction.address}?t=1713211991329\n\nBuy link:\nhttps://jup.ag/swap/USDC-${transaction.address}\n\n@Furymuse`);
         }
 
@@ -309,16 +315,22 @@ async function processPendingTransactions() {
             console.error("Error during transaction confirmation:", error);
         }
     }
+    return new_buy;
   } catch (error) {
     console.error('Error processing transactions:', error);
   }
 }
 
 async function processCompleteTransactions() {
+  
   const today = new Date();
-  const dateString = today.toISOString().split('T')[0];
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // January is 0
+  const year = today.getFullYear();
+  const dateString = `${day}-${month}-${year}`;
+
   try {
-    const completedTransactions = await get_transaction_by_date_and_state("completed", "03-05-2024");
+    const completedTransactions = await get_transaction_by_date_and_state("completed", dateString);
     const balances = await getAllBalances(); // Assume this returns an object indexed by string addresses
 
     for (const transaction of completedTransactions) {
@@ -342,6 +354,10 @@ async function processCompleteTransactions() {
       }
 
       // Create a new open order only if the balance is sufficient and no order exists
+      const STOP_LOSS_PERCENT_FROM_ENTRY = 1 - parseFloat(process.env.STOP_LOSS || "0.25");
+      const TAKE_PROFIT_1_PERCENT_FROM_ENTRY = 1 + parseFloat(process.env.TAKE_PROFIT_PRICE_1 || "0.75");
+      const TAKE_PROFIT_2_PERCENT_FROM_ENTRY = 1 + parseFloat(process.env.TAKE_PROFIT_PRICE_1 || "1.75");
+
       if (balance && balance >= 1) {
         const orderData: OpenOrder = {
           tx_date: transaction.tx_date,
@@ -350,9 +366,9 @@ async function processCompleteTransactions() {
           usd_spent: transaction.usd_spent || 0,
           entry_price: transaction.entry_price,
           token_amount_received: transaction.token_amount_received || 0,
-          stop_loss: transaction.entry_price * 0.65,
-          TP_1: transaction.entry_price * 1.95,
-          TP_2: transaction.entry_price * 2.95,
+          stop_loss: transaction.entry_price * 0.25,
+          TP_1: transaction.entry_price * 4,
+          TP_2: transaction.entry_price * 8.75,
           price_change_percent: "",
           profit_and_loss: ""
         };

@@ -23,21 +23,18 @@ The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION
 
 import dotenv from "dotenv";
 import axios from 'axios';
-import {manageOpenOrders} from './transaction_manager'
+import {manageOpenOrders, processCompleteTransactions, processPendingTransactions} from './transaction_manager'
 import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations, pre_and_post_buy_operations_for_buy_manual, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions, refresh_SOL_balance} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import csv from 'csv-parser';
 import fs, { readFileSync, writeFileSync } from 'fs';
 import {checkOHLCVConditions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
 import {get_token_price, get_token_prices} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/account_pnl';
-import {send_message, start_bot} from './telegram_bot';
-import {get_transaction_by_state, updateTransactionState, createOpenOrder, getOpenOrderRecordByAddress, getBuyTrackerRecordByAddress, getBuyTrackerRecordsByAddress} from "./mongoDB_connection"
-import {processPendingTransactions} from './transaction_manager';
+import {send_message, start_bot, send_message_to_private_group} from './telegram_bot';
+import {get_transaction_by_state, updateTransactionState, createOpenOrder, getOpenOrderRecordByAddress, getBuyTrackerRecordByAddress, getBuyTrackerRecordsByAddress, deleteOldRecords, delete_buy_by_date} from "./mongoDB_connection"
+
 
 dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
-
-
-const AMOUNT_SOL_TO_BUY = 0.0175;
 
 
 async function delay(ms: number): Promise<void> {
@@ -56,7 +53,7 @@ async function getAmountInSOL(usdAmount: number): Promise<string> {
     try {
         const response = await axios.get(url, { headers });
         const solPrice = response.data.data.value;
-        //console.log(`SOL Price: ${solPrice}`);
+        
 
         // Calculate the amount in SOL for the given USD amount and format to show only four decimal places
         const solAmount = (usdAmount / solPrice).toFixed(4);
@@ -78,7 +75,7 @@ async function getAmountInUSD(solAmount: number): Promise<number> {
         const response = await axios.get(url, { headers });
         await delay(1000);
         const solPrice = response.data.data.value;
-        //const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
+
         console.log(`SOL Price: ${solPrice}`);
 
         // Calculate the amount in USD for the given amount of SOL
@@ -105,91 +102,11 @@ async function buy_manual(amount_usd: number, token_address: String) {
 //-----------------------------------------------------------------------------------------------------------------------------
 // Called by buyWrapper loop
 //-----------------------------------------------------------------------------------------------------------------------------
-/*
-async function buy_all_from_filtered(excludedAddresses = new Set()) {
-    console.log("DEBUG: starting buy_all_from_filtered()");
 
-    let all_transactions_succeed = true;
-    const filePath = '/root/project/solana-trading-bot/data/level_1_filter.csv';
-    const openOrdersFilePath = '/root/project/solana-trading-bot/data/open_orders_v2.csv'; // Path to open orders CSV file
-    const csvHeaders = [
-      'createdDateTime', 'address', 'symbol', 'pairAddress', 'buys_5m',
-      'buys_1h', 'buys_6h', 'buys_24h', 'sells_5m', 'sells_1h',
-      'sells_6h', 'sells_24h', 'volume_5m', 'volume_1h', 'volume_6h',
-      'volume_24h', 'priceChange_5m', 'priceChange_1h', 'priceChange_6h',
-      'priceChange_24h', 'liquidity', 'marketCap', 'priceUSD', 'website',
-      'twitter', 'telegram'
-    ];
-
-    try {
-        const balances = await getAllBalances();
-
-        if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
-            console.log("The source csv file level_2_filter.csv is empty.\n");
-            return true;
-        }
-
-        // Read the open orders file to get existing addresses
-        const openOrdersAddresses = new Set();
-        if (fs.existsSync(openOrdersFilePath) && fs.statSync(openOrdersFilePath).size > 0) {
-            const openOrdersStream = fs.createReadStream(openOrdersFilePath).pipe(csv({ headers: csvHeaders }));
-            for await (const order of openOrdersStream) {
-                if (order.address && order.address.trim() !== '' && order.address !== 'address') {
-                    openOrdersAddresses.add(order.address.trim());
-                }
-            }
-        }
-
-        const stream = fs.createReadStream(filePath).pipe(csv({ headers: csvHeaders }));
-
-        for await (const row of stream) {
-            // Skip rows with no address or with the placeholder "address"
-            if (!row.address || row.address.trim() === '' || row.address === 'address') {
-                console.log("Skipping row with invalid address.");
-                continue;
-            }
-
-            if (openOrdersAddresses.has(row.address)) {
-                console.log(`Skipping purchase for excluded or open order address ${row.address}`);
-                continue;
-            }
-
-            const balance = balances[row.address];
-            console.log(`Performing OHLCV checks on ${row.address}. Balance: ${balance}`);
-
-            if ((balance && balance < 1) || balance === undefined) {
-                const canBuy = await checkOHLCVConditions(row.pairAddress);
-                console.log(`OHLCV check result: ${canBuy}`);
-
-                if (canBuy) {
-                    try {
-                        const amount_SOL = await getAmountInSOL(AMOUNT_USD_TO_BUY);
-                        const result = await pre_and_post_buy_operations(AMOUNT_USD_TO_BUY, parseFloat(amount_SOL), row.address, row.symbol);
-                        if (!result) {
-                            all_transactions_succeed = false;
-                        }
-                    } catch (error) {
-                        console.error('Error during buy operation:', error);
-                        all_transactions_succeed = false;
-                    }
-                }
-            } else {
-                console.log("INFO: Wallet already holds that token, not buying.");
-            }
-
-            // Delay to ensure a pause before processing the next token
-            await delay(1000);
-        }
-    } catch (error) {
-        console.error('Error fetching balances or reading CSV:', error);
-        return false;
-    }
-
-    console.log(all_transactions_succeed ? 'All transactions processed.' : 'Some transactions failed.');
-    return all_transactions_succeed;
-}
-*/
 async function buy_all_from_filtered_v2() {
+    
+    //delete_buy_by_date("09-05-2024");
+    
     console.log("DEBUG: starting buy_all_from_filtered_v2()");
 
     const filePath = '/root/project/solana-trading-bot/data/level_2_filter.csv';
@@ -212,11 +129,11 @@ async function buy_all_from_filtered_v2() {
 
         const balances = await getAllBalances();
 
-        //const BalanceResult = await printTokenBalancesInUSD_v2();
-        //const { message: telegram_message, totalUSDInvested } = BalanceResult;
+        const BalanceResult = await printTokenBalancesInUSD_v2();
+        const { message: telegram_message, totalUSDInvested } = BalanceResult;
         // Get the percent to invest from environment variable, or use default value if not set
-        //const account_percent_toInvest = parseFloat(process.env.PERCENT_OF_ACCOUNT_TO_INVEST || "0.02");
-        const AMOUNT_USD_TO_BUY = 10;
+        const account_percent_toInvest = parseFloat(process.env.PERCENT_OF_ACCOUNT_TO_INVEST || "0.009");
+        const AMOUNT_USD_TO_BUY = totalUSDInvested * account_percent_toInvest;
 
         if (!fs.existsSync(filePath) || fs.statSync(filePath).size === 0) {
             console.log("The source csv file level_1_filter.csv is empty.\n");
@@ -242,9 +159,9 @@ async function buy_all_from_filtered_v2() {
             const threeHoursAgo = moment().subtract(3, 'hours');
 
             if (buyTrackerRecords.some(record => record.tx_state === "completed")) {
-                    console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed" and recent.`);
-                    continue; // Skip this iteration if there is any record with the transaction completed and date is less than 3 hours ago
-                }
+                console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed".`);
+                continue; // Skip this iteration if there is any record with the transaction completed and date is less than 3 hours ago
+            }
 
             // Check if the address is in open_orders
             const openOrderRecord = await getOpenOrderRecordByAddress(row.address);
@@ -252,6 +169,7 @@ async function buy_all_from_filtered_v2() {
                 console.log(`Skipping purchase for ${row.address} as it exists in open_orders.`);
                 continue; // Skip this iteration if the token is in open orders
             }
+            
 
             const balance = balances[row.address];
             console.log(`Performing OHLCV checks on ${row.address}. Balance: ${balance}`);
@@ -281,8 +199,15 @@ async function buy_all_from_filtered_v2() {
         }
 
         console.log("\n*** Processing pending transactions... ***\n")
-        await processPendingTransactions();
-
+        const result = await processPendingTransactions();
+        
+        if (result) {
+            console.log("New buy! Updating open_orders!!")
+            await processCompleteTransactions();
+        } else {
+            console.log("No new buy, skipping processCompleteTx.")
+        }
+            
 
     } catch (error) {
         console.error('Error fetching balances or reading CSV:', error);
@@ -557,7 +482,7 @@ switch (arg1) {
         break;
     
    
-    case "balance-in-usd":
+    case "balance":
         printTokenBalancesInUSD();
         break;    
       

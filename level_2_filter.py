@@ -35,11 +35,11 @@ def fetch_audit_data():
         time.sleep(2)
         response = requests.get(url, headers=headers)
 
-        print(f"Status code for {address}: {response.status_code}")
         if response.status_code == 200:
             try:
                 data = response.json()
                 audit_data = data.get('data')
+                print(f"Audit data for index {index}: {audit_data}")  # Print the audit data for each index
                 print(f"Filtering audit info for {address}")
                 if isinstance(audit_data, dict):
                     def check_value(key, expected_value):

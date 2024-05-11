@@ -1,9 +1,10 @@
 
 
 // dbInsert.ts
-import { startOfDay, endOfDay } from 'date-fns';
+import { startOfDay, endOfDay, subHours, startOfHour, format } from 'date-fns';
 import { MongoClient, ObjectId } from 'mongodb';
-export { insertDocument, get_transaction_by_state, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state, insertSellTrackerDocument,  updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState, createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder };
+
+export { insertDocument, get_transaction_by_state, deleteOldRecords, delete_buy_by_date, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state, insertSellTrackerDocument,  updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState, createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder };
 
 const uri: string = "mongodb+srv://tiagoluz92:F49IQWE3BhCQSQKL@sniperbot.neoqqnn.mongodb.net/?retryWrites=true&w=majority&appName=sniperbot";
 const options = {
@@ -224,16 +225,6 @@ async function get_transaction_by_date_and_state(tx_state: string, tx_date: stri
     }
 }
 
-async function testConnection() {
-  try {
-    await client.connect();
-    console.log('Connected successfully to server');
-  } catch (error) {
-    console.error('Connection failed:', error);
-  } finally {
-    await client.close();
-  }
-}
 
 async function updateTransactionState(
   transactionId: ObjectId, // Change to use ObjectId type
@@ -280,9 +271,9 @@ async function updateOpenOrderProfitAndLoss(address: string, updateFields: any):
     if (updateResult.matchedCount === 0) {
       console.log(`No open order found with address ${address} to update.`);
     } else if (updateResult.modifiedCount === 0) {
-      console.log(`Open order with address ${address} was found but not updated. It may already have the latest values.`);
+      //console.log(`Open order with address ${address} was found but not updated. It may already have the latest values.`);
     } else {
-      console.log(`Open order with address ${address} updated.`);
+      //console.log(`Open order with address ${address} updated.`);
     }
   } catch (error) {
     console.error('Error updating open order:', error);
@@ -310,27 +301,56 @@ async function getSellTrackerRecordsByQuery(query: any): Promise<SellTracker[]> 
   }
 }
 
-async function deleteAllRecords() {
+async function deleteOldRecords() {
+  
+
   try {
-    
-    
-
-    // Connect to MongoDB
     await client.connect();
+    const database = client.db('your_database_name'); // Replace with your actual database name
+    const collection = database.collection('buy_tracker');
 
-    // Get the database and collection
-    const database = client.db("sniperbot");
-    const collection = database.collection<SellTracker>('buy_tracker');
+    // Calculate the timestamp for 3 hours ago from now
+    const threeHoursAgo = subHours(new Date(), 3);
 
-    // Delete all documents in the collection
-    const deleteResult = await collection.deleteMany({});
+    // Ensure that you're comparing Date objects
+    const filter = { tx_date: { $lte: threeHoursAgo } };
 
-    console.log(`${deleteResult.deletedCount} documents deleted from the collection.`);
-
-    // Close the connection
-    await client.close();
+    // Delete the matching records
+    const result = await collection.deleteMany(filter);
+    console.log(`${result.deletedCount} records deleted.`);
   } catch (error) {
-    console.error('Error deleting documents:', error);
+    console.error('Error deleting old records:', error);
+  } finally {
+    await client.close();
+  }
+}
+
+
+async function delete_buy_by_date(tx_date: string): Promise<number> {
+  // MongoDB connection URL
+
+  try {
+      // Connect to the MongoDB client
+      await client.connect();
+      const database = client.db("sniperbot");
+      const collection = database.collection("buy_tracker");
+
+      // Create a regex to search for dates that contain the tx_date string
+      const dateRegex = new RegExp(tx_date);
+
+      // Query to find records with the matching tx_state and a tx_date containing the tx_date string
+      const query = { tx_date: { $regex: dateRegex } };
+
+      // Deleting the records from the database
+      const result = await collection.deleteMany(query);
+
+      return result.deletedCount; // Number of deleted documents
+  } catch (error) {
+      console.error("An error occurred while deleting records:", error);
+      throw error;
+  } finally {
+      // Ensuring the MongoDB client closes connection after execution
+      await client.close();
   }
 }
 
