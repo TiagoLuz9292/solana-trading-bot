@@ -8,12 +8,12 @@ from typing import List, Dict
 
 def get_token_list() -> None:
     url = "https://public-api.birdeye.so/defi/tokenlist"
-    headers = {"x-chain": "solana", "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f"}
+    headers = {"x-chain": "solana", "X-API-KEY": "702bd78965ff486f903388ebb3b4c4c3"}
 
     limit = 50
     offset = 0
     fetched_tokens = 0
-    tokens_to_fetch = 35000
+    tokens_to_fetch = 45000
     csv_filename = '/root/project/solana-trading-bot/data/initial_list_fresh.csv'
 
     # Open the CSV file in write mode to overwrite existing data or create a new file

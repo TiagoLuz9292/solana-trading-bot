@@ -1,0 +1,73 @@
+Step 1: Install Apache
+Ensure Apache is installed on your server. Installation steps vary depending on the operating system:
+
+For Ubuntu/Debian:
+
+bash
+Copy code
+sudo apt-get update
+sudo apt-get install apache2
+For CentOS/RHEL:
+
+bash
+Copy code
+sudo yum install httpd
+For Fedora:
+
+bash
+Copy code
+sudo dnf install httpd
+Make sure Apache is running:
+
+bash
+Copy code
+sudo systemctl start httpd # or apache2 depending on your system
+sudo systemctl enable httpd # or apache2
+Step 2: Install FastAPI and Uvicorn
+Set up your Python environment and install FastAPI and Uvicorn:
+
+bash
+Copy code
+python -m venv venv
+source venv/bin/activate  # Use `venv\Scripts\activate` on Windows
+pip install fastapi uvicorn
+Create your FastAPI application if you haven’t already. Here's a simple example in a file named main.py:
+
+python
+Copy code
+from fastapi import FastAPI
+
+app = FastAPI()
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
+Step 3: Run Uvicorn with FastAPI
+Run Uvicorn on a localhost port, let’s say 8000:
+
+uvicorn main:app --host 0.0.0.0 --port 8000
+
+
+Step 4: Configure Apache to Proxy Requests
+Enable Necessary Apache Modules:
+
+Enable modules required for proxy functionality:
+
+sudo a2enmod proxy proxy_http proxy_balancer lbmethod_byrequests
+sudo systemctl restart apache2
+
+Configure Virtual Host:
+Edit or create a new virtual host configuration for Apache. If using the default site, edit /etc/apache2/sites-available/000-default.conf on Debian/Ubuntu or /etc/httpd/conf/httpd.conf on Red Hat-based systems. Add the following inside the <VirtualHost *:80> block:
+
+
+
+<VirtualHost *:80>
+    ServerName yourdomain.com
+
+    ProxyPreserveHost On
+    ProxyPass / http://127.0.0.1:8000/
+    ProxyPassReverse / http://127.0.0.1:8000/
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>

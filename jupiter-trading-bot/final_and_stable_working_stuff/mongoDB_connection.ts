@@ -1,18 +1,59 @@
-
-
-// dbInsert.ts
 import { startOfDay, endOfDay, subHours, startOfHour, format } from 'date-fns';
-import { MongoClient, ObjectId } from 'mongodb';
+import { MongoClient, ObjectId, Collection, Db } from 'mongodb';
+import dotenv from "dotenv";
 
-export { insertDocument, get_transaction_by_state, deleteOldRecords, delete_buy_by_date, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state, insertSellTrackerDocument,  updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState, createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder };
+dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
-const uri: string = "mongodb+srv://tiagoluz92:F49IQWE3BhCQSQKL@sniperbot.neoqqnn.mongodb.net/?retryWrites=true&w=majority&appName=sniperbot";
-const options = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  authSource: "admin", // The database that handles authentication, typically "admin"
+export {
+  insertWalletData, activateWallet, deactivateWallet, getWalletActivationStatus,
+  findWalletByTelegramId, insertDocument, getHighPriceChangeOrders, get_transaction_by_state,
+  deleteOldRecords, delete_buy_by_date, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state,
+  insertSellTrackerDocument, updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState,
+  createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder,
+  addTaxesToPayToAllRecords, findActiveWallets
 };
-const client = new MongoClient(uri, options);
+
+
+
+let database: Db | null = null;
+
+
+let client: MongoClient | null = null;
+
+// Asynchronously connects to the database and initializes it if not already done
+export async function connectToDatabase(): Promise<MongoClient> {
+  if (!client) {
+      const uri = process.env.MONGO_DB_CONNECTION_STRING || '';
+      client = new MongoClient(uri);
+      await client.connect();
+      console.log("MongoClient connected");
+  }
+  return client;
+}
+
+// Returns the database object for a specific database
+export function getDatabase(dbName: string): Db {
+  if (!client) {
+      throw new Error("Database connection is not established. Call connectToDatabase first.");
+  }
+  return client.db(dbName);
+}
+
+process.on('SIGINT', async () => {
+  if (client) {
+      await client.close();
+      console.log("MongoClient closed");
+  }
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
+  if (client) {
+      await client.close();
+      console.log("MongoClient closed");
+  }
+  process.exit(0);
+});
 
 interface buy {
   _id: ObjectId;
@@ -44,199 +85,362 @@ interface SellTracker {
   _id: ObjectId;
   buy_date: Date;
   sell_date: Date;
-  address: String;
+  address: string;
   symbol: string;
   usd_received: number;
   token_amount_sold: number;
   entry_price: number;
-  message: String;
+  message: string;
   exit_price: number;
   profit_and_loss?: number;
 }
 
+export async function updateUserRecord(telegramId: string, fieldName: string, fieldValue: any, db: Db): Promise<void> {
+  
+  const collection = db.collection("tg_info");
 
-async function deleteAllDocumentsFromCollection(collectionName: string) {
   try {
-    await client.connect(); // Ensure the client is connected
-    const database = client.db("sniperbot"); // Specify your database name
-    const collection = database.collection(collectionName); // Specify the collection from which to delete documents
+      const result = await collection.updateOne(
+          { telegramId: telegramId }, // Filter documents to find the document with the matching Telegram ID
+          { $set: { [fieldName]: fieldValue } } // Use computed property names to set the field dynamically
+      );
 
-    const result = await collection.deleteMany({}); // An empty filter deletes all documents
-
-    console.log(`${result.deletedCount} documents were deleted from the collection '${collectionName}'.`);
+      if (result.matchedCount === 0) {
+          console.log(`No document found with telegramId: ${telegramId}`);
+      } else if (result.modifiedCount === 0) {
+          console.log(`Document with telegramId: ${telegramId} was not updated. It may already have the value ${fieldValue}.`);
+      } else {
+          console.log(`Successfully updated the document with telegramId: ${telegramId}.`);
+      }
   } catch (error) {
-    console.error('Error deleting documents:', error);
-  } finally {
-    await client.close(); // Close the connection
+      console.error(`Error updating document for telegramId: ${telegramId}: ${error}`);
+      throw error;
   }
 }
 
-async function insertSellTrackerDocument(sellData: any): Promise<void> {
+
+
+export async function addNewPropertiesToAllRecords(db: Db): Promise<void> {
+  const collection = db.collection('tg_info');
+  
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection('sell_tracker');
+      const result = await collection.updateMany(
+          {}, // filter to select all documents
+          {
+              $set: {
+                  account_percent_to_invest: 0.01,
+                  take_profit_1_amount: 0.70,
+                  take_profit_2_amount: 1
+              }
+          }
+      );
+
+      console.log(`Updated ${result.modifiedCount} documents.`);
+  } catch (error) {
+      console.error(`Failed to update documents: ${error}`);
+      throw error;
+  }
+}
+
+export async function resetTaxesToPay(telegramId: string, db: Db): Promise<void> {
+  const collection = db.collection('tg_info');
+
+  try {
+    // Correct use of updateOne on the collection object
+    const result = await collection.updateOne(
+      { telegramId: telegramId }, // Filter to find the document
+      { $set: { taxes_to_pay: 0 } } // Reset operation
+    );
+
+    if (result.matchedCount === 0) {
+      console.error(`No document found with telegramId: ${telegramId}`);
+    } else {
+      console.log(`Successfully reset taxes_to_pay for telegramId: ${telegramId}`);
+    }
+  } catch (error) {
+    console.error(`Failed to reset taxes_to_pay: ${error}`);
+    throw error; // Optional: Re-throwing error might be omitted depending on error handling strategy
+  }
+}
+
+async function incrementTaxesToPay(tax_to_increment: number, telegramId: string, db: Db): Promise<void> {
+  const collection = db.collection('tg_info');
+
+  try {
+      // Correct use of updateOne on the collection object
+      const result = await collection.updateOne(
+          { telegramId: telegramId }, // Filter to find the document
+          { $inc: { taxes_to_pay: tax_to_increment } } // Increment operation
+      );
+
+      if (result.matchedCount === 0) {
+          console.error(`No document found with telegramId: ${telegramId}`);
+      } else {
+          console.log(`Successfully incremented taxes_to_pay for telegramId: ${telegramId}`);
+      }
+  } catch (error) {
+      console.error(`Failed to increment taxes_to_pay: ${error}`);
+      throw error; // Optional: Re-throwing error might be omitted depending on error handling strategy
+  }
+}
+
+
+export async function checkTelegramIdExists(telegramId: number, db: Db): Promise<boolean> {
+  try {
+
+    const accessListCollection = db.collection('access_list');
+    
+    const count = await accessListCollection.countDocuments({ telegramId }, { limit: 1 });
+    return count > 0;
+  } catch (error) {
+    console.error("Failed to check Telegram ID in access list:", error);
+    throw error;
+  }
+}
+
+export async function addTelegramIdToAccessList(telegramId: number, db: Db) {
+  try {
+    
+    const accessListCollection = db.collection('access_list');
+    
+    const result = await accessListCollection.insertOne({ telegramId });
+    console.log(`Telegram ID ${telegramId} added to access list with result:`, result);
+    
+  } catch (error) {
+    console.error("Failed to add Telegram ID to access list:", error);
+    throw error;
+  }
+}
+
+
+async function getWalletActivationStatus(telegramId: string, db: Db): Promise<boolean | null> {
+  try {
+    
+    const wallets = db.collection("tg_info");
+    const wallet = await wallets.findOne({ telegramId: telegramId }, { projection: { activated: 1 } });
+    return wallet?.activated ?? null;
+  } catch (e) {
+    console.error(`Failed to get wallet activation status: ${e}`);
+    return null;
+  }
+}
+
+async function activateWallet(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated: true } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to activate wallet: ${e}`);
+    return false;
+  }
+}
+
+async function deactivateWallet(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated: false } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to deactivate wallet: ${e}`);
+    return false;
+  }
+}
+
+async function findActiveWallets(db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+
+    // Log the entire collection to verify contents
+    const allWallets = await wallets.find({}).toArray();
+    console.log("All Wallets in tg_info collection:", allWallets);
+
+    // Perform the query to find activated wallets
+    const activeWallets = await wallets.find({ activated: true }).toArray();
+    console.log("Queried Active Wallets:", activeWallets);
+
+    return activeWallets;
+  } catch (e) {
+    console.error(`Failed to find active wallets: ${e}`);
+    return [];
+  }
+}
+
+export async function findAllWallets(db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+    return await wallets.find().toArray();
+  } catch (e) {
+    console.error(`Failed to retrieve all wallets: ${e}`);
+    return [];
+  }
+}
+
+async function findWalletByTelegramId(telegramId: string, db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+    return await wallets.findOne({ telegramId: telegramId });
+  } catch (e) {
+    console.error(`Failed to find wallet by Telegram ID: ${e}`);
+    return null;
+  }
+}
+
+async function insertWalletData(telegramId: string, walletAddress: string, encryptedSecretKey: string, db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.insertOne({
+      telegramId,
+      walletAddress,
+      secretKey: encryptedSecretKey,
+      activated: false, // Default value for the "activated" property
+      taxes_to_pay: 0,   // Default value for the "taxes_to_pay" property
+      account_percent_to_invest: 0.01, // Default value for account investment percentage
+      take_profit_1_amount: 0.7,       // Default value for take profit 1
+      take_profit_2_amount: 1          // Default value for take profit 2
+    });
+    console.log(`New wallet record inserted with the following id: ${result.insertedId}`);
+  } catch (e) {
+    console.error(`Failed to insert wallet data: ${e}`);
+  }
+}
+
+async function deleteAllDocumentsFromCollection(collectionName: string, db: Db) {
+  try {
+    const collection = db.collection(collectionName);
+    const result = await collection.deleteMany({});
+    console.log(`${result.deletedCount} documents were deleted from the collection '${collectionName}'.`);
+  } catch (error) {
+    console.error('Error deleting documents:', error);
+  }
+}
+
+async function insertSellTrackerDocument(sellData: any, db: Db): Promise<void> {
+  try {
+    const collection = db.collection('sell_tracker');
     await collection.insertOne(sellData);
     console.log(`Sell tracker document inserted successfully.`);
   } catch (error) {
     console.error('Error inserting sell tracker document:', error);
-  } finally {
-    await client.close();
   }
 }
 
-async function getAllOpenOrders(): Promise<OpenOrder[]> {
+async function getAllOpenOrders(db: Db): Promise<OpenOrder[]> {
   try {
-      await client.connect();
-      const database = client.db("sniperbot");
-      const collection = database.collection<OpenOrder>('open_orders');
-      return await collection.find({}).toArray();
-  } finally {
-      await client.close();
+    const collection: Collection<OpenOrder> = db.collection('open_orders');
+    return await collection.find({}).toArray();
+  } catch (error) {
+    console.error('Error getting all open orders:', error);
+    return [];
   }
 }
 
-async function deleteOpenOrder(address: string): Promise<void> {
+async function deleteOpenOrder(address: string, db: Db): Promise<void> {
   try {
-      await client.connect();
-      const database = client.db("sniperbot");
-      const collection = database.collection<OpenOrder>('open_orders');
-      await collection.deleteOne({ address: address });
-      console.log(`Deleted open order for address ${address}`);
-  } finally {
-      await client.close();
+    const collection: Collection<OpenOrder> = db.collection('open_orders');
+    await collection.deleteOne({ address: address });
+    console.log(`Deleted open order for address ${address}`);
+  } catch (error) {
+    console.error('Error deleting open order:', error);
   }
 }
 
-async function getBuyTrackerRecordByAddress(address: string): Promise<buy | null> {
+async function getBuyTrackerRecordByAddress(address: string, db: Db): Promise<buy | null> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<buy>('buy_tracker');
+    const collection: Collection<buy> = db.collection('buy_tracker');
     const record = await collection.findOne({ address: address });
     console.log(`Record found for address ${address} in buy_tracker:`, record);
     return record;
   } catch (error) {
     console.error('Error retrieving record from buy_tracker:', error);
     return null;
-  } finally {
-    await client.close();
   }
 }
 
-async function getBuyTrackerRecordsByAddress(address: string): Promise<buy[]> {
+async function getBuyTrackerRecordsByAddress(address: string, db: Db): Promise<buy[]> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<buy>('buy_tracker');
+    const collection: Collection<buy> = db.collection('buy_tracker');
     const records = await collection.find({ address: address }).toArray();
     console.log(`Records found for address ${address} in buy_tracker:`, records);
     return records;
   } catch (error) {
     console.error('Error retrieving records from buy_tracker:', error);
     return [];
-  } finally {
-    await client.close();
   }
 }
 
-async function getOpenOrderRecordByAddress(address: string): Promise<OpenOrder | null> {
+async function getOpenOrderRecordByAddress(address: string, db: Db ): Promise<OpenOrder | null> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<OpenOrder>('open_orders');
+    
+    const collection: Collection<OpenOrder> = db.collection('open_orders');
     const record = await collection.findOne({ address: address });
     console.log(`Record found for address ${address} in open_orders:`, record);
     return record;
   } catch (error) {
     console.error('Error retrieving record from open_orders:', error);
     return null;
-  } finally {
-    await client.close();
   }
 }
 
-async function createOpenOrder(order: OpenOrder): Promise<void> {
+async function createOpenOrder(order: OpenOrder, db: Db): Promise<void> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection('open_orders');
+    
+    const collection: Collection<OpenOrder> = db.collection('open_orders');
     await collection.insertOne(order);
     console.log(`Open order for address ${order.address} created.`);
   } catch (error) {
     console.error('Error creating open order:', error);
-  } finally {
-    await client.close();
   }
 }
 
-async function insertDocument(doc: buy): Promise<void> {
+async function insertDocument(doc: buy, db: Db): Promise<void> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<buy>('buy_tracker');
+    
+    const collection: Collection<buy> = db.collection('buy_tracker');
     const result = await collection.insertOne(doc);
     console.log(`A document was inserted with the _id: ${result.insertedId}`);
   } catch (error) {
     console.error('Error inserting document:', error);
-  } finally {
-    await client.close();
   }
 }
 
-async function get_transaction_by_state(ts_state: String): Promise<buy[]> {
+async function get_transaction_by_state(ts_state: string, db: Db): Promise<buy[]> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<buy>('buy_tracker');
+    
+    const collection: Collection<buy> = db.collection('buy_tracker');
     const pendingTransactions = await collection.find({ tx_state: ts_state }).toArray();
     return pendingTransactions;
-  } finally {
-    await client.close();
+  } catch (error) {
+    console.error('Error getting transaction by state:', error);
+    return [];
   }
 }
 
+async function get_transaction_by_date_and_state(tx_state: string, tx_date: string, db: Db): Promise<any[]> {
+  try {
+    
+    const collection = db.collection("buy_tracker");
 
-async function get_transaction_by_date_and_state(tx_state: string, tx_date: string): Promise<any[]> {
-    // MongoDB connection URL
+    const dateRegex = new RegExp(tx_date);
+    const query = { tx_state: tx_state, tx_date: { $regex: dateRegex } };
 
-    try {
-        // Connect to the MongoDB client
-        await client.connect();
-        const database = client.db("sniperbot");
-        const collection = database.collection("buy_tracker");
-
-        // Create a regex to search for dates that contain the tx_date string
-        const dateRegex = new RegExp(tx_date);
-
-        // Query to find records with the matching tx_state and a tx_date containing the tx_date string
-        const query = { tx_state: tx_state, tx_date: { $regex: dateRegex } };
-
-        // Fetching the records from the database
-        const records = await collection.find(query).toArray();
-
-        return records;
-    } catch (error) {
-        console.error("An error occurred while fetching records:", error);
-        throw error;
-    } finally {
-        // Ensuring the MongoDB client closes connection after execution
-        await client.close();
-    }
+    const records = await collection.find(query).toArray();
+    return records;
+  } catch (error) {
+    console.error("An error occurred while fetching records:", error);
+    throw error;
+  }
 }
 
-
 async function updateTransactionState(
-  transactionId: ObjectId, // Change to use ObjectId type
-  newState: string, 
-  usdSpent: number, 
-  tokenReceived: number, 
-  additionalFields: any
+  transactionId: ObjectId,
+  newState: string,
+  usdSpent: number,
+  tokenReceived: number,
+  additionalFields: any, db: Db
 ): Promise<void> {
-  // Calculate entry price if transaction is completed and tokenReceived is greater than zero to avoid division by zero
   let entryPrice = newState === "completed" && tokenReceived > 0 ? usdSpent / tokenReceived : 0;
 
-  // Merge additional fields with the base update document
   const updateDoc = {
     $set: {
       ...additionalFields,
@@ -248,109 +452,122 @@ async function updateTransactionState(
   };
 
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<buy>('buy_tracker');
+    
+    const collection: Collection<buy> = db.collection('buy_tracker');
     await collection.updateOne({ _id: transactionId }, updateDoc);
     console.log(`Transaction with _id ${transactionId} updated to ${newState} with entry price: ${entryPrice}`);
-  } finally {
-    await client.close();
+  } catch (error) {
+    console.error('Error updating transaction state:', error);
   }
 }
 
-async function updateOpenOrderProfitAndLoss(address: string, updateFields: any): Promise<void> {
+async function updateOpenOrderProfitAndLoss(address: string, updateFields: any, db: Db): Promise<void> {
+  
+  
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<OpenOrder>('open_orders');
+   
+    const collection: Collection<OpenOrder> = db.collection('open_orders');
     const updateResult = await collection.updateOne(
       { address: address },
       { $set: updateFields }
     );
+    
 
-    if (updateResult.matchedCount === 0) {
-      console.log(`No open order found with address ${address} to update.`);
-    } else if (updateResult.modifiedCount === 0) {
-      //console.log(`Open order with address ${address} was found but not updated. It may already have the latest values.`);
-    } else {
-      //console.log(`Open order with address ${address} updated.`);
-    }
   } catch (error) {
     console.error('Error updating open order:', error);
-  } finally {
-    await client.close();
   }
 }
 
-
-async function getSellTrackerRecordsByQuery(query: any): Promise<SellTracker[]> {
+async function getSellTrackerRecordsByQuery(query: any, db: Db): Promise<SellTracker[]> {
   try {
-    await client.connect();
-    const database = client.db("sniperbot");
-    const collection = database.collection<SellTracker>('sell_tracker');
+    
+    const collection: Collection<SellTracker> = db.collection('sell_tracker');
 
     const records = await collection.find(query).toArray();
-
     console.log(`Records found in sell_tracker based on the provided query:`, records);
     return records;
   } catch (error) {
     console.error('Error retrieving records from sell_tracker based on query:', error);
     return [];
-  } finally {
-    await client.close();
   }
 }
 
-async function deleteOldRecords() {
-  
-
+async function deleteOldRecords(db: Db) {
   try {
-    await client.connect();
-    const database = client.db('your_database_name'); // Replace with your actual database name
-    const collection = database.collection('buy_tracker');
+    const collection = db.collection('buy_tracker');
 
-    // Calculate the timestamp for 3 hours ago from now
-    const threeHoursAgo = subHours(new Date(), 3);
+    // Get today's date in dd-mm-yyyy format
+    const today = format(new Date(), 'dd-MM-yyyy');
+    
+    // Create the filter to check if the tx_date does not include today's date
+    const filter = { tx_date: { $not: { $regex: today } } };
 
-    // Ensure that you're comparing Date objects
-    const filter = { tx_date: { $lte: threeHoursAgo } };
-
-    // Delete the matching records
     const result = await collection.deleteMany(filter);
     console.log(`${result.deletedCount} records deleted.`);
   } catch (error) {
     console.error('Error deleting old records:', error);
-  } finally {
-    await client.close();
   }
 }
 
-
-async function delete_buy_by_date(tx_date: string): Promise<number> {
-  // MongoDB connection URL
-
+async function delete_buy_by_date(tx_date: string, db: Db): Promise<number> {
   try {
-      // Connect to the MongoDB client
-      await client.connect();
-      const database = client.db("sniperbot");
-      const collection = database.collection("buy_tracker");
+    
+    const collection = db.collection("buy_tracker");
 
-      // Create a regex to search for dates that contain the tx_date string
-      const dateRegex = new RegExp(tx_date);
+    const dateRegex = new RegExp(tx_date);
+    const query = { tx_date: { $regex: dateRegex } };
 
-      // Query to find records with the matching tx_state and a tx_date containing the tx_date string
-      const query = { tx_date: { $regex: dateRegex } };
-
-      // Deleting the records from the database
-      const result = await collection.deleteMany(query);
-
-      return result.deletedCount; // Number of deleted documents
+    const result = await collection.deleteMany(query);
+    return result.deletedCount;
   } catch (error) {
-      console.error("An error occurred while deleting records:", error);
-      throw error;
-  } finally {
-      // Ensuring the MongoDB client closes connection after execution
-      await client.close();
+    console.error("An error occurred while deleting records:", error);
+    throw error;
   }
 }
 
+async function getHighPriceChangeOrders(db: Db): Promise<any[] | undefined> {
+  try {
+    
+    const openOrders = db.collection("open_orders");
+
+    const pipeline = [
+      {
+        $addFields: {
+          price_change_percent_float: {
+            $convert: {
+              input: { $replaceAll: { input: "$price_change_percent", find: ",", replacement: "" } },
+              to: "double",
+              onError: 0
+            }
+          }
+        }
+      },
+      {
+        $match: {
+          price_change_percent_float: { $gt: 1750 }
+        }
+      }
+    ];
+
+    const results = await openOrders.aggregate(pipeline).toArray();
+    return results;
+  } catch (err) {
+    console.error("Failed to retrieve records:", err);
+    return undefined;
+  }
+}
+
+async function addTaxesToPayToAllRecords(db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+
+    const result = await wallets.updateMany(
+      {}, // Filter to match all documents
+      { $set: { taxes_to_pay: 0 } } // Update operation to add the new field
+    );
+
+    console.log(`Modified ${result.modifiedCount} documents to add taxes_to_pay with value 0`);
+  } catch (e) {
+    console.error(`Failed to update records: ${e}`);
+  }
+}

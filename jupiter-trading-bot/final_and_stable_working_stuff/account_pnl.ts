@@ -3,7 +3,7 @@ import { Parser } from 'json2csv';
 import axios from 'axios';
 import { parse } from 'csv-parse/sync';
 import { format } from 'date-fns';
-export {get_token_price, get_token_prices, update_account_PNL_v3, update_pnl_after_buy_v2, update_sell_tracker_after_sell};
+export {get_token_price, update_account_PNL_v3, update_pnl_after_buy_v2, update_sell_tracker_after_sell};
 import { swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_sell_operations} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION'
 import { getAllBalances, getTokenBalance, refresh_SOL_and_USDC_balance, processTransactions} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet'
 import { off } from 'process';
@@ -139,7 +139,7 @@ async function get_token_prices(tokenAddresses: string[]): Promise<Map<string, n
         const chunk = tokenAddresses.slice(i, i + MAX_ADDRESSES_PER_CALL);
         const joinedAddresses = chunk.join('%2C');
         const url = `https://public-api.birdeye.so/defi/multi_price?list_address=${joinedAddresses}`;
-        const headers = { "X-API-KEY": "1368ab5cd35549da9d2111afa32c829f" };
+        const headers = { "X-API-KEY": "cf15975d7aaf402fbac45058e252960e" };
 
         try {
             await delay(2000);

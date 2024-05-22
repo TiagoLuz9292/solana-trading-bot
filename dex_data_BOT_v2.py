@@ -12,6 +12,7 @@ import time
 import threading
 import level_2_filter
 import OHLCV_filters
+import birdeye_premium
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -21,12 +22,23 @@ def reload():
 
     while(True):
         print("Reloading token infos...")
-        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/recent_tokens_list.csv")
+        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/recent_tokens_list.csv", "/root/project/solana-trading-bot/data/token_overview_list.csv")
         level_1_filter.get_filtered_dexscreener()
-        level_2_filter.fetch_audit_data() 
+
+        print("executing birdeye_premium.get_birdeye_security_for_list()")
+        birdeye_premium.get_birdeye_security_for_list()
+        print("executing birdeye_premium.filter_with_security()")
+        birdeye_premium.filter_with_security()
+        print("executing birdeye_premium.get_birdeye_overview_for_list()")
+        birdeye_premium.get_birdeye_overview_for_list()
+        print("executing birdeye_premium.filter_with_overview()")
+        birdeye_premium.filter_with_overview()
+        #level_2_filter.fetch_audit_data() 
+        print("Preparing final list for buy_all_from_filtered()")
+        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/final_filtered.csv", "/root/project/solana-trading-bot/data/tokens_to_buy.csv")
 
         print("Filter complete.")
-        time.sleep(15)
+        time.sleep(30)
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 
@@ -37,10 +49,10 @@ def reload_initial_list():
    
     while(True):
         initial_list.get_token_list()
-        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/initial_list_fresh.csv")
+        token_overview_list.get_token_overview_for_list("/root/project/solana-trading-bot/data/initial_list_fresh.csv", "/root/project/solana-trading-bot/data/initial_overview.csv")
         token_overview_list.filter_recent_tokens()
         print("Initial list complete.")
-        time.sleep(300)
+        time.sleep(30)
 
 #----------------------------------------------------------------------------------------------------------------------------------------
 

@@ -225,3 +225,47 @@ alias start-OHLCV-check='$dex_BOT/start-OHLCV-check.sh'
 
 
 
+*****************************
+
+TG bot FAQ
+
+
+Q: What do I need for the bot to make trades on my wallet?
+
+A: Minimum:
+
+0.025 SOL
+$50 USDC
+
+Q: What if I transfered USDT instead of USDC?
+
+A: There is a button to convert from USDT to USDC
+
+Q: Can I transfer solana and convert it to USDC?
+
+A: Yes, there is a button to convert the majority of SOL into USDC, it will leave just enough for the trade fees
+
+Q: What if my SOL balances goes to 0 while the bot is making trades with my wallet?
+
+A: The bot will automatically fuy a small amount of SOL if its balance goes below 0.015
+
+Q:
+
+
+
+Sell-All: I will initiate an operation that will Sell a percentage of ALL the tokens in your wallet (Except SOL).
+
+Activate: Make your wallet Active. While its active, the bot will take it into consideration when replicating the Buys and Sells.
+
+Settings:
+    Trade Value: The percentage of the total value of your wallet in USD, that will be invested in each trade;
+    Amount to Sell on TP1: The percentage of the token holdings to be sold at Take Profit 1;
+    Amount to Sell on TP2: The percentage of the token holdings to be sold at Take Profit 2;
+
+Withdraw: Currently you can only withdraw USDC, select a valid amount, and a valid solana Wallet. In the future you will be able to Withdraw SOL.    
+
+
+
+
+
+

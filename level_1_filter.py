@@ -1,34 +1,13 @@
-"""
-initial_filter = (
-            #(df['priceChange_5m'] > MIN_PRICE_CHANGE_5M) &
-            #(df['priceChange_1h'] > MIN_PRICE_CHANGE_1H) &
-            #(df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
-            #(df['priceChange_24h'] > MIN_PRICE_CHANGE_24H) &
-            #(df['volume_5m'] >= MIN_VOLUME_5M) &
-            #(df['volume_1h'] >= MIN_VOLUME_1H) &
-            #(df['volume_6h'] >= MIN_VOLUME_6H) &
-            #(df['volume_24h'] >= MIN_VOLUME_24H) &
-            #(df['buys_5m'] > MIN_BUYS_5M) &
-            (df['buys_1h'] > MIN_BUYS_1H) &
-            #(df['buys_6h'] > MIN_BUYS_6H) &
-            #(df['buys_24h'] > MIN_BUYS_24H) &
-            #(df['sells_5m'] <= df['buys_5m'] * 0.6) &
-            (df['sells_1h'] <= df['buys_1h'] * 0.6) &
-            #(df['sells_6h'] <= df['buys_6h'] * 0.6) &
-            #(df['sells_24h'] <= df['buys_24h'] * 0.6) &
-            (df['marketCap'] >= MIN_MARKET_CAP) & (df['marketCap'] <= MAX_MARKET_CAP) &
-            (df['liquidity'] >= MIN_LIQUIDITY)
-        )
-"""
+
 
 from datetime import datetime, timedelta
 import pandas as pd
 
 # price change
 MIN_PRICE_CHANGE_5M = 0
-MIN_PRICE_CHANGE_1H = -55
-MIN_PRICE_CHANGE_6H = -55
-MIN_PRICE_CHANGE_24H = -55
+MIN_PRICE_CHANGE_1H = -75
+MIN_PRICE_CHANGE_6H = -35
+MIN_PRICE_CHANGE_24H = -75
 
 MAX_PRICE_CHANGE_5M = 40
 MAX_PRICE_CHANGE_1H = 70
@@ -37,7 +16,7 @@ MAX_PRICE_CHANGE_24H = 200
 
 # volume
 MIN_VOLUME_5M = 1000
-MIN_VOLUME_1H = 500
+MIN_VOLUME_1H = 1000
 MIN_VOLUME_6H = 1000
 MIN_VOLUME_24H = 1000
 
@@ -60,13 +39,13 @@ MAX_MARKET_CAP = 55000
 
 # liquidity
 
-MIN_LIQUIDITY = 400
+MIN_LIQUIDITY = 1000
 
 
 
 
 
-# Read the CSV file into a DataFrame
+
 
 
 # Check if the required columns exist in the DataFrame
@@ -95,7 +74,7 @@ def get_filtered_dexscreener():
         initial_filter = (
             #(df['priceChange_5m'] > 0) &
             (df['priceChange_1h'] > MIN_PRICE_CHANGE_1H) &
-            (df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
+            #(df['priceChange_6h'] > MIN_PRICE_CHANGE_6H) &
             (df['priceChange_24h'] > MIN_PRICE_CHANGE_24H) &
             #(df['priceChange_5m'] < MAX_PRICE_CHANGE_5M) &
             #(df['priceChange_1h'] < MAX_PRICE_CHANGE_1H) &
@@ -105,13 +84,13 @@ def get_filtered_dexscreener():
             (df['volume_1h'] >= MIN_VOLUME_1H) &
             #(df['volume_6h'] >= MIN_VOLUME_6H) &
             #(df['volume_24h'] >= MIN_VOLUME_24H) &
-            (df['buys_5m'] >= df['sells_5m']) &
-            (df['buys_1h'] >= df['sells_1h']) &
-            (df['buys_1h'] > 0) &
-            (df['buys_6h'] > df['buys_1h']) &
+            #(df['buys_5m'] >= df['sells_5m']) &
+            #(df['buys_1h'] >= df['sells_1h']) &
+            #(df['buys_1h'] > 0) &
+            #(df['buys_6h'] > df['buys_1h']) &
             #(df['buys_24h'] > MIN_BUYS_24H) &
             #(df['sells_5m'] <= df['buys_5m'] * 0.6) &
-            (df['sells_1h'] <= df['buys_1h'] * 0.7) &
+            (df['sells_1h'] <= df['buys_1h']) &
             #(df['sells_6h'] <= df['buys_6h'] * 0.6) &
             #(df['sells_24h'] <= df['buys_24h'] * 0.7) &
             (df['marketCap'] >= MIN_MARKET_CAP) & (df['marketCap'] <= MAX_MARKET_CAP) &

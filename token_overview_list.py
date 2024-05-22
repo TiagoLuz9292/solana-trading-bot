@@ -154,7 +154,7 @@ def get_token_overview_for_token(token_address):
         
 def filter_recent_tokens():
     # Load the CSV file into a DataFrame
-    df = pd.read_csv('/root/project/solana-trading-bot/data/token_overview_list.csv')
+    df = pd.read_csv('/root/project/solana-trading-bot/data/initial_overview.csv')
 
     # Specify the exact format of the dates in the 'createdDateTime' column
     date_format = '%d-%m-%y %H:%M:%S'
@@ -176,7 +176,7 @@ def filter_recent_tokens():
     else:
         print("No recent tokens found within the last 10 days.")
         
-def get_token_overview_for_list(src_csv_file):
+def get_token_overview_for_list(src_csv_file, output_csv_file):
     df_addresses = pd.read_csv(src_csv_file)
     data_list = []
 
@@ -256,7 +256,7 @@ def get_token_overview_for_list(src_csv_file):
 
     # Drop duplicates based on the 'address' column
     df_result = df_result.drop_duplicates(subset='address', keep='first')
-    df_result.to_csv("/root/project/solana-trading-bot/data/token_overview_list.csv", index=False)
+    df_result.to_csv(output_csv_file, index=False)
     print("Data written to 'data/token_overview_list.csv'")
 
 #get_token_overview_for_list()    
