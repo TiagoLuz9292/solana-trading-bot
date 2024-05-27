@@ -5,12 +5,12 @@ import dotenv from "dotenv";
 dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
 export {
-  insertWalletData, activateWallet, deactivateWallet, getWalletActivationStatus,
+  insertWalletData, activateWallet_buyer, deactivateWallet_buyer, getWalletActivationStatus_buyer,
   findWalletByTelegramId, insertDocument, getHighPriceChangeOrders, get_transaction_by_state,
   deleteOldRecords, delete_buy_by_date, getSellTrackerRecordsByQuery, get_transaction_by_date_and_state,
   insertSellTrackerDocument, updateOpenOrderProfitAndLoss, getBuyTrackerRecordsByAddress, updateTransactionState,
   createOpenOrder, getBuyTrackerRecordByAddress, getOpenOrderRecordByAddress, getAllOpenOrders, deleteOpenOrder,
-  addTaxesToPayToAllRecords, findActiveWallets
+  addTaxesToPayToAllRecords
 };
 
 
@@ -95,6 +95,31 @@ interface SellTracker {
   profit_and_loss?: number;
 }
 
+
+export async function set_trade_mode_to_fixed(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { trade_value_mode: "fixed" } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to achange trade mode: ${e}`);
+    return false;
+  }
+}
+
+export async function set_trade_mode_to_percent(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { trade_value_mode: "percent" } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to achange trade mode: ${e}`);
+    return false;
+  }
+}
+
+
+
 export async function updateUserRecord(telegramId: string, fieldName: string, fieldValue: any, db: Db): Promise<void> {
   
   const collection = db.collection("tg_info");
@@ -128,9 +153,8 @@ export async function addNewPropertiesToAllRecords(db: Db): Promise<void> {
           {}, // filter to select all documents
           {
               $set: {
-                  account_percent_to_invest: 0.01,
-                  take_profit_1_amount: 0.70,
-                  take_profit_2_amount: 1
+                  trade_value_mode: "percent"
+                  
               }
           }
       );
@@ -163,7 +187,7 @@ export async function resetTaxesToPay(telegramId: string, db: Db): Promise<void>
   }
 }
 
-async function incrementTaxesToPay(tax_to_increment: number, telegramId: string, db: Db): Promise<void> {
+export async function incrementTaxesToPay(tax_to_increment: number, telegramId: string, db: Db): Promise<void> {
   const collection = db.collection('tg_info');
 
   try {
@@ -213,7 +237,7 @@ export async function addTelegramIdToAccessList(telegramId: number, db: Db) {
 }
 
 
-async function getWalletActivationStatus(telegramId: string, db: Db): Promise<boolean | null> {
+async function getWalletActivationStatus_buyer(telegramId: string, db: Db): Promise<boolean | null> {
   try {
     
     const wallets = db.collection("tg_info");
@@ -225,7 +249,20 @@ async function getWalletActivationStatus(telegramId: string, db: Db): Promise<bo
   }
 }
 
-async function activateWallet(telegramId: string, db: Db): Promise<boolean> {
+export async function getWalletActivationStatus_seller(telegramId: string, db: Db): Promise<boolean | null> {
+  try {
+    
+    const wallets = db.collection("tg_info");
+    const wallet = await wallets.findOne({ telegramId: telegramId }, { projection: { activated_seller: 1 } });
+    return wallet?.activated_seller ?? null;
+  } catch (e) {
+    console.error(`Failed to get wallet activation status: ${e}`);
+    return null;
+  }
+}
+
+
+async function activateWallet_buyer(telegramId: string, db: Db): Promise<boolean> {
   try {
     const wallets = db.collection("tg_info");
     const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated: true } });
@@ -235,8 +272,18 @@ async function activateWallet(telegramId: string, db: Db): Promise<boolean> {
     return false;
   }
 }
+export async function activateWallet_seller(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated_seller: true } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to activate wallet: ${e}`);
+    return false;
+  }
+}
 
-async function deactivateWallet(telegramId: string, db: Db): Promise<boolean> {
+async function deactivateWallet_buyer(telegramId: string, db: Db): Promise<boolean> {
   try {
     const wallets = db.collection("tg_info");
     const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated: false } });
@@ -247,7 +294,20 @@ async function deactivateWallet(telegramId: string, db: Db): Promise<boolean> {
   }
 }
 
-async function findActiveWallets(db: Db) {
+export async function deactivateWallet_seller(telegramId: string, db: Db): Promise<boolean> {
+  try {
+    const wallets = db.collection("tg_info");
+    const result = await wallets.updateOne({ telegramId: telegramId }, { $set: { activated_seller: false } });
+    return result.modifiedCount > 0;
+  } catch (e) {
+    console.error(`Failed to deactivate wallet: ${e}`);
+    return false;
+  }
+}
+
+
+
+export async function findActiveWallets_for_buy(db: Db) {
   try {
     const wallets = db.collection("tg_info");
 
@@ -257,6 +317,25 @@ async function findActiveWallets(db: Db) {
 
     // Perform the query to find activated wallets
     const activeWallets = await wallets.find({ activated: true }).toArray();
+    console.log("Queried Active Wallets:", activeWallets);
+
+    return activeWallets;
+  } catch (e) {
+    console.error(`Failed to find active wallets: ${e}`);
+    return [];
+  }
+}
+
+export async function findActiveWallets_for_sell(db: Db) {
+  try {
+    const wallets = db.collection("tg_info");
+
+    // Log the entire collection to verify contents
+    const allWallets = await wallets.find({}).toArray();
+    console.log("All Wallets in tg_info collection:", allWallets);
+
+    // Perform the query to find activated wallets
+    const activeWallets = await wallets.find({ activated_seller: true }).toArray();
     console.log("Queried Active Wallets:", activeWallets);
 
     return activeWallets;
@@ -293,11 +372,13 @@ async function insertWalletData(telegramId: string, walletAddress: string, encry
       telegramId,
       walletAddress,
       secretKey: encryptedSecretKey,
-      activated: false, // Default value for the "activated" property
+      activated_buyer: false, // Default value for the "activated" property
+      activated_seller: false,
       taxes_to_pay: 0,   // Default value for the "taxes_to_pay" property
-      account_percent_to_invest: 0.01, // Default value for account investment percentage
+      account_percent_to_invest: 0.03, // Default value for account investment percentage
       take_profit_1_amount: 0.7,       // Default value for take profit 1
-      take_profit_2_amount: 1          // Default value for take profit 2
+      take_profit_2_amount: 1,          // Default value for take profit 2
+      auto_pause_percent: 0.5
     });
     console.log(`New wallet record inserted with the following id: ${result.insertedId}`);
   } catch (e) {

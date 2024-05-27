@@ -1,0 +1,993 @@
+    at IncomingMessage.emit (node:events:529:35)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1400:12)
+    at processTicksAndRejections (node:internal/process/task_queues:82:21)
+    at Axios.request (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/axios/lib/core/Axios.js:45:41)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+  code: 'ERR_BAD_REQUEST',
+  config: {
+    transitional: {
+      silentJSONParsing: true,
+      forcedJSONParsing: true,
+      clarifyTimeoutError: false
+    },
+    adapter: [ 'xhr', 'http' ],
+    transformRequest: [ [Function: transformRequest] ],
+    transformResponse: [ [Function: transformResponse] ],
+    timeout: 0,
+    xsrfCookieName: 'XSRF-TOKEN',
+    xsrfHeaderName: 'X-XSRF-TOKEN',
+    maxContentLength: -1,
+    maxBodyLength: -1,
+    env: { FormData: [Function], Blob: [class Blob] },
+    validateStatus: [Function: validateStatus],
+    headers: Object [AxiosHeaders] {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'User-Agent': 'axios/1.6.8',
+      'Content-Length': '1712',
+      'Accept-Encoding': 'gzip, compress, deflate, br'
+    },
+    method: 'post',
+    url: 'https://quote-api.jup.ag/v6/swap',
+    data: '{"userPublicKey":"3XbTJ9zPEt9gA5g1zjp5XeRWgVL1vhGRBdtW6NFGM3NF","wrapAndUnwrapSol":true,"useSharedAccounts":true,"prioritizationFeeLamports":25000,"asLegacyTransaction":false,"useTokenLedger":false,"destinationTokenAccount":"Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum","dynamicComputeUnitLimit":true,"skipUserAccountsRpcCalls":true,"quoteResponse":{"inputMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG","inAmount":"1547907889","outputMint":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","outAmount":"33119","otherAmountThreshold":"332","swapMode":"ExactIn","slippageBps":9900,"platformFee":null,"priceImpactPct":"0","routePlan":[{"swapInfo":{"ammKey":"4hnNaMpBkAHpcWLQzbKzJZEb4N4RcDNRMTKsU1aERgbZ","label":"Raydium","inputMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG","outputMint":"So11111111111111111111111111111111111111112","inAmount":"1547907889","outAmount":"190313","feeAmount":"3869769","feeMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG"},"percent":100},{"swapInfo":{"ammKey":"6zRpisJTLQE8m3oymbrXhrUpyWmCisDcgXXbgykdrcNp","label":"Raydium","inputMint":"So11111111111111111111111111111111111111112","outputMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My","inAmount":"190313","outAmount":"85334977","feeAmount":"475","feeMint":"So11111111111111111111111111111111111111112"},"percent":100},{"swapInfo":{"ammKey":"6kGFSgWyfyzE2XcSp6tHrRLMdZnW7APiGSLqcRQvqdRn","label":"Meteora DLMM","inputMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My","outputMint":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","inAmount":"85334977","outAmount":"33119","feeAmount":"854950","feeMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My"},"percent":100}],"contextSlot":267536020,"timeTaken":0.083066049}}'
+  },
+  request: <ref *1> ClientRequest {
+    _events: [Object: null prototype] {
+      abort: [Function (anonymous)],
+      aborted: [Function (anonymous)],
+      connect: [Function (anonymous)],
+      error: [Function (anonymous)],
+      socket: [Function (anonymous)],
+      timeout: [Function (anonymous)],
+      finish: [Function: requestOnFinish]
+    },
+    _eventsCount: 7,
+    _maxListeners: undefined,
+    outputData: [],
+    outputSize: 0,
+    writable: true,
+    destroyed: false,
+    _last: true,
+    chunkedEncoding: false,
+    shouldKeepAlive: false,
+    maxRequestsOnConnectionReached: false,
+    _defaultKeepAlive: true,
+    useChunkedEncodingByDefault: true,
+    sendDate: false,
+    _removedConnection: false,
+    _removedContLen: false,
+    _removedTE: false,
+    strictContentLength: false,
+    _contentLength: '1712',
+    _hasBody: true,
+    _trailer: '',
+    finished: true,
+    _headerSent: true,
+    _closed: false,
+    socket: TLSSocket {
+      _tlsOptions: [Object],
+      _secureEstablished: true,
+      _securePending: false,
+      _newSessionPending: false,
+      _controlReleased: true,
+      secureConnecting: false,
+      _SNICallback: null,
+      servername: 'quote-api.jup.ag',
+      alpnProtocol: false,
+      authorized: true,
+      authorizationError: null,
+      encrypted: true,
+      _events: [Object: null prototype],
+      _eventsCount: 10,
+      connecting: false,
+      _hadError: false,
+      _parent: null,
+      _host: 'quote-api.jup.ag',
+      _closeAfterHandlingError: false,
+      _readableState: [ReadableState],
+      _maxListeners: undefined,
+      _writableState: [WritableState],
+      allowHalfOpen: false,
+      _sockname: null,
+      _pendingData: null,
+      _pendingEncoding: '',
+      server: undefined,
+      _server: null,
+      ssl: [TLSWrap],
+      _requestCert: true,
+      _rejectUnauthorized: true,
+      parser: null,
+      _httpMessage: [Circular *1],
+      [Symbol(alpncallback)]: null,
+      [Symbol(res)]: [TLSWrap],
+      [Symbol(verified)]: true,
+      [Symbol(pendingSession)]: null,
+      [Symbol(async_id_symbol)]: 5430,
+      [Symbol(kHandle)]: [TLSWrap],
+      [Symbol(lastWriteQueueSize)]: 0,
+      [Symbol(timeout)]: null,
+      [Symbol(kBuffer)]: null,
+      [Symbol(kBufferCb)]: null,
+      [Symbol(kBufferGen)]: null,
+      [Symbol(kCapture)]: false,
+      [Symbol(kSetNoDelay)]: false,
+      [Symbol(kSetKeepAlive)]: true,
+      [Symbol(kSetKeepAliveInitialDelay)]: 60,
+      [Symbol(kBytesRead)]: 0,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(connect-options)]: [Object]
+    },
+    _header: 'POST /v6/swap HTTP/1.1\r\n' +
+      'Accept: application/json\r\n' +
+      'Content-Type: application/json\r\n' +
+      'User-Agent: axios/1.6.8\r\n' +
+      'Content-Length: 1712\r\n' +
+      'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+      'Host: quote-api.jup.ag\r\n' +
+      'Connection: close\r\n' +
+      '\r\n',
+    _keepAliveTimeout: 0,
+    _onPendingData: [Function: nop],
+    agent: Agent {
+      _events: [Object: null prototype],
+      _eventsCount: 2,
+      _maxListeners: undefined,
+      defaultPort: 443,
+      protocol: 'https:',
+      options: [Object: null prototype],
+      requests: [Object: null prototype] {},
+      sockets: [Object: null prototype],
+      freeSockets: [Object: null prototype] {},
+      keepAliveMsecs: 1000,
+      keepAlive: false,
+      maxSockets: Infinity,
+      maxFreeSockets: 256,
+      scheduling: 'lifo',
+      maxTotalSockets: Infinity,
+      totalSocketCount: 1,
+      maxCachedSessions: 100,
+      _sessionCache: [Object],
+      [Symbol(kCapture)]: false
+    },
+    socketPath: undefined,
+    method: 'POST',
+    maxHeaderSize: undefined,
+    insecureHTTPParser: undefined,
+    joinDuplicateHeaders: undefined,
+    path: '/v6/swap',
+    _ended: true,
+    res: IncomingMessage {
+      _readableState: [ReadableState],
+      _events: [Object: null prototype],
+      _eventsCount: 4,
+      _maxListeners: undefined,
+      socket: [TLSSocket],
+      httpVersionMajor: 1,
+      httpVersionMinor: 1,
+      httpVersion: '1.1',
+      complete: true,
+      rawHeaders: [Array],
+      rawTrailers: [],
+      joinDuplicateHeaders: undefined,
+      aborted: false,
+      upgrade: false,
+      url: '',
+      method: null,
+      statusCode: 400,
+      statusMessage: 'Bad Request',
+      client: [TLSSocket],
+      _consuming: false,
+      _dumped: false,
+      req: [Circular *1],
+      responseUrl: 'https://quote-api.jup.ag/v6/swap',
+      redirects: [],
+      [Symbol(kCapture)]: false,
+      [Symbol(kHeaders)]: [Object],
+      [Symbol(kHeadersCount)]: 30,
+      [Symbol(kTrailers)]: null,
+      [Symbol(kTrailersCount)]: 0
+    },
+    aborted: false,
+    timeoutCb: null,
+    upgradeOrConnect: false,
+    parser: null,
+    maxHeadersCount: null,
+    reusedSocket: false,
+    host: 'quote-api.jup.ag',
+    protocol: 'https:',
+    _redirectable: Writable {
+      _writableState: [WritableState],
+      _events: [Object: null prototype],
+      _eventsCount: 3,
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 1712,
+      _requestBodyBuffers: [],
+      _onNativeResponse: [Function (anonymous)],
+      _currentRequest: [Circular *1],
+      _currentUrl: 'https://quote-api.jup.ag/v6/swap',
+      [Symbol(kCapture)]: false
+    },
+    [Symbol(kCapture)]: false,
+    [Symbol(kBytesWritten)]: 0,
+    [Symbol(kNeedDrain)]: false,
+    [Symbol(corked)]: 0,
+    [Symbol(kOutHeaders)]: [Object: null prototype] {
+      accept: [Array],
+      'content-type': [Array],
+      'user-agent': [Array],
+      'content-length': [Array],
+      'accept-encoding': [Array],
+      host: [Array]
+    },
+    [Symbol(errored)]: null,
+    [Symbol(kHighWaterMark)]: 16384,
+    [Symbol(kRejectNonStandardBodyWrites)]: false,
+    [Symbol(kUniqueHeaders)]: null
+  },
+  response: {
+    status: 400,
+    statusText: 'Bad Request',
+    headers: Object [AxiosHeaders] {
+      date: 'Thu, 23 May 2024 18:19:23 GMT',
+      'content-type': 'application/json',
+      'content-length': '104',
+      connection: 'close',
+      'cf-ray': '88870dcc6a8c60d2-MAD',
+      'cf-cache-status': 'DYNAMIC',
+      'access-control-allow-origin': '*',
+      via: '1.1 google',
+      'access-control-allow-headers': '*',
+      'access-control-max-age': '86400',
+      'access-control-request-method': 'GET, POST, OPTIONS',
+      'alt-svc': 'h3=":443"; ma=86400',
+      m: '',
+      vary: 'Accept-Encoding',
+      server: 'cloudflare'
+    },
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 0,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://quote-api.jup.ag/v6/swap',
+      data: '{"userPublicKey":"3XbTJ9zPEt9gA5g1zjp5XeRWgVL1vhGRBdtW6NFGM3NF","wrapAndUnwrapSol":true,"useSharedAccounts":true,"prioritizationFeeLamports":25000,"asLegacyTransaction":false,"useTokenLedger":false,"destinationTokenAccount":"Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum","dynamicComputeUnitLimit":true,"skipUserAccountsRpcCalls":true,"quoteResponse":{"inputMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG","inAmount":"1547907889","outputMint":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","outAmount":"33119","otherAmountThreshold":"332","swapMode":"ExactIn","slippageBps":9900,"platformFee":null,"priceImpactPct":"0","routePlan":[{"swapInfo":{"ammKey":"4hnNaMpBkAHpcWLQzbKzJZEb4N4RcDNRMTKsU1aERgbZ","label":"Raydium","inputMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG","outputMint":"So11111111111111111111111111111111111111112","inAmount":"1547907889","outAmount":"190313","feeAmount":"3869769","feeMint":"vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG"},"percent":100},{"swapInfo":{"ammKey":"6zRpisJTLQE8m3oymbrXhrUpyWmCisDcgXXbgykdrcNp","label":"Raydium","inputMint":"So11111111111111111111111111111111111111112","outputMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My","inAmount":"190313","outAmount":"85334977","feeAmount":"475","feeMint":"So11111111111111111111111111111111111111112"},"percent":100},{"swapInfo":{"ammKey":"6kGFSgWyfyzE2XcSp6tHrRLMdZnW7APiGSLqcRQvqdRn","label":"Meteora DLMM","inputMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My","outputMint":"EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v","inAmount":"85334977","outAmount":"33119","feeAmount":"854950","feeMint":"8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My"},"percent":100}],"contextSlot":267536020,"timeTaken":0.083066049}}'
+    },
+    request: <ref *1> ClientRequest {
+      _events: [Object: null prototype],
+      _eventsCount: 7,
+      _maxListeners: undefined,
+      outputData: [],
+      outputSize: 0,
+      writable: true,
+      destroyed: false,
+      _last: true,
+      chunkedEncoding: false,
+      shouldKeepAlive: false,
+      maxRequestsOnConnectionReached: false,
+      _defaultKeepAlive: true,
+      useChunkedEncodingByDefault: true,
+      sendDate: false,
+      _removedConnection: false,
+      _removedContLen: false,
+      _removedTE: false,
+      strictContentLength: false,
+      _contentLength: '1712',
+      _hasBody: true,
+      _trailer: '',
+      finished: true,
+      _headerSent: true,
+      _closed: false,
+      socket: [TLSSocket],
+      _header: 'POST /v6/swap HTTP/1.1\r\n' +
+        'Accept: application/json\r\n' +
+        'Content-Type: application/json\r\n' +
+        'User-Agent: axios/1.6.8\r\n' +
+        'Content-Length: 1712\r\n' +
+        'Accept-Encoding: gzip, compress, deflate, br\r\n' +
+        'Host: quote-api.jup.ag\r\n' +
+        'Connection: close\r\n' +
+        '\r\n',
+      _keepAliveTimeout: 0,
+      _onPendingData: [Function: nop],
+      agent: [Agent],
+      socketPath: undefined,
+      method: 'POST',
+      maxHeaderSize: undefined,
+      insecureHTTPParser: undefined,
+      joinDuplicateHeaders: undefined,
+      path: '/v6/swap',
+      _ended: true,
+      res: [IncomingMessage],
+      aborted: false,
+      timeoutCb: null,
+      upgradeOrConnect: false,
+      parser: null,
+      maxHeadersCount: null,
+      reusedSocket: false,
+      host: 'quote-api.jup.ag',
+      protocol: 'https:',
+      _redirectable: [Writable],
+      [Symbol(kCapture)]: false,
+      [Symbol(kBytesWritten)]: 0,
+      [Symbol(kNeedDrain)]: false,
+      [Symbol(corked)]: 0,
+      [Symbol(kOutHeaders)]: [Object: null prototype],
+      [Symbol(errored)]: null,
+      [Symbol(kHighWaterMark)]: 16384,
+      [Symbol(kRejectNonStandardBodyWrites)]: false,
+      [Symbol(kUniqueHeaders)]: null
+    },
+    data: {
+      errorCode: 'MARKET_NOT_FOUND',
+      error: 'Market 6kGFSgWyfyzE2XcSp6tHrRLMdZnW7APiGSLqcRQvqdRn not found'
+    }
+  }
+}
+No signature returned from swap operation. Retrying...
+INFO: Performing swap from 1547.9078894000002 of vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 1547.9078894000002
+TOKEN BALANCE to be swapped: 1547907889
+Requesting quote with parameters: {
+  inputMint: 'vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '1547907889',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG",
+  "inAmount": "1547907889",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "33556",
+  "otherAmountThreshold": "336",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4hnNaMpBkAHpcWLQzbKzJZEb4N4RcDNRMTKsU1aERgbZ",
+        "label": "Raydium",
+        "inputMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "1547907889",
+        "outAmount": "190313",
+        "feeAmount": "3869769",
+        "feeMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "APzLpjwMQ5BfKoTrsT786Kdx6rcbih1ZqVXhyWg8xgLC",
+        "label": "Meteora",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT",
+        "inAmount": "190313",
+        "outAmount": "143539177644",
+        "feeAmount": "1903",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "GGnQoeJ6oBwn1hqj9BbqDECDzrdUbMSgNYDao2ZsUpg9",
+        "label": "Whirlpool",
+        "inputMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "143539177644",
+        "outAmount": "33556",
+        "feeAmount": "86123506",
+        "feeMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536020,
+  "timeTaken": 0.082727707
+}
+Associated token account Bkbkn71kFKXPG1QCMR5UNZuUFsYzC2Rw1QC44gtSRpsh already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Error processing swap transaction: SendTransactionError: failed to send transaction: Transaction simulation failed: Blockhash not found
+    at Connection.sendEncodedTransaction (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/@solana/web3.js/src/connection.ts:5923:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.sendRawTransaction (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/@solana/web3.js/src/connection.ts:5880:20) {
+  logs: []
+}
+Error during token to SOL swap process: SendTransactionError: failed to send transaction: Transaction simulation failed: Blockhash not found
+    at Connection.sendEncodedTransaction (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/@solana/web3.js/src/connection.ts:5923:13)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at async Connection.sendRawTransaction (/root/project/solana-trading-bot/jupiter-trading-bot/node_modules/@solana/web3.js/src/connection.ts:5880:20) {
+  logs: []
+}
+No signature returned from swap operation. Retrying...
+INFO: Performing swap from 1547.9078894000002 of vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 1547.9078894000002
+Server responded with 429 Too Many Requests.  Retrying after 500ms delay...
+TOKEN BALANCE to be swapped: 1547907889
+Requesting quote with parameters: {
+  inputMint: 'vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '1547907889',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG",
+  "inAmount": "1547907889",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "33556",
+  "otherAmountThreshold": "336",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4hnNaMpBkAHpcWLQzbKzJZEb4N4RcDNRMTKsU1aERgbZ",
+        "label": "Raydium",
+        "inputMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "1547907889",
+        "outAmount": "190313",
+        "feeAmount": "3869769",
+        "feeMint": "vsJjNRpRvFJbzfJuqbmKHfuqqNbcXhZKpqZDrz9zxWG"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "APzLpjwMQ5BfKoTrsT786Kdx6rcbih1ZqVXhyWg8xgLC",
+        "label": "Meteora",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT",
+        "inAmount": "190313",
+        "outAmount": "143539177644",
+        "feeAmount": "1903",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "GGnQoeJ6oBwn1hqj9BbqDECDzrdUbMSgNYDao2ZsUpg9",
+        "label": "Whirlpool",
+        "inputMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "143539177644",
+        "outAmount": "33556",
+        "feeAmount": "86123506",
+        "feeMint": "7AL9fsasEgYjoKKHbFGRYbrPHDX3sAywybvLuxmANogT"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536022,
+  "timeTaken": 0.084840738
+}
+Associated token account Bkbkn71kFKXPG1QCMR5UNZuUFsYzC2Rw1QC44gtSRpsh already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+preparing to sell 4218.9531599 of GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay
+INFO: Performing swap from 4218.9531599 of GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 4218.9531599
+TOKEN BALANCE to be swapped: 4218953159
+Requesting quote with parameters: {
+  inputMint: 'GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '4218953159',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay",
+  "inAmount": "4218953159",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "102442",
+  "otherAmountThreshold": "1025",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "A9Xmrixh4hGnDyHNctvuk9DMhtoLvBrDd4S41R2Mb3Pf",
+        "label": "Raydium",
+        "inputMint": "GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "4218953159",
+        "outAmount": "592523",
+        "feeAmount": "10547382",
+        "feeMint": "GWjfAUukqifx78c3DGxy6XkgSBqy2RcWxLAFE8fpJHay"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "7eEq58YoaHEnsF4PBtG18X5TuBQYGE2ogkuaByUFjAKn",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "FkbWN4dcFQym2PgCELfThghQqLuA2e2jThMJyhZjfG4M",
+        "inAmount": "592523",
+        "outAmount": "32267212",
+        "feeAmount": "1481",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "CVu4CPsN5qbUwWGrsMsccdYiJCSnZAF8XRM8Wwvja9yD",
+        "label": "Whirlpool",
+        "inputMint": "FkbWN4dcFQym2PgCELfThghQqLuA2e2jThMJyhZjfG4M",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "32267212",
+        "outAmount": "102442",
+        "feeAmount": "41947",
+        "feeMint": "FkbWN4dcFQym2PgCELfThghQqLuA2e2jThMJyhZjfG4M"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536033,
+  "timeTaken": 0.058223026
+}
+Associated token account 8MGHPaNdzLBgej3w9VPbStsKtcSjfEx1p5g7TX48HxaF already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 3EmT3aFLXFvh4BQ6DZGgEtiBze6jJkaBqArJPvbmpSGZ8KuxGJBCsC6FTXurk5QMK5gnraeVSiQyQvVV4ppiK6nb
+Swap transaction was sent. Signature: 3EmT3aFLXFvh4BQ6DZGgEtiBze6jJkaBqArJPvbmpSGZ8KuxGJBCsC6FTXurk5QMK5gnraeVSiQyQvVV4ppiK6nb
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '3EmT3aFLXFvh4BQ6DZGgEtiBze6jJkaBqArJPvbmpSGZ8KuxGJBCsC6FTXurk5QMK5gnraeVSiQyQvVV4ppiK6nb',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID vd6rx6rtix
+Sending signed transaction to the network...
+Transaction sent, signature: 5EKWzyNSbhBSYmr36bDjLMjPdEDSEfjXHyjpNt3ZgH4d7pomHoGA6wnXms35CuVJGm1G2sfN9eU1191jHazALPj9
+Swap transaction was sent. Signature: 5EKWzyNSbhBSYmr36bDjLMjPdEDSEfjXHyjpNt3ZgH4d7pomHoGA6wnXms35CuVJGm1G2sfN9eU1191jHazALPj9
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '5EKWzyNSbhBSYmr36bDjLMjPdEDSEfjXHyjpNt3ZgH4d7pomHoGA6wnXms35CuVJGm1G2sfN9eU1191jHazALPj9',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID pa1ms4zswxj
+preparing to sell 1607.5456498 of 6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq
+INFO: Performing swap from 1607.5456498 of 6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 1607.5456498
+TOKEN BALANCE to be swapped: 1607545649
+Requesting quote with parameters: {
+  inputMint: '6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '1607545649',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq",
+  "inAmount": "1607545649",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "120890",
+  "otherAmountThreshold": "1209",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "6NohajJPcyaf8gZqgSWdHcwMF5m24raAJaoFt5z9K72y",
+        "label": "Raydium",
+        "inputMint": "6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "1607545649",
+        "outAmount": "697785",
+        "feeAmount": "4018864",
+        "feeMint": "6zpfe7HVj1zN4nJ2suhCdGvA5V2PCjxXFot9FZgSyNoq"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "AzuFuRCn2WWJXSsW2CEHqR9ZCU3QhkFjE8y5cR8QBfx",
+        "label": "Meteora",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "AeNg6DaCAjNpK7CvkSC6c9j5g8YFSp78aTQxejaNRNcz",
+        "inAmount": "697785",
+        "outAmount": "12375103",
+        "feeAmount": "41867",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "DzPixwJ5YKDDoNvgRS2TnWcZohbi7cuUL1DmJGZEoVTp",
+        "label": "Whirlpool",
+        "inputMint": "AeNg6DaCAjNpK7CvkSC6c9j5g8YFSp78aTQxejaNRNcz",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "12375103",
+        "outAmount": "120890",
+        "feeAmount": "7425",
+        "feeMint": "AeNg6DaCAjNpK7CvkSC6c9j5g8YFSp78aTQxejaNRNcz"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536037,
+  "timeTaken": 0.386829926
+}
+Associated token account APc615YqPDBq5jvEHd9hmudpxqKjTd1g7uiR9XmmxWs6 already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 2n8xC5Lsceo5mUkcxeo9Jjr1xWMuX5odoPBn3gAMREYfXNJf7Vx2bdu5JcGuu5PCvKjFPz38p3j6yFdqU3MFuZPJ
+Swap transaction was sent. Signature: 2n8xC5Lsceo5mUkcxeo9Jjr1xWMuX5odoPBn3gAMREYfXNJf7Vx2bdu5JcGuu5PCvKjFPz38p3j6yFdqU3MFuZPJ
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '2n8xC5Lsceo5mUkcxeo9Jjr1xWMuX5odoPBn3gAMREYfXNJf7Vx2bdu5JcGuu5PCvKjFPz38p3j6yFdqU3MFuZPJ',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID yccr4t7ldhq
+preparing to sell 3565.7563387000005 of 5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj
+INFO: Performing swap from 3565.7563387000005 of 5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 3565.7563387000005
+TOKEN BALANCE to be swapped: 3565756338
+Requesting quote with parameters: {
+  inputMint: '5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '3565756338',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj",
+  "inAmount": "3565756338",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "81706",
+  "otherAmountThreshold": "818",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "2b8cDrsQ9zNnbmyPRD1nYp5K2hw76HUU1b6rLchvR3MR",
+        "label": "Raydium",
+        "inputMint": "5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "3565756338",
+        "outAmount": "469636",
+        "feeAmount": "8914390",
+        "feeMint": "5jb4AYViuomfHD1bgbhxFcDagEbM5UNYWwbbYbiZkwdj"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "6zRpisJTLQE8m3oymbrXhrUpyWmCisDcgXXbgykdrcNp",
+        "label": "Raydium",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My",
+        "inAmount": "469636",
+        "outAmount": "210581361",
+        "feeAmount": "1174",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "6kGFSgWyfyzE2XcSp6tHrRLMdZnW7APiGSLqcRQvqdRn",
+        "label": "Meteora DLMM",
+        "inputMint": "8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "210581361",
+        "outAmount": "81706",
+        "feeAmount": "2168989",
+        "feeMint": "8A7NPmnpqawyqspqim4hpD18sWTJxM1gaERPHN3k87My"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536045,
+  "timeTaken": 0.101279814
+}
+Associated token account F84tFkdtEVo1mw5FaVmL1THJbjHV3uQ4NL17fTU61zfx already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 2yVBnwqJZ67vYVUYpA3NbCxk3DrP9sRi2FrnVyuf35e5uP3743hyHbtkKmVQimbk2iAWNax7nHY7jxbyn7tvVGFi
+Swap transaction was sent. Signature: 2yVBnwqJZ67vYVUYpA3NbCxk3DrP9sRi2FrnVyuf35e5uP3743hyHbtkKmVQimbk2iAWNax7nHY7jxbyn7tvVGFi
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '2yVBnwqJZ67vYVUYpA3NbCxk3DrP9sRi2FrnVyuf35e5uP3743hyHbtkKmVQimbk2iAWNax7nHY7jxbyn7tvVGFi',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID 6wdsd0bpwzq
+preparing to sell 649.3681497628 of HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw
+INFO: Performing swap from 649.3681497628 of HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 649.3681497628
+TOKEN BALANCE to be swapped: 649368149762
+Requesting quote with parameters: {
+  inputMint: 'HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '649368149762',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw",
+  "inAmount": "649368149762",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "25109",
+  "otherAmountThreshold": "252",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "JCB6ZZRRrob4YeK2mM4UFsABWfqmVW2qAkiVbV8KLpxq",
+        "label": "Raydium",
+        "inputMint": "HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "649368149762",
+        "outAmount": "144482",
+        "feeAmount": "1623420374",
+        "feeMint": "HVT71CWBGmWHzGLTqEWA52GWEVQJNX38dYhbesUb6Czw"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "E5tLAoEfH9LSYtw2x8i82JuDj5Gd2S6ZZFx4KB4xWqE",
+        "label": "Raydium CLMM",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ",
+        "inAmount": "144482",
+        "outAmount": "45500",
+        "feeAmount": "63",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "F4VMg5gSNa9vuEJ16a57r1gAKSVfqWgK5Muk4RN3C1nq",
+        "label": "Meteora DLMM",
+        "inputMint": "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "45500",
+        "outAmount": "25109",
+        "feeAmount": "910",
+        "feeMint": "85VBFQZC9TZkfaptBWjvUw7YbZjy52A6mjtPGjstQAmQ"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536058,
+  "timeTaken": 0.070686325
+}
+Associated token account FVExbhJfumMFLyYnzaKjrww8GcsBgLJfegHQ6t37mp9V already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 4oL3UZDRAqiRY8fAsVPQrhKfuF19ninQnEkbyivWW5svnRXsNUPYdrseKUcqpykc9NBEs9hTekZS8JRY4RRcRjpH
+Swap transaction was sent. Signature: 4oL3UZDRAqiRY8fAsVPQrhKfuF19ninQnEkbyivWW5svnRXsNUPYdrseKUcqpykc9NBEs9hTekZS8JRY4RRcRjpH
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '4oL3UZDRAqiRY8fAsVPQrhKfuF19ninQnEkbyivWW5svnRXsNUPYdrseKUcqpykc9NBEs9hTekZS8JRY4RRcRjpH',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID 64wihiu2dcw
+preparing to sell 1929.4475144375 of CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV
+INFO: Performing swap from 1929.4475144375 of CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 1929.4475144375
+TOKEN BALANCE to be swapped: 1929447514437
+Requesting quote with parameters: {
+  inputMint: 'CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '1929447514437',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV",
+  "inAmount": "1929447514437",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "18110",
+  "otherAmountThreshold": "182",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "38ZdtAXiAdRAvUTUqADBEvpnKadBvhE1p3xe3zw3Hcei",
+        "label": "Raydium",
+        "inputMint": "CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "1929447514437",
+        "outAmount": "103168",
+        "feeAmount": "4823618786",
+        "feeMint": "CKj1Pgp33krD2R6jjzFB1SgFkKPyh9WMrAZ4x1pim5eV"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "JSoLLrxK5bYdHwTEWYaGgmeycBCNXKDiBCTw5hXGBg7",
+        "label": "Saber",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn",
+        "inAmount": "103168",
+        "outAmount": "92052",
+        "feeAmount": "36",
+        "feeMint": "7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "7e8GrkwsRm5sS5UaKobLJUNu9esmrzg37dqX6aQyuver",
+        "label": "Raydium",
+        "inputMint": "7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "92052",
+        "outAmount": "18110",
+        "feeAmount": "230",
+        "feeMint": "7Q2afV64in6N6SeZsAAB81TJzwDoD6zpqmHkzi9Dcavn"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536057,
+  "timeTaken": 0.093598261
+}
+Associated token account 37fNxoQchy4Qy5hdN7HvAtkCxLAWRqkhVc439kdvk57r already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 4JozpHigkyy1nmWLTPzqpTj1VJAbS7zYC468ZypFKj7K52FYGE2cjtZyTdeomzX4kURHHN9oYJUXSknKow4Q569E
+Swap transaction was sent. Signature: 4JozpHigkyy1nmWLTPzqpTj1VJAbS7zYC468ZypFKj7K52FYGE2cjtZyTdeomzX4kURHHN9oYJUXSknKow4Q569E
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '4JozpHigkyy1nmWLTPzqpTj1VJAbS7zYC468ZypFKj7K52FYGE2cjtZyTdeomzX4kURHHN9oYJUXSknKow4Q569E',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID 1tvuiv3e77q
+preparing to sell 823.7290210112001 of 3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc
+INFO: Performing swap from 823.7290210112001 of 3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc to SOL...
+DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: 823.7290210112001
+TOKEN BALANCE to be swapped: 823729021011
+Requesting quote with parameters: {
+  inputMint: '3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc',
+  outputMint: 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v',
+  amount: '823729021011',
+  slippageBps: 9900
+}
+Received swap quote response: {
+  "inputMint": "3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc",
+  "inAmount": "823729021011",
+  "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "outAmount": "52943",
+  "otherAmountThreshold": "530",
+  "swapMode": "ExactIn",
+  "slippageBps": 9900,
+  "platformFee": null,
+  "priceImpactPct": "0",
+  "routePlan": [
+    {
+      "swapInfo": {
+        "ammKey": "4uYVRN85Vk3a39z9zNg6Lr6VBiu5nbsUT8dSrf6YMVTE",
+        "label": "Raydium",
+        "inputMint": "3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc",
+        "outputMint": "So11111111111111111111111111111111111111112",
+        "inAmount": "823729021011",
+        "outAmount": "305736",
+        "feeAmount": "2059322552",
+        "feeMint": "3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "GGa9ZubMSv5eFZRq7mYvdqjwaG1jvLYDFbfW15ZH7X16",
+        "label": "Meteora DLMM",
+        "inputMint": "So11111111111111111111111111111111111111112",
+        "outputMint": "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq",
+        "inAmount": "305736",
+        "outAmount": "121773",
+        "feeAmount": "459",
+        "feeMint": "So11111111111111111111111111111111111111112"
+      },
+      "percent": 100
+    },
+    {
+      "swapInfo": {
+        "ammKey": "B8qYT1PVcgkzsUt8PF3GQkqfpvEUaBnH5Byr1NoobVsU",
+        "label": "Whirlpool",
+        "inputMint": "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq",
+        "outputMint": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+        "inAmount": "121773",
+        "outAmount": "52943",
+        "feeAmount": "47",
+        "feeMint": "ZEUS1aR7aX8DFFJf5QjWj2ftDDdNTroMNGo8YoQm3Gq"
+      },
+      "percent": 100
+    }
+  ],
+  "contextSlot": 267536070,
+  "timeTaken": 0.072613296
+}
+Associated token account HzfZ4ZXVJXEytDEKazGSMahzCXFztxHxS4RWjyyXitUZ already exists.
+Associated token account Q74fQN6yisHXYGBjpCBhyzoLZdQNawGXYXRmJX1Cxum already exists.
+Preparing payload for the swap transaction...
+Sending POST request to execute swap...
+Sending signed transaction to the network...
+Transaction sent, signature: 4qK6niemfHbZDo8uNss2TGugFCFvJwdmSMsDPjuofvKioX96gaKLAuWR7pUwjewSxztGhdKw2hU6pPADQgpQvkk
+Swap transaction was sent. Signature: 4qK6niemfHbZDo8uNss2TGugFCFvJwdmSMsDPjuofvKioX96gaKLAuWR7pUwjewSxztGhdKw2hU6pPADQgpQvkk
+Subscription request sent: {
+  jsonrpc: '2.0',
+  id: 1,
+  method: 'signatureSubscribe',
+  params: [
+    '4qK6niemfHbZDo8uNss2TGugFCFvJwdmSMsDPjuofvKioX96gaKLAuWR7pUwjewSxztGhdKw2hU6pPADQgpQvkk',
+    { commitment: 'finalized' }
+  ]
+}
+Stored subscription data for ID afkfv2cfl9a
+All operations completed successfully.
+Fetched new prices from API for chunk
+Fetched new prices from API for chunk
+^CMongoClient closed

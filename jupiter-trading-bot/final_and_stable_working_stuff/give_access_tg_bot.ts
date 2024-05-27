@@ -6,7 +6,7 @@ async function main() {
     
     const db = getDatabase("sniperbot-tg");
 
-    const telegramId = "2118422500";
+    const telegramId = "465136049";
 
 
     await addTelegramIdToAccessList(parseFloat(telegramId), db);

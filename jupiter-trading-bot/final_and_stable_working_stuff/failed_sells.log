@@ -1,0 +1,6 @@
+[2024-05-27T13:32:55.162Z]
+Wallet: Main Wallet
+Token: A1m1N9dx8t2617SEkfNLZtpjRZrYE3BNTPUDYFhLpjFT
+Token amount sold: 712032.017968
+Error: Error catched inside pre_and_post_sell_operations_v2:
+No tokens received or transaction is not confirmed

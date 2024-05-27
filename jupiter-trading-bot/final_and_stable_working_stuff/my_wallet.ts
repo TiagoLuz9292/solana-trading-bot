@@ -6,7 +6,7 @@ getAllBalances()
 import dotenv from "dotenv";
 import WebSocket from 'ws';
 import csv from 'csv-parser';
-import {get_token_prices, get_token_price} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/transaction_manager';
+import {get_token_prices, get_token_price, sell_all} from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/transaction_manager';
 import { writeFile, access } from 'fs/promises';
 import { promises as fs } from 'fs';
 import { parse } from 'csv-parse/sync';
@@ -15,10 +15,12 @@ export { getAllBalances, getTokenBalance, get_SOL_balance as refresh_SOL_and_USD
 import { Keypair, Connection, PublicKey, LAMPORTS_PER_SOL, TokenAccountsFilter } from "@solana/web3.js";
 import { getAssociatedTokenAddress, TOKEN_PROGRAM_ID } from "@solana/spl-token";
 import { time } from 'console';
-import { send_USDC, pay_taxes, pre_and_post_sell_operations_for_ACTIVE_wallets, pre_and_post_sell_operations_v2_emergency } from './jupiter_swap_STABLE_VERSION';
-import { connectToDatabase, findWalletByTelegramId, getAllOpenOrders, getDatabase } from "./mongoDB_connection";
+import { send_USDC, pay_taxes, pre_and_post_sell_operations_for_ACTIVE_wallets, pre_and_post_sell_operations_v2_emergency, pre_and_post_buy_operations_for_ACTIVATED_wallets } from './jupiter_swap_STABLE_VERSION';
+import { connectToDatabase, deactivateWallet_buyer, deactivateWallet_seller, findAllWallets, findWalletByTelegramId, getAllOpenOrders, getDatabase } from "./mongoDB_connection";
 import axios from "axios";
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
+import redisClient, { connectRedis, disconnectRedis } from './redisClient';
+
 
 
 dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
@@ -329,20 +331,34 @@ async function processTransactions(): Promise<void> {
     
 }
 
+
+
+
 async function getAmountInUSD(solAmount: number): Promise<number> {
-    //const url = "https://public-api.birdeye.so/public/price?address=So11111111111111111111111111111111111111112";
-    //const headers = { "X-API-KEY": "eccc7565cb0c42ff85c19b64a640d41f" };
     
     try {
-        //const response = await axios.get(url, { headers });
-        //await delay(1000);
-        //const solPrice = response.data.data.value;
+       
         const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
         console.log(`SOL Price: ${solPrice}`);
 
         // Calculate the amount in USD for the given amount of SOL
         const usdAmount = solAmount * solPrice;
         return usdAmount;
+    } catch (error) {
+        console.error("Error fetching SOL price", error);
+        throw error;
+    }
+}
+
+export async function getSolPrice(): Promise<number> {
+    
+    try {
+       
+        const solPrice = await get_token_price("So11111111111111111111111111111111111111112");
+        console.log(`SOL Price: ${solPrice}`);
+
+        
+        return solPrice;
     } catch (error) {
         console.error("Error fetching SOL price", error);
         throw error;
@@ -395,22 +411,7 @@ function delay(ms: number) {
 function sleep(milliseconds: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
-//processTransactions();
-//setInterval(processTransactions, 20000);
 
-
-// Refresh balances and then print them
-
-/*
-refreshBalances().then(() => {
-    console.log('Balance')
-    
-    printAllBalances(); // Print all token balances after refreshing
-});
-
-*/
-
-//getTokenBalance("EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
 
 
 export async function getAllBalances_v2(wallet: Keypair, retryCount = 3): Promise<{ [address: string]: number | undefined }> {
@@ -480,6 +481,7 @@ export async function get_wallet_balances_in_usd(wallet: Keypair) {
     let tokens_USD_value = 0; // To accumulate the total USD value
     let USDC_value = 0;
     let USDT_value = 0;
+    let tokenDetailsArray: string[] = [];
     for (const tokenAddress of tokenAddresses) {
         if (tokenAddress == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
             USDC_value = balances[tokenAddress];
@@ -495,6 +497,7 @@ export async function get_wallet_balances_in_usd(wallet: Keypair) {
             const usdValue = balance * price;
             tokens_USD_value += usdValue; // Add to total USD invested
             tokenValues.push({ tokenAddress, usdValue, balance });
+            tokenDetailsArray.push(`${tokenAddress}\nUSD Value: $${usdValue.toFixed(2)}\nBalance: ${balance.toFixed(2)}\n`);
         }
     }
 
@@ -507,7 +510,8 @@ export async function get_wallet_balances_in_usd(wallet: Keypair) {
     });
     
     const sol_value_in_USD = await getAmountInUSD(sol_balance);
-    const totalUSDInvested = (tokens_USD_value + USDC_value + sol_value_in_USD).toFixed(2);
+    const totalUSDInvested = parseFloat((tokens_USD_value + USDC_value + sol_value_in_USD).toFixed(2));
+    const tokenDetails = tokenDetailsArray.join('\n');
     
 
     return {
@@ -516,7 +520,8 @@ export async function get_wallet_balances_in_usd(wallet: Keypair) {
         USDC_value,
         USDT_value,
         tokens_USD_value,
-        totalUSDInvested
+        totalUSDInvested,
+        tokenDetails
     };
 
 }
@@ -589,6 +594,9 @@ export async function withdraw_USDC(usdc_amount: number, destinationAddress: str
     return signature;
 }
 
+
+
+
 export async function pay_all_taxes(usdc_amount: number, wallet: Keypair): Promise<string> {
     console.log("calling pay_taxes of jupiter_swap script");
     const signature = await pay_taxes(usdc_amount, wallet);
@@ -597,89 +605,90 @@ export async function pay_all_taxes(usdc_amount: number, wallet: Keypair): Promi
 
 
 export async function get_wallet_balances_in_usd_v2(wallet: Keypair) {
-    const balances = (await getAllBalances_v2(wallet) || {}) as { [address: string]: number };
-  
-    // Get unique token addresses from the balances
+    if (!redisClient.isOpen) {
+        await connectRedis();
+    }
+
+    const walletBalancesMapString = await redisClient.get('walletBalancesMap');
+    const walletBalancesMap = walletBalancesMapString ? JSON.parse(walletBalancesMapString) : {};
+
+    const balances = walletBalancesMap[wallet.publicKey.toString()] || {};
+
     const tokenAddresses = Object.keys(balances).filter(address => balances[address] > 0);
-    const sol_balance = await get_SOL_balance_v2(wallet);
-  
-    if (tokenAddresses.length === 0 && sol_balance === 0) {
-      console.log("No token balances to display.");
-      return {
-        sol_balance: 0,
-        sol_value_in_USD: 0,
-        USDC_value: 0,
-        USDT_value: 0,
-        tokens_USD_value: 0,
-        totalUSDInvested: 0,
-        tokenDetails: ""
-      };
+
+    if (tokenAddresses.length === 0) {
+        console.log("No token balances to display.");
+        return {
+            sol_balance: 0,
+            sol_value_in_USD: 0,
+            USDC_value: 0,
+            USDT_value: 0,
+            tokens_USD_value: 0,
+            totalUSDInvested: 0,
+            tokenDetails: "",
+            tokenValueMap: {}
+        };
     }
-  
-    // Include SOL address in tokenAddresses
+
     const SOL_ADDRESS = "So11111111111111111111111111111111111111112";
-    if (sol_balance > 0) {
-      tokenAddresses.push(SOL_ADDRESS);
-    }
-  
-    // Get prices for all tokens
+    tokenAddresses.push(SOL_ADDRESS);
+
     const priceMap = await get_token_prices_jupiter(tokenAddresses);
-  
+
     let tokenValues: { tokenAddress: string; usdValue: number; balance: number; }[] = [];
-    let tokens_USD_value = 0; // To accumulate the total USD value
+    let tokenValueMap: { [tokenAddress: string]: { usdValue: number; balance: number; } } = {};
+    let tokens_USD_value = 0;
     let USDC_value = 0;
     let USDT_value = 0;
     let tokenDetailsArray: string[] = [];
     let sol_value_in_USD = 0;
-  
+    let sol_balance = 0;
+
     for (const tokenAddress of tokenAddresses) {
-      if (tokenAddress == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
-        USDC_value = balances[tokenAddress];
-        continue;
-      }
-      if (tokenAddress == "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB") {
-        USDT_value = balances[tokenAddress];
-        continue;
-      }
-      
-      const balance = tokenAddress === SOL_ADDRESS ? sol_balance : balances[tokenAddress];
-      const price = priceMap.get(tokenAddress);
-
-      console.log(price);
-
-      if (balance > 1 && price !== undefined) {
-        const usdValue = balance * price;
-        if (tokenAddress === SOL_ADDRESS) {
-          sol_value_in_USD = usdValue;
-        } else {
-          tokens_USD_value += usdValue; // Add to total USD invested
+        if (tokenAddress == "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v") {
+            USDC_value = balances[tokenAddress];
+            continue;
         }
-        tokenValues.push({ tokenAddress, usdValue, balance });
-        tokenDetailsArray.push(`${tokenAddress}\nUSD Value: $${usdValue.toFixed(2)}\nBalance: ${balance.toFixed(2)}\n`);
-      }
+        if (tokenAddress == "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB") {
+            USDT_value = balances[tokenAddress];
+            continue;
+        }
+
+        const balance = balances[tokenAddress];
+        const price = priceMap.get(tokenAddress);
+
+        if (tokenAddress === SOL_ADDRESS && price !== undefined) {
+            sol_balance = balance;
+            sol_value_in_USD = balance * price;
+        } else if (balance > 1 && price !== undefined) {
+            const usdValue = balance * price;
+            tokens_USD_value += usdValue;
+            tokenValues.push({ tokenAddress, usdValue, balance });
+            tokenValueMap[tokenAddress] = { usdValue, balance };
+            tokenDetailsArray.push(`${tokenAddress}\nUSD Value: $${usdValue.toFixed(2)}\nBalance: ${balance.toFixed(2)}\n`);
+        }
     }
-  
-    // Sort the tokens by their USD value in descending order
+
     tokenValues.sort((a, b) => b.usdValue - a.usdValue);
-  
-    // Concatenate the token details into a single string
-    const tokenDetails = tokenDetailsArray.join('\n');
-  
-    // Print the tokens in order
-    //tokenDetailsArray.forEach(detail => console.log(detail));
-  
-    const totalUSDInvested = (tokens_USD_value + USDC_value + sol_value_in_USD).toFixed(2);
-  
+
+    const tokenDetails = tokenDetailsArray.slice(0, 10).join('\n');
+
+    const totalUSDInvestedNumber = tokens_USD_value + USDC_value + sol_value_in_USD;
+    const totalUSDInvested = totalUSDInvestedNumber.toFixed(2);
+
     return {
-      sol_balance,
-      sol_value_in_USD,
-      USDC_value,
-      USDT_value,
-      tokens_USD_value,
-      totalUSDInvested,
-      tokenDetails // Return the concatenated string
+        sol_balance,
+        sol_value_in_USD,
+        USDC_value,
+        USDT_value,
+        tokens_USD_value,
+        totalUSDInvested,
+        tokenDetails,
+        tokenValueMap
     };
-  }
+}
+
+
 
 export async function get_token_prices_jupiter(tokenAddresses: string[]): Promise<Map<string, number>> {
     const JUPITER_PRICE_API_URL = 'https://price.jup.ag/v6/price';
@@ -740,5 +749,232 @@ export async function sell_token(token_amount: number, token_address: string, te
         }
     }
 
+}
+
+export async function sell_token_by_percentage(percentage: number, token_address: string, telegramId: string) {
+    await connectToDatabase();
+    const db = getDatabase("sniperbot-tg");
     
+    const existingWallet = await findWalletByTelegramId(telegramId, db);
+
+    if (existingWallet) {
+        const decryptedSecretKey = decryptText(existingWallet.secretKey);
+        try {
+            const secretKeyArray = JSON.parse(decryptedSecretKey); // Parse JSON string to array
+            const wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+
+            const balances = await getAllBalances_v2(wallet);
+            const balance = balances[token_address];
+            
+
+            const token_amount_to_sell = balance! * percentage;
+
+
+            console.log(`Swaping for wallet ${wallet}`);
+
+            const signature = await pre_and_post_sell_operations_v2_emergency(token_amount_to_sell, token_address, "manual sell", wallet, telegramId);
+            
+            
+        } catch (parseError) {
+            console.error('Error parsing decrypted secret key:', parseError);
+            
+        }
+    }
+
+}
+
+export async function sell_all_wrapper(percentage: number, telegramId: string) {
+
+    await connectToDatabase();
+    const db = getDatabase("sniperbot-tg");
+    
+    const existingWallet = await findWalletByTelegramId(telegramId, db);
+
+    if (existingWallet) {
+        const decryptedSecretKey = decryptText(existingWallet.secretKey);
+        try {
+            const secretKeyArray = JSON.parse(decryptedSecretKey); // Parse JSON string to array
+            const wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+
+            
+            await sell_all(percentage, wallet, telegramId);
+            
+            
+        } catch (parseError) {
+            console.error('Error parsing decrypted secret key:', parseError);
+            
+        }
+    }
+
+
+}
+
+export async function buy_wrapper(amount_usd: number, tokenAddress: string, telegramId: string) {
+
+
+    await connectToDatabase();
+    const db = getDatabase("sniperbot-tg");
+    
+    const existingWallet = await findWalletByTelegramId(telegramId, db);
+
+    if (existingWallet) {
+        const decryptedSecretKey = decryptText(existingWallet.secretKey);
+        try {
+            const secretKeyArray = JSON.parse(decryptedSecretKey); // Parse JSON string to array
+            const wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+
+            
+            await pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd, tokenAddress.toString(), wallet, telegramId);
+            
+            
+        } catch (parseError) {
+            console.error('Error parsing decrypted secret key:', parseError);
+            
+        }
+    }
+
+}
+
+
+
+
+const walletBalancesMap: { [pubKey: string]: { [address: string]: number } } = {};
+
+
+const debounceDelay = 20000; // 5 seconds delay
+let debounceTimer: NodeJS.Timeout | null = null;
+
+
+export async function update_wallet_balances() {
+    try {
+      await connectToDatabase();
+      const db = getDatabase("sniperbot-tg");
+  
+      const existingWallets = await findAllWallets(db);
+  
+      console.log("Updating wallet balances...");
+  
+      const walletBalancesMap: { [key: string]: { [address: string]: number } } = {};
+  
+      for (const existingWallet of existingWallets) {
+        try {
+          const decryptedSecretKey = decryptText(existingWallet.secretKey);
+          const secretKeyArray = JSON.parse(decryptedSecretKey);
+          const wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+  
+          const balances = (await getAllBalances_v2(wallet) || {}) as { [address: string]: number };
+  
+          // Fetch SOL balance and include it in the map
+          const solBalance = await getSolBalance(wallet.publicKey);
+          balances["So11111111111111111111111111111111111111112"] = solBalance;
+  
+          walletBalancesMap[wallet.publicKey.toString()] = balances;
+  
+        } catch (error) {
+          console.error(`Error: ${error}`);
+        }
+      }
+  
+      await connectRedis();
+      await redisClient.set('walletBalancesMap', JSON.stringify(walletBalancesMap));
+      await check_for_auto_pause();
+
+      console.log("Map initialized and saved to Redis!");
+    } catch (error) {
+      console.error(`Failed to initialize wallet balances: ${error}`);
+    } finally {
+      await disconnectRedis();
+    }
+  }
+  
+export async function getSolBalance(publicKey: PublicKey): Promise<number> {
+    const connection = new Connection('https://serene-soft-dream.solana-mainnet.quiknode.pro/d9545d21916469751695fb7a165e97325634fdb5/', 'finalized');
+    const balance = await connection.getBalance(publicKey, 'finalized');
+    return balance / 1e9; // Convert lamports to SOL
+}
+
+function debounceUpdateWalletBalances() {
+    if (debounceTimer) {
+      clearTimeout(debounceTimer);
+    }
+    debounceTimer = setTimeout(() => {
+      update_wallet_balances();
+    }, debounceDelay);
+  }
+  
+  // Call this function instead of update_wallet_balances directly after each sell or buy operation
+ export function triggerWalletBalanceUpdate() {
+    debounceUpdateWalletBalances();
+  }
+
+
+
+
+
+  export async function get_tokens_by_usdc_value(usd_value: number, wallet: Keypair) {
+    const balances = await get_wallet_balances_in_usd_v2(wallet);
+
+    let concatenatedString = '';
+    let tokenCount = 0;
+    let totalUsdValue = 0;
+
+    for (const [address, { balance, usdValue }] of Object.entries(balances.tokenValueMap)) {
+        if (usdValue > usd_value) {
+            concatenatedString += `${address}\nBalance: ${balance}\nUSD Value: $${usdValue.toFixed(2)}\n\n`;
+            tokenCount++;
+            totalUsdValue += usdValue;
+        }
+    }
+
+    return {
+        concatenatedString,
+        tokenCount,
+        totalUsdValue
+    };
+}
+
+
+async function check_for_auto_pause() {
+    try {
+        await connectToDatabase();
+        const db = getDatabase("sniperbot-tg");
+
+        const existingWallets = await findAllWallets(db);
+
+        for (const existingWallet of existingWallets) {
+            try {
+                const decryptedSecretKey = decryptText(existingWallet.secretKey);
+                const secretKeyArray = JSON.parse(decryptedSecretKey);
+                const wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+
+                const balances = await get_wallet_balances_in_usd_v2(wallet);
+
+                const auto_pause_percent = existingWallet.auto_pause_percent;
+
+                let totalUSDInvested: number;
+                if (typeof balances.totalUSDInvested === 'string') {
+                    totalUSDInvested = parseFloat(balances.totalUSDInvested + balances.sol_value_in_USD);
+                } else {
+                    totalUSDInvested = balances.totalUSDInvested + balances.sol_value_in_USD;
+                }
+
+                const USDC_value = balances.USDC_value;
+
+                const USDC_percent = (USDC_value / totalUSDInvested);
+
+                if (USDC_percent < auto_pause_percent) {
+                    // Perform the auto-pause action
+                    console.log(`Auto-pause triggered for wallet: ${existingWallet.walletAddress}`);
+                    //const result_seller = await deactivateWallet_seller(existingWallet.telegramId, db);
+                    const result_buyer = await deactivateWallet_buyer(existingWallet.telegramId, db);
+                }
+
+            } catch (error) {
+                console.error(`Error processing wallet ${existingWallet.walletAddress}: ${error}`);
+            }
+        }
+
+    } catch (error) {
+        console.error(`Failed to initialize wallet balances: ${error}`);
+    }
 }

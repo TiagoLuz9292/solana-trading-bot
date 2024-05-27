@@ -7,7 +7,7 @@ async function main() {
     
     const db = getDatabase("sniperbot-tg");
 
-    const telegramId = "7004088797";
+    const telegramId = "2088746736";
 
 
     await addNewPropertiesToAllRecords(db);

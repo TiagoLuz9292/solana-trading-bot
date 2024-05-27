@@ -7,14 +7,14 @@ THIS IS THE MAIN ONE
 import { Db, ObjectId } from 'mongodb';
 import {process_sell, waitForTransactionConfirmation} from './transaction_manager'
 import { BigNumber } from 'bignumber.js';
-import { insertDocument, connectToDatabase, getDatabase } from './mongoDB_connection';
+import { insertDocument, connectToDatabase, getDatabase, incrementTaxesToPay } from './mongoDB_connection';
 import { promises as fs } from 'fs';
 import { Parser } from 'json2csv';
 import {get_token_price} from './account_pnl';
 export { swap_from_usdc_to_token as swap_from_sol_to_token, swap_from_token_to_sol, pre_and_post_buy_operations_for_buy_manual, pre_and_post_sell_operations, pre_and_post_buy_operations_v2, pre_and_post_sell_operations_v2};
-import { getAllBalances, getTokenBalance } from './my_wallet';
+import { getAllBalances, getTokenBalance, triggerWalletBalanceUpdate, update_wallet_balances } from './my_wallet';
 
-import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Keypair, Connection, ParsedConfirmedTransaction, TransactionSignature, TokenBalance, PublicKey, ParsedInstruction, Transaction, VersionedTransaction, SystemProgram, sendAndConfirmTransaction, LAMPORTS_PER_SOL, TransactionExpiredBlockheightExceededError } from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID, ASSOCIATED_TOKEN_PROGRAM_ID, getAssociatedTokenAddress, createAssociatedTokenAccountInstruction, MintLayout, getOrCreateAssociatedTokenAccount, createTransferInstruction } from "@solana/spl-token";
 import dotenv from "dotenv";
 import axios from "axios";
@@ -27,6 +27,7 @@ import {update_pnl_after_buy_v2, update_account_PNL_v3, update_sell_tracker_afte
 import { createDecipheriv } from 'crypto';
 import WebSocket from 'ws';
 import { send_message_to_telegramId } from './telegram_public_sniper_bot';
+import { logBuyAction, logFailedBuyAction, logFailedSellAction, logSellAction } from './log_manager';
 
 
 
@@ -115,6 +116,8 @@ interface TokenToSell {
     message: String;
 }
 
+
+
 async function ensureAssociatedTokenAccount_v2(mint: PublicKey, owner: PublicKey, wallet: Keypair): Promise<PublicKey> {
   const associatedTokenAddress = await getAssociatedTokenAddress(mint, owner);
   const accountInfo = await connection.getAccountInfo(associatedTokenAddress);
@@ -158,6 +161,7 @@ async function swap_v2(quoteResponse: any, sourceMint: PublicKey, destinationMin
   console.log("Output token associated token account created:", destinationTokenAccount.toString());
 
   if (!quoteResponse || !quoteResponse.routePlan || quoteResponse.routePlan.length === 0) {
+    await logFailedBuyAction(wallet.publicKey.toBase58(), "Not relevant", destinationMint.toString(), `Error catched inside swap_v2:\nInvalid quote response or empty route plan`);
     throw new Error("Invalid quote response or empty route plan");
   }
 
@@ -183,11 +187,13 @@ async function swap_v2(quoteResponse: any, sourceMint: PublicKey, destinationMin
 
     if (response.data.error) {
       console.error("Error from Jupiter API:", response.data.error);
+      await logFailedBuyAction(wallet.publicKey.toBase58(), "Not relevant", destinationMint.toString(), `Error catched inside swap_v2:\nError from Jupiter API: ${response.data.error}`);
       throw new Error(`Error from Jupiter API: ${response.data.error}`);
     }
 
     if (!response.data.swapTransaction) {
       console.error("Swap transaction is missing in API response.");
+      await logFailedBuyAction(wallet.publicKey.toBase58(), "Not relevant", destinationMint.toString(), `Error catched inside swap_v2:\nSwap transaction is missing`);
       throw new Error("Swap transaction is missing");
     }
 
@@ -206,19 +212,21 @@ async function swap_v2(quoteResponse: any, sourceMint: PublicKey, destinationMin
     
     // Fix for TypeScript error related to console.log
     
-    /*
+    
     const simulationResult = await connection.simulateTransaction(transaction);
     if (simulationResult.value.err) {
       console.error("Simulation error:", JSON.stringify(simulationResult.value.err));
+      await logFailedBuyAction(wallet.publicKey.toBase58(), "Not relevant", destinationMint.toString(), `Error catched inside swap_v2:\nSimulation error: ${JSON.stringify(simulationResult.value.err)}`);
       throw new Error(`Simulation error: ${JSON.stringify(simulationResult.value.err)}`);
     }
-    */
+    
     const signature = await connection.sendRawTransaction(serializedWithSignatures);
     console.log("Transaction sent, signature:", signature);
 
     return signature;
   } catch (error) {
     console.error("Swap failed:", error);
+    await logFailedBuyAction(wallet.publicKey.toBase58(), "Not relevant", destinationMint.toString(), `Error catched inside swap_v2:\nSwap failed: ${error}`);
     throw error;
   }
 }
@@ -238,12 +246,14 @@ async function swap_from_usdc_to_token(amount_usd: number, token_Address: string
   try {
     const quote = await axios.get(url, { params });
     const quoteResponse = quote.data;
-    console.log(`DEBUG: Received swap quote: ${JSON.stringify(quoteResponse, null, 2)}`);
+    //console.log(`DEBUG: Received swap quote: ${JSON.stringify(quoteResponse, null, 2)}`);
+    console.log(`\nDEBUG: Received swap quote.`);
     const signature = await swap_v2(quoteResponse, usdcMint, tokenMint, wallet);
-    console.log("Swap from token to SOL successful with signature:", signature);
+    console.log("\nSwap from token to SOL successful with signature:", signature);
     return signature;
   } catch (error) {
     console.error("Error during swap process:", error);
+    await logFailedBuyAction("Main Wallet", amount_usd.toString(), token_Address.toString(), `Error catched inside swap_from_usdc_to_token:\n${error}`);
   }
 }
 
@@ -254,6 +264,7 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String,
 
     if (amountToSwap === undefined) {
       console.error("Unable to fetch token decimals for swap.");
+      await logFailedSellAction("Main Wallet", "No info available", tokenAddress.toString(), `Error catched inside swap_from_token_to_sol:\nUnable to fetch token decimals for swap.`);
       return;
     }
 
@@ -273,38 +284,42 @@ async function swap_from_token_to_sol(tokenAmount: number, tokenAddress: String,
     return signature;
   } catch (error) {
     console.error("Error during token to SOL swap process:", error);
+    await logFailedSellAction("Main Wallet", "No info available", tokenAddress.toString(), `Error catched inside swap_from_token_to_sol:\nError during token to SOL swap process: ${error}`);
   }
 }
 
+
+
 async function getAmountInSmallestUnit_v2(tokenAmount: number, tokenAddress: string): Promise<string | undefined> {
-  // Assume USDC address and handle it specifically
-  const isUSDC = tokenAddress === "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v";
-  
-  // Get mint account information
   const tokenMint = new PublicKey(tokenAddress);
-  const mintAccountInfo = await connection.getAccountInfo(tokenMint);
-  if (!mintAccountInfo || !mintAccountInfo.data) {
-    console.error(`Failed to fetch mint account info for token at address: ${tokenAddress}`);
-    return undefined;
-  }
-
-  // Decode the mint information to get decimals
-  const mintData = MintLayout.decode(mintAccountInfo.data);
-  const decimals = mintData.decimals;
   
-  // Adjust token amount based on whether it is USDC or not
-  let adjustedTokenAmount;
-  if (isUSDC) {
-    adjustedTokenAmount = tokenAmount;  // Use the original amount for USDC
-  } else {
-    // Remove decimals for non-USDC by rounding down to the nearest whole number
-    adjustedTokenAmount = Math.floor(tokenAmount);
-  }
+  let attempts = 0;
+  const maxAttempts = 5; // Maximum attempts to fetch the mint account information
 
-  // Calculate the smallest unit of the token
-  const amount = new BigNumber(adjustedTokenAmount);
-  const factor = new BigNumber(10).pow(decimals);
-  return amount.times(factor).integerValue(BigNumber.ROUND_DOWN).toString();
+  while (attempts < maxAttempts) {
+    try {
+      const mintAccountInfo = await connection.getAccountInfo(tokenMint);
+
+      if (!mintAccountInfo || !mintAccountInfo.data) {
+        throw new Error(`Mint account information is unavailable for ${tokenAddress}`);
+      }
+
+      const mintData = MintLayout.decode(mintAccountInfo.data);
+      const decimals = mintData.decimals;
+
+      const amount = new BigNumber(tokenAmount);
+      const factor = new BigNumber(10).pow(decimals);
+      return amount.times(factor).integerValue(BigNumber.ROUND_DOWN).toString();
+    } catch (error) {
+      console.error(`Attempt ${attempts + 1}: Error fetching token decimals`);
+      attempts++;
+      if (attempts < maxAttempts) {
+        await delay(2000); // Wait for 2 seconds before retrying
+      } else {
+        return undefined; // All attempts failed
+      }
+    }
+  }
 }
 
 function delay(ms: number) {
@@ -429,6 +444,7 @@ async function pre_and_post_sell_operations_v2(token_amount: number, token_addre
 
       if (!signature) {
           console.error("No signature returned from swap operation.");
+          await logFailedSellAction("Main Wallet", token_amount.toString(), token_address, `Error catched inside pre_and_post_sell_operations_v2:\n No signature returned from swap operation.`);
           return false;
       }
 
@@ -443,6 +459,7 @@ async function pre_and_post_sell_operations_v2(token_amount: number, token_addre
 
       if (!usdc_received) {
           console.log("No tokens received or transaction is not confirmed");
+          await logFailedSellAction("Main Wallet", token_amount.toString(), token_address, `Error catched inside pre_and_post_sell_operations_v2:\nNo tokens received or transaction is not confirmed`);
           return false;
       }
 
@@ -459,6 +476,7 @@ async function pre_and_post_sell_operations_v2(token_amount: number, token_addre
       return signature;
   } catch (error) {
       console.error("Error during swap operation:", error);
+      await logFailedSellAction("Main Wallet", token_amount.toString(), token_address, `Error catched inside pre_and_post_sell_operations_v2:\nError during swap operation: ${error}`);
   }
 }
 
@@ -495,6 +513,7 @@ async function pre_and_post_buy_operations_v2(amount_usd: number, token_address:
     insertDocument(mongo_buy, db);
   } catch (error) {
     console.error("Error during pre and post buy operations:", error);
+    await logFailedBuyAction("Main Wallet", amount_usd.toString(), token_address.toString(), `Error catched inside pre_and_post_buy_operations_v2:\n${error}`);
   }
 }
 
@@ -536,31 +555,37 @@ async function sendSol(receiverAddress: string, amountSol: number, wallet: Keypa
 }
 
 
-export async function pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd: number, token_address: string, wallet: Keypair, telegramId: string) {
-  try {
+export async function pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd: number, token_address: string, wallet: Keypair, telegramId: string, maxRetries: number = 3) {
+  let attempt = 0;
+  let successful = false;
+  
+  while (!successful) {
+    try {
       await connectToDatabase();
       const db = getDatabase("sniperbot-tg");
 
       console.log(`INFO: Attempting to perform swap from ${amount_usd} USDT ($${amount_usd} USD) to token address ${token_address}...`);
-
-     
       
+      const signature = await attemptSwap(amount_usd, token_address, wallet);
       
-      const signature = await swap_from_usdc_to_token_for_specific_wallet(amount_usd, token_address, wallet);
+      if (signature) {
+        console.log("Swap transaction was sent. Signature:", signature);
+        subscribeToBuySignature_v2(signature, amount_usd, token_address, wallet, telegramId);
+        return signature; // End loop if successful
 
-      if (!signature) {
-          console.error("No signature returned from swap operation.");
-          return false;
       } else {
-          console.log("Swap transaction was sent. Signature:", signature);
+        console.error("No signature returned from swap operation. Retrying...");
+        await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, `Error caught inside pre_and_post_buy_operations_for_ACTIVATED_wallets:\nNo signature returned from swap operation. Retrying...`);
+        attempt++;
+        delay(2000);
       }
 
-      subscribeToBuySignature(signature, amount_usd, token_address, wallet, telegramId);
-
-      
-
-  } catch (error) {
-      console.error("Error during pre and post buy operations:", error);
+    } catch (error) {
+      console.error("Error during pre and post buy operations. Retrying...", error);
+      await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, `Error caught inside pre_and_post_buy_operations_for_ACTIVATED_wallets:\nNo signature returned from swap operation. Retrying...`);
+      attempt++;
+      delay(2000);
+    }
   }
 }
 
@@ -585,6 +610,7 @@ async function swap_from_usdc_to_token_for_specific_wallet(amount_usd: number, t
       return signature;
   } catch (error) {
       console.error("Error during swap process:", error);
+      await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, `Error catched inside swap_from_usdc_to_token_for_specific_wallet:\nError during swap process: ${error}`);
       throw error;
   }
 }
@@ -737,61 +763,67 @@ async function swap_from_token_to_sol_for_wallet(tokenAmount: number, tokenAddre
 }
 
 
-export async function send_USDC(usdc_amount: number, destination_address: string, wallet: Keypair, token_mint: string): Promise<string> {
+export async function send_USDC(usdc_amount: number, destination_address: string, wallet: Keypair, token_mint: string, maxRetries: number = 3): Promise<string> {
   console.log(`Preparing to send ${usdc_amount} ${token_mint} to ${destination_address}`);
 
-  try {
+  let attempts = 0;
+  while (attempts < maxRetries) {
+    try {
+      const { blockhash } = await connection.getRecentBlockhash("finalized");
       const destinationPublicKey = new PublicKey(destination_address);
       const microUsdcAmount = usdc_amount * 1_000_000;
 
+      let transaction;
       if (token_mint === "So11111111111111111111111111111111111111112") {
-          // SOL transfer
           console.log('Preparing SOL transfer...');
-          const transaction = new Transaction().add(
-              SystemProgram.transfer({
-                  fromPubkey: wallet.publicKey,
-                  toPubkey: destinationPublicKey,
-                  lamports: microUsdcAmount // 1 SOL = 1_000_000_000 lamports
-              })
+          transaction = new Transaction({
+            recentBlockhash: blockhash,
+            feePayer: wallet.publicKey,
+          }).add(
+            SystemProgram.transfer({
+              fromPubkey: wallet.publicKey,
+              toPubkey: destinationPublicKey,
+              lamports: microUsdcAmount // 1 SOL = 1_000_000_000 lamports
+            })
           );
-
-          console.log('Sending SOL transaction...');
-          const signature = await withTimeout(120000, sendAndConfirmTransaction(connection, transaction, [wallet], {
-              skipPreflight: false,
-              preflightCommitment: 'confirmed',
-              commitment: 'confirmed'
-          }) as Promise<string>); // Cast as Promise<string> if necessary and safe to do so
-
-          console.log(`SOL transaction successful with signature: ${signature}`);
-          return signature;
       } else {
-          // Token transfer
-          const mint_pubkey = new PublicKey(token_mint); // USDC mint address
-
-          console.log('Fetching sender token account...');
+          console.log('Fetching token accounts and preparing transaction...');
+          const mint_pubkey = new PublicKey(token_mint);
           const senderTokenAccount = await getOrCreateAssociatedTokenAccount(connection, wallet, mint_pubkey, wallet.publicKey);
-          console.log('Fetching recipient token account...');
           const recipientTokenAccount = await getOrCreateAssociatedTokenAccount(connection, wallet, mint_pubkey, destinationPublicKey);
 
-          console.log('Creating token transfer instruction...');
-          const transferInstruction = createTransferInstruction(senderTokenAccount.address, recipientTokenAccount.address, wallet.publicKey, microUsdcAmount, [], TOKEN_PROGRAM_ID);
-          const transaction = new Transaction().add(transferInstruction);
-
-          console.log('Sending token transaction...');
-          const signature = await withTimeout(120000, sendAndConfirmTransaction(connection, transaction, [wallet], {
-              skipPreflight: false,
-              preflightCommitment: 'confirmed',
-              commitment: 'confirmed'
-          }) as Promise<string>); // Cast as Promise<string> if necessary and safe to do so
-
-          console.log(`Token transaction successful with signature: ${signature}`);
-          return signature;
+          transaction = new Transaction({
+            recentBlockhash: blockhash,
+            feePayer: wallet.publicKey,
+          }).add(
+            createTransferInstruction(senderTokenAccount.address, recipientTokenAccount.address, wallet.publicKey, microUsdcAmount, [], TOKEN_PROGRAM_ID)
+          );
       }
-  } catch (error) {
-      console.error('Error during transaction:', error);
-      throw error;
+
+      console.log('Sending transaction...');
+      const signature = await sendAndConfirmTransaction(connection, transaction, [wallet], {
+          skipPreflight: false,
+          preflightCommitment: 'confirmed',
+          commitment: 'confirmed'
+      });
+
+      console.log(`Transaction successful with signature: ${signature}`);
+      triggerWalletBalanceUpdate();
+      return signature;
+    } catch (error) {
+      console.error(`Attempt ${attempts + 1} failed:`, error);
+      if (error instanceof TransactionExpiredBlockheightExceededError && attempts < maxRetries - 1) {
+          console.log("Retrying transaction...");
+          attempts++;
+      } else {
+          console.error("Transaction failed after all retries:", error);
+      }
+    }
   }
+  throw new Error("Failed to send USDC after " + maxRetries + " attempts");
 }
+
+
 
 class TimeoutError extends Error {
   constructor(message: string) {
@@ -868,33 +900,351 @@ async function getFeeAccount(referralAccountPubkey: PublicKey, mint: PublicKey):
 
 
 
-export async function pre_and_post_sell_operations_v2_emergency(token_amount: number, token_address: String, message: String, wallet: Keypair, telegramId:string) {
-  try {
-      
-    
+export async function pre_and_post_sell_operations_v2_emergency(token_amount: number, token_address: string, message: string, wallet: Keypair, telegramId: string, maxRetries: number = 3) {
+  let attempt = 0;
+  let successful = false;
 
-      console.log("INFO: Performing swap from " + token_amount + " " + token_address + " to SOL ...");
-      const signature = await swap_from_token_to_sol_emergency(token_amount, token_address, wallet); // Ensure swap_from_token_to_sol is defined
-      console.log("Swap signature:", signature);
+  while (!successful) {
+    try {
+      console.log(`INFO: Performing swap from ${token_amount} of ${token_address} to SOL...`);
+
+      const signature = await swap_from_token_to_sol_emergency(token_amount, token_address, wallet);
 
       if (!signature) {
-          console.error("No signature returned from swap operation.");
-          return false;
-      } else {
-          console.log("Swap transaction was sent. Signature:", signature);
+        console.error("No signature returned from swap operation. Retrying...");
+        attempt++;
+        delay(2000);
+        continue;
       }
 
+      console.log("Swap transaction was sent. Signature:", signature);
       subscribeToSellSignature(signature, token_amount, token_address, message, wallet, telegramId);
+      return signature; // Exit the loop on success
 
-      return signature;
-
-
-  } catch (error) {
-      console.error("Error during swap operation:", error);
+    } catch (error) {
+      console.error(`Error during swap operation on attempt ${attempt + 1}:`, error);
+      attempt++;
+      delay(2000);
+    }
   }
 }
 
+//---------------------------------------------------------------------------
 
+const wsUrl = 'wss://api.mainnet-beta.solana.com';
+
+let ws: WebSocket | null = null;
+
+
+
+function ensureWebSocketConnected_sell(): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (!ws) {
+      console.log("WebSocket is not initialized, initializing now.");
+      initializeWebSocketConnection_sell();
+    }
+
+    if (ws) {
+      switch (ws.readyState) {
+        case WebSocket.OPEN:
+          resolve();
+          break;
+        case WebSocket.CONNECTING:
+          ws.onopen = () => resolve();
+          ws.onerror = (event: { error: any; message: string; type: string; target: WebSocket }) => {
+            reject(new Error("WebSocket connection failed: " + event.message));
+          };
+          break;
+        case WebSocket.CLOSING:
+        case WebSocket.CLOSED:
+          console.log("WebSocket is closed or closing. Reinitializing...");
+          initializeWebSocketConnection_sell();
+          if (ws) {
+            ws.onopen = () => resolve();
+            ws.onerror = (event: { error: any; message: string; type: string; target: WebSocket }) => {
+              reject(new Error("WebSocket reconnection failed: " + event.message));
+            };
+          }
+          break;
+        default:
+          reject(new Error("Unhandled WebSocket readyState: " + ws.readyState));
+          break;
+      }
+    } else {
+      reject(new Error("WebSocket is still not initialized after attempting to initialize."));
+    }
+  });
+}
+
+function ensureWebSocketConnected_buy(): Promise<void> {
+  return new Promise((resolve, reject) => {
+      if (!ws) {
+          console.log("WebSocket is not initialized, initializing now.");
+          initializeWebSocketConnection_buy();
+      }
+
+      if (ws) {
+          switch (ws.readyState) {
+              case WebSocket.OPEN:
+                  resolve();
+                  break;
+              case WebSocket.CONNECTING:
+                  ws.onopen = () => resolve();
+                  // Correctly typing 'event' as 'ErrorEvent' specific to the 'ws' library
+                  ws.onerror = (event: { error: any; message: string; type: string; target: WebSocket }) => {
+                      reject(new Error("WebSocket connection failed: " + event.message));
+                  };
+                  break;
+              case WebSocket.CLOSING:
+              case WebSocket.CLOSED:
+                  console.log("WebSocket is closed or closing. Reinitializing...");
+                  initializeWebSocketConnection_buy();
+                  if (ws) {
+                      ws.onopen = () => resolve();
+                      ws.onerror = (event: { error: any; message: string; type: string; target: WebSocket }) => {
+                          reject(new Error("WebSocket reconnection failed: " + event.message));
+                      };
+                  }
+                  break;
+              default:
+                  reject(new Error("Unhandled WebSocket readyState: " + ws.readyState));
+                  break;
+          }
+      } else {
+          reject(new Error("WebSocket is still not initialized after attempting to initialize."));
+      }
+  });
+}
+
+function initializeWebSocketConnection_sell() {
+  ws = new WebSocket(wsUrl);
+
+  ws.onopen = () => {
+    console.log("WebSocket connection successfully opened.");
+  };
+
+  ws.on('message', async (data: string) => {
+    const response = JSON.parse(data);
+    console.log('*********************\n\nReceived message:', response);
+
+    if (response.method === 'signatureNotification') {
+      if (response.params && response.params.subscription) {
+        const subscriptionId = response.params.subscription;
+        console.log('Received subscription ID:', subscriptionId);
+
+        const subscriptionData = subscriptions_sell.get(subscriptionId);
+
+        if (subscriptionData) {
+          console.log("\n\n calling fetchsell");
+          await fetchSellTransactionDetails(subscriptionData.signature, subscriptionData.token_amount, subscriptionData.token_address, subscriptionData.message, subscriptionData.wallet, subscriptionData.telegramId);
+          subscriptions_sell.delete(subscriptionId); // Remove handled subscription
+        } else {
+          console.log("subscriptionData is undefined for subscription ID:", subscriptionId);
+        }
+      }
+    }
+  });
+
+  ws.onerror = (event) => {
+    console.error("WebSocket error:", event.message);
+  };
+
+  ws.onclose = async () => {
+    console.log("WebSocket connection closed.");
+    await update_wallet_balances();
+    ws = null; // Ensures reinitialization on next use
+  };
+}
+
+function initializeWebSocketConnection_buy() {
+  ws = new WebSocket(wsUrl);
+
+  ws.onopen = () => {
+      console.log("WebSocket connection successfully opened.");
+  };
+
+  ws.on('message', async (data: string) => {
+    const response = JSON.parse(data);
+    console.log('*********************\n\nReceived message:', response);
+    if(!ws) {
+      console.log("ws");
+      return;
+    }
+    // Check if the message is a signature notification and handle it
+    if (response.method === 'signatureNotification') {
+        if (response.params && response.params.subscription) {
+            const result = response.params.subscription;
+            
+            console.error('Received subscription ID:', result);
+            
+            const subscriptionData = subscriptions_buy.get(result);
+
+            if (!subscriptionData) {
+              console.log("subscriptionData is undefined");
+              return;
+            }
+
+            console.log("\n\n calling fetchBuyTransactionDetails");
+            await fetchBuyTransactionDetails(subscriptionData.signature, subscriptionData.usd_amount_Received, subscriptionData.token_address, subscriptionData.wallet, subscriptionData.telegramId);
+            
+        }
+    }
+});
+
+  ws.onerror = (event) => {
+      console.error("WebSocket error:", event.message);
+  };
+
+  ws.onclose = () => {
+      console.log("WebSocket connection closed.");
+      ws = null; // Ensures reinitialization on next use
+  };
+}
+
+const subscriptions_sell = new Map<string, { token_amount: number, token_address: string, message: string, wallet: Keypair, telegramId: string, signature: string }>();
+const subscriptions_buy = new Map<string, { usd_amount_Received: number, token_address: string, wallet: Keypair, telegramId: string, signature: string }>();
+
+function subscribeToSellSignature(signature: string, token_amount: number, token_address: string, message: string, wallet: Keypair, telegramId: string) {
+  const subscribeMessage = {
+    "jsonrpc": "2.0",
+    "id": 1,
+    "method": "signatureSubscribe",
+    "params": [signature, { "commitment": "finalized" }]
+  };
+
+  ensureWebSocketConnected_sell().then(() => {
+    if (ws) {
+      ws.send(JSON.stringify(subscribeMessage));
+      console.log('Subscription request sent:', subscribeMessage);
+
+      // Handle the initial response to get the subscription ID
+      ws.onmessage = (event) => {
+        if (typeof event.data === 'string') {
+          const response = JSON.parse(event.data);
+          if (response.id === 1 && response.result) { // Ensure this is the response to our subscription request
+            const subscriptionId = response.result;
+            subscriptions_sell.set(subscriptionId, { token_amount, token_address, message, wallet, telegramId, signature });
+            console.log(`Stored subscription data for ID ${subscriptionId}`);
+          }
+        } else {
+          console.error("Received data is not a string:", event.data);
+        }
+      };
+    } else {
+      console.error("WebSocket is null, cannot send message.");
+    }
+  }).catch(console.error);
+}
+
+
+function subscribeToBuySignature_v2(signature: string, usd_amount_Received: number, token_address: string, wallet: Keypair, telegramId: string) {
+  const subscribeMessage = {
+      "jsonrpc": "2.0",
+      "id": 1,
+      "method": "signatureSubscribe",
+      "params": [signature, { "commitment": "finalized" }]
+  };
+
+  ensureWebSocketConnected_buy().then(() => {
+      if (ws) {
+          ws.send(JSON.stringify(subscribeMessage));
+          console.log('Subscription request sent:', subscribeMessage);
+
+          // Handle the initial response to get the subscription ID
+          ws.onmessage = (event) => {
+              if (typeof event.data === 'string') {
+                  const response = JSON.parse(event.data);
+                  if (response.id === 1 && response.result) { // Ensure this is the response to our subscription request
+                      const subscriptionId = response.result;
+                      subscriptions_buy.set(subscriptionId, { usd_amount_Received, token_address, wallet, telegramId, signature });
+                      console.log(`Stored subscription data for ID ${subscriptionId}`);
+                  }
+              } else {
+                  console.error("Received data is not a string:", event.data);
+              }
+          };
+      } else {
+          console.error("WebSocket is null, cannot send message.");
+      }
+  }).catch(console.error);
+}
+
+
+
+function handleMessage_sell(data: string) {
+  console.log('Received WebSocket message:', data);
+  try {
+    const response = JSON.parse(data);
+    if (response.method === 'signatureNotification') {
+      const subscriptionId = response.params.subscription;
+      console.log(`Retrieving data for subscription ID ${subscriptionId}`);
+      const subscriptionData = subscriptions_sell.get(subscriptionId);
+
+      if (!subscriptionData) {
+        console.error('No subscription data found for subscription ID:', subscriptionId);
+        return;
+      }
+
+      console.log('Transaction confirmed in slot:', response.params.result.context.slot);
+      fetchSellTransactionDetails(
+        subscriptionData.signature,
+        subscriptionData.token_amount,
+        subscriptionData.token_address,
+        subscriptionData.message,
+        subscriptionData.wallet,
+        subscriptionData.telegramId
+      );
+    } else {
+      console.log('Unhandled WebSocket message type:', response.method);
+    }
+  } catch (error) {
+    console.error("Error parsing message data:", error);
+  }
+}
+
+function generateUniqueSubscriptionId() {
+  return Math.random().toString(36).substring(2, 15);
+}
+
+function handleError(error: Error) {
+  console.error('WebSocket error:', error);
+  ws = null; // Reset WebSocket connection
+}
+
+function handleClosure() {
+  console.log('WebSocket connection closed. Reconnecting...');
+  ws = null; // Reset WebSocket connection
+  ensureWebSocketConnected_sell(); // Attempt to reconnect
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//---------------------------------------------------------------------------
 async function waitForSellTransactionConfirmation_emergency(
   signature: TransactionSignature, 
   connection: Connection
@@ -969,10 +1319,13 @@ function delayy(ms: number) {
 
 async function swap_from_token_to_sol_emergency(tokenAmount: number, tokenAddress: String, wallet: Keypair): Promise<string | undefined> {
   try {
+
+      console.log(`DEBUG: Inside swap_from_token_to_sol_emergency, tokenAmount: ${tokenAmount}`);
+
       const tokenMint = new PublicKey(tokenAddress);
       const amountToSwap = await getAmountInSmallestUnit_v2(tokenAmount, tokenAddress.toString());
 
-      if (amountToSwap === undefined) {
+      if (amountToSwap === undefined || parseFloat(amountToSwap) == 0) {
           console.error("Unable to fetch token decimals for swap.");
           return;
       }
@@ -992,16 +1345,18 @@ async function swap_from_token_to_sol_emergency(tokenAmount: number, tokenAddres
       const quoteResponse = quote.data;
       
       if (!quoteResponse || quoteResponse.error) {
-          console.error("Failed to get a valid quote response:", quoteResponse.error);
+          console.error("Failed to get a valid quote response:");
+          delay(2000);
           return;
       }
 
-      console.log("Received swap quote response:", JSON.stringify(quoteResponse, null, 2));
+      //console.log("Received swap quote response:", JSON.stringify(quoteResponse, null, 2));
 
       const signature = await swap_v2_emergency(quoteResponse, tokenMint, usdcMint, wallet);
       return signature;
   } catch (error) {
-      console.error("Error during token to SOL swap process:", error);
+      console.error("Error during token to SOL swap process:");
+      delay(2000);
   }
 }
 
@@ -1126,66 +1481,30 @@ export async function pre_and_post_buy_operations_v2_emergency(amount_usd: numbe
 
 
 
+async function fetchSellTransactionDetails(signature: string, token_amount: number, token_address: string, message: string, wallet: Keypair, telegramId: string) {
+  await connectToDatabase();
 
-function subscribeToSellSignature(signature: string, token_amount: number, token_address: String, message: String, wallet: Keypair, telegramId: string) {
-  // Initialize a new WebSocket connection
-  const ws = new WebSocket('wss://api.mainnet-beta.solana.com');
+  const db = getDatabase("sniperbot-tg");
 
-  ws.on('open', () => {
-      console.log('WebSocket connection opened.');
-      const subscribeMessage = {
-          "jsonrpc": "2.0",
-          "id": 1,
-          "method": "signatureSubscribe",
-          "params": [
-              signature,  // Use the transaction signature received from the swap transaction
-              { "commitment": "finalized" }
-          ]
-      };
-      ws.send(JSON.stringify(subscribeMessage));
-      console.log('Subscription request sent:', subscribeMessage);
-  });
+  const usdc_received = await waitForSellTransactionConfirmation(signature, connection, wallet);
 
-  ws.on('message', (data: string) => {
-      const response = JSON.parse(data);
-      console.log('Received message:', response);
+  if (!usdc_received) {
+    console.log("Transaction failed, Re-doing the sell swap...");
+    enqueueRetryOperation({ token_amount, token_address, wallet, telegramId });
+  } else {
+    console.log(`Transaction successful for wallet ${wallet}\nSignature: ${signature}`);
 
-      if (response.method === 'signatureNotification') {
-          const result = response.params.result;
-          console.log('Transaction confirmed in slot:', result.context.slot);
+    await logSellAction(wallet.publicKey.toBase58(), usdc_received.toString(), token_address.toString(), signature);
 
-          fetchSellTransactionDetails(signature, token_amount, token_address, message, wallet, telegramId);
-          
+    const tax = parseFloat((usdc_received * 0.01).toFixed(3));
+    await incrementTaxesToPay(tax, telegramId, db);
 
-          // Clean up after receiving the notification
-          ws.close();
-      }
-  });
+    const tg_message = `New token sell!\n\nSell type: ${message}\n\nUSDC received: $${usdc_received.toFixed(2)}\n\n ${token_amount.toFixed(2)} token sold\n\nToken Address: ${token_address}\n\nTransaction signature: ${signature}`;
+    await send_message_to_telegramId(tg_message, telegramId);
+    triggerWalletBalanceUpdate();
 
-  ws.on('close', () => {
-      console.log('WebSocket connection closed.');
-  });
-
-  ws.on('error', (error: Error) => {
-      console.error('WebSocket error:', error);
-  });
-}
-
-async function fetchSellTransactionDetails(signature: string, token_amount: number, token_address: String, message: String, wallet: Keypair, telegramId: string) {
-
-    const usdc_received = await waitForSellTransactionConfirmation(signature, connection, wallet);
-
-    if (!usdc_received) {
-        console.log("Transaction failed, Re-doing the sell swap...");
-        pre_and_post_sell_operations_v2_emergency(token_amount, token_address, message, wallet, telegramId);
-    } else {
-        console.log(`Transaction sucessfull for wallet ${wallet}\nSignature: ${signature}`)
-
-        const tg_message = `New token sell!\n\nSell type: ${message}\n\nUSDC received: $${usdc_received.toFixed(2)}\n\n ${token_amount.toFixed(2)} token sold\n\nToken Address: ${token_address}\n\nTransaction signature: ${signature}`;
-        await send_message_to_telegramId(tg_message, telegramId);
-
-        console.log(`Sell operation successful for wallet ${wallet}`);
-    }
+    console.log(`Sell operation successful for wallet ${wallet}`);
+  }
 }
 
 
@@ -1210,19 +1529,24 @@ function subscribeToBuySignature(signature: string, amount_usd: number, token_ad
       console.log('Subscription request sent:', subscribeMessage);
   });
 
-  ws.on('message', (data: string) => {
+  ws.on('message', async (data: string) => {
       const response = JSON.parse(data);
       console.log('Received message:', response);
 
+      // Check if the message is a signature notification and handle it
       if (response.method === 'signatureNotification') {
-          const result = response.params.result;
-          console.log('Transaction confirmed in slot:', result.context.slot);
-
-          fetchBuyTransactionDetails(signature, amount_usd, token_address, wallet, telegramId);
-          
-
-          // Clean up after receiving the notification
-          ws.close();
+          if (response.params && response.params.result) {
+              const result = response.params.result;
+              if (result.value && result.value.err) {
+                  console.error('Transaction failed with error:', result.value.err);
+                  ws.close();
+              } else {
+                  console.log('Transaction confirmed in slot:', result.context.slot);
+                  fetchBuyTransactionDetails(signature, amount_usd, token_address, wallet, telegramId);
+                  ws.close(); // Close the WebSocket connection once confirmed
+                  
+              }
+          }
       }
   });
 
@@ -1236,17 +1560,107 @@ function subscribeToBuySignature(signature: string, amount_usd: number, token_ad
 }
 
 async function fetchBuyTransactionDetails(signature: string, amount_usd: number, token_address: string, wallet: Keypair, telegramId: string) {
+  await connectToDatabase();
+  const db = getDatabase("sniperbot-tg");
 
-  const { tokenAmountReceived, usdcAmountSpent, error } = await waitForTransactionConfirmation(signature, token_address.toString(), "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v")
+  const { tokenAmountReceived, usdcAmountSpent, error } = await waitForTransactionConfirmation(signature, token_address.toString(), "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+
   if (tokenAmountReceived > 0 && usdcAmountSpent > 0 && (!error || error === null || error === undefined || error === "")) {
       console.log("\nBuy Successful!");
+      await logBuyAction(wallet.publicKey.toBase58(), usdcAmountSpent.toString(), token_address);
+      const tax = parseFloat((usdcAmountSpent * 0.01).toFixed(3));
+      await incrementTaxesToPay(tax, telegramId, db);
       
-      const tg_message = `New token buy!n\nUSDC spent: $${usdcAmountSpent.toFixed(2)}\n\n ${tokenAmountReceived.toFixed(2)} token bought\n\nToken Address: ${token_address}\n\nTransaction signature: ${signature}`;
+      const tg_message = `New token buy!\n\nUSDC spent: $${usdcAmountSpent.toFixed(2)}\n\n ${tokenAmountReceived.toFixed(2)} token bought\n\nToken Address: ${token_address}\n\nTransaction signature: ${signature}`;
       await send_message_to_telegramId(tg_message, telegramId);
+      triggerWalletBalanceUpdate();
+
       console.log(`Buy operation successful for wallet ${wallet}`);
   } else {
       console.log("Retrying to buy...");
-
-      pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd, token_address.toString(), wallet, telegramId);
+      await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, "Inside fetchBuyTransactionDetails(), before retrying the buy.");
+      retryBuyTransaction(amount_usd, token_address.toString(), wallet, telegramId);
   }
 }
+
+
+async function attemptSwap(amount_usd: number, token_address: string, wallet: Keypair): Promise<string | null> {
+  try {
+    const signature = await swap_from_usdc_to_token_for_specific_wallet(amount_usd, token_address, wallet);
+    if (!signature) {
+      console.error("Swap attempt failed. No signature was returned.");
+      await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, `Error catched inside attemptSwap:\nSwap attempt failed. No signature was returned.`);
+      return null;
+    }
+    return signature;
+  } catch (error) {
+    console.error("Error during swap attempt:", error);
+    await logFailedBuyAction(wallet.publicKey.toBase58(), amount_usd.toString(), token_address, `Error catched inside attemptSwap:\nError during swap attempt: ${error}`);
+    throw error;  // Propagate the error
+  }
+}
+
+async function attemptSwapToSol(tokenAmount: number, tokenAddress: string, wallet: Keypair): Promise<string | null> {
+  try {
+    const signature = await swap_from_token_to_sol_emergency(tokenAmount, tokenAddress, wallet);
+    if (!signature) {
+      console.error("Swap attempt failed. No signature was returned.");
+      return null;
+    }
+    return signature;
+  } catch (error) {
+    console.error("Error during swap attempt:", error);
+    throw error; // Propagate the error for the retry logic to handle
+  }
+}
+
+
+async function retryBuyTransaction(amount_usd_to_invest: number, token_address: String, wallet: Keypair, telegramId: string) {
+  // Additional logic to create a new transaction and obtain a new signature if necessary
+  console.log("Retrying the sell transaction...");
+  // You might need to regenerate the signature or handle it differently depending on how your application manages transactions
+  
+  await pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd_to_invest, token_address.toString(), wallet, telegramId);
+
+}
+
+
+interface RetryOperation {
+  token_amount: number;
+  token_address: String;
+  wallet: Keypair;
+  telegramId: string;
+}
+
+const retryQueue: RetryOperation[] = [];
+let isProcessingQueue = false;
+
+async function processQueue() {
+  if (isProcessingQueue) return;
+  isProcessingQueue = true;
+
+  while (retryQueue.length > 0) {
+    const operation = retryQueue.shift(); // Get the first operation
+    if (operation) {
+      await retrySellTransaction(operation.token_amount, (operation.token_address).toString(), operation.wallet, operation.telegramId);
+      // Implement a delay between each retry operation to further avoid rate limiting
+      await delay(5000);
+    }
+  }
+
+  isProcessingQueue = false;
+}
+
+// Function to add an operation to the queue
+function enqueueRetryOperation(operation: RetryOperation) {
+  retryQueue.push(operation);
+  processQueue();
+}
+
+async function retrySellTransaction(token_amount: number, token_address: string, wallet: Keypair, telegramId: string) {
+  console.log("Retrying the sell transaction...");
+  await pre_and_post_sell_operations_v2_emergency(token_amount, token_address, `Retry sell operation`, wallet, telegramId);
+}
+
+
+

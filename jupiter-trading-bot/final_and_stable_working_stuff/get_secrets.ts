@@ -3,9 +3,9 @@ import { Message, Update } from 'telegraf/typings/core/types/typegram';
 import { Keypair } from '@solana/web3.js';
 import dotenv from "dotenv";
 import { randomBytes, createCipheriv, createDecipheriv } from 'crypto';
-import { insertWalletData, findWalletByTelegramId, activateWallet, deactivateWallet, getWalletActivationStatus, checkTelegramIdExists, connectToDatabase, getDatabase, updateUserRecord, resetTaxesToPay } from "./mongoDB_connection"; // Ensure the functions are correctly implemented
+import { insertWalletData, findWalletByTelegramId, checkTelegramIdExists, connectToDatabase, getDatabase, updateUserRecord, resetTaxesToPay } from "./mongoDB_connection"; // Ensure the functions are correctly implemented
 import { InlineKeyboardMarkup } from 'telegraf/typings/core/types/typegram';
-import { get_wallet_balances_in_usd, get_wallet_balances_in_usd_v2} from './my_wallet';
+
 import { withdraw_USDC, pay_all_taxes, convert_USDT_to_USDC, convert_SOL_to_USDC, sell_token } from './my_wallet';
 import { sell_all } from './transaction_manager';
 import { Db } from 'mongodb';

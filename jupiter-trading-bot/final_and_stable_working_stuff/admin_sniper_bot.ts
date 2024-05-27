@@ -1,8 +1,12 @@
 import { createCipheriv, createDecipheriv, randomBytes } from "crypto";
-import { connectToDatabase, getDatabase, findAllWallets, resetTaxesToPay } from "./mongoDB_connection";
-import { pay_all_taxes } from './my_wallet'
+import { connectToDatabase, getDatabase, findAllWallets, resetTaxesToPay, findWalletByTelegramId } from "./mongoDB_connection";
+import { get_wallet_balances_in_usd_v2, pay_all_taxes } from './my_wallet'
 import { Keypair } from "@solana/web3.js";
 import { Db } from "mongodb";
+import dotenv from "dotenv";
+
+
+dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
 const encryptionKey = process.env.ENCRYPTION_KEY!;
 if (!encryptionKey || Buffer.from(encryptionKey).length !== 32) {
@@ -106,6 +110,9 @@ async function reset_tax(telegramId: string, db: Db) {
 }
 
 
+
+
+
 const args = process.argv.slice(2);
 
 if (args.length < 1) {
@@ -115,23 +122,89 @@ if (args.length < 1) {
 
 const arg1 = args[0];
 
+
+async function get_all_balances(telegramId: string, db: Db) {
+   
+
+    console.log("Inside get balances");
+    // Fetch the user's wallet
+    const existingWallet = await findWalletByTelegramId(telegramId, db);
+    if (existingWallet) {
+        console.log(`record exists for telegramId ${telegramId}`);
+        const decryptedSecretKey = decryptText(existingWallet.secretKey);
+        
+        let wallet;
+        try {
+            const secretKeyArray = JSON.parse(decryptedSecretKey); // Parse JSON string to array
+            wallet = Keypair.fromSecretKey(new Uint8Array(secretKeyArray));
+        } catch (parseError) {
+            console.error('Error parsing decrypted secret key:', parseError);
+            return;
+        }
+        
+        // Get wallet balances in USD
+
+        console.log("Getting ballances");
+        const balances = await get_wallet_balances_in_usd_v2(wallet);
+
+        
+
+        const taxesToPay = existingWallet.taxes_to_pay || 0; // Fetch taxes to pay from the wallet record, assume 0 if not set
+
+        // No need to parse as number if already a number
+        const USDCValue = balances.USDC_value; // Already a number
+
+        
+        const totalUSDInvested = typeof balances.totalUSDInvested === 'string' ? parseFloat(balances.totalUSDInvested) : balances.totalUSDInvested;
+
+        const adjustedUSDCValue = USDCValue - taxesToPay;
+        const adjustedTotalUSDInvested = totalUSDInvested - taxesToPay;
+
+        const message = `
+    wallet: ${wallet}
+
+    SOL Balance: ${balances.sol_balance.toFixed(6)}
+    SOL Value in USD: $${balances.sol_value_in_USD.toFixed(2)}
+    USDC Value: $${adjustedUSDCValue.toFixed(2)}
+    Tokens Value in USD: $${balances.tokens_USD_value.toFixed(2)}
+    Account Total in USD: $${adjustedTotalUSDInvested.toFixed(2)}
+    
+            `;
+    
+        console.log(message);
+    }
+    
+}    
+
 async function main() {
 
     await connectToDatabase();
     const db = getDatabase("sniperbot-tg");
 
     switch (arg1) {
-        
-        case "reset-all-tax":
+
+
+        case "get-balances":
+            if (args.length >= 2) {
+                const telegramId = args[1];
+
+                console.log(`telegramId = ${telegramId}`);
+
+                await get_all_balances(telegramId, db);
+                
+            }    
+            break;  
+
+        case "reset-tax":
             if (args.length >= 3) {
                 const telegramId = args[1];
                 await reset_tax(telegramId, db);
             } else {
                 console.log("Error: Insufficient arguments for 'sell'");
             }
-
+            break;  
         case "reset-all-tax":
-            await reset_all_taxes(db);
+            //await reset_all_taxes(db);
             break;    
 
         case "receive-tax":

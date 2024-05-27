@@ -21,6 +21,7 @@ The script for the blochchain transaction logic is:  jupiter_swap_STABLE_VERSION
     
 */
 
+
 import dotenv from "dotenv";
 import axios from 'axios';
 import csv from 'csv-parser';
@@ -41,7 +42,8 @@ import {
     pre_and_post_buy_operations_for_ACTIVATED_wallets,
     pre_and_post_sell_operations_for_ACTIVE_wallets,
     pre_and_post_buy_operations_v2_emergency,
-    pre_and_post_sell_operations_v2_emergency
+    pre_and_post_sell_operations_v2_emergency,
+    send_USDC
 } from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/jupiter_swap_STABLE_VERSION';
 
 import { 
@@ -50,10 +52,12 @@ import {
     refresh_SOL_and_USDC_balance, 
     processTransactions, 
     refresh_SOL_balance, 
-    get_wallet_balances_in_usd, 
     getAllBalances_v2, 
     get_wallet_balances_in_usd_v2,
-    sell_token
+    sell_token,
+    sell_all_wrapper,
+    buy_wrapper,
+    get_wallet_balances_in_usd
 } from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/my_wallet';
 
 import { checkOHLCVConditions } from '/root/project/solana-trading-bot/jupiter-trading-bot/final_and_stable_working_stuff/check_OHLCV';
@@ -61,12 +65,16 @@ import { get_token_price, get_token_prices } from '/root/project/solana-trading-
 import { send_message, start_bot, send_message_to_private_group } from './telegram_bot';
 import { 
     getOpenOrderRecordByAddress, 
-    getBuyTrackerRecordsByAddress, 
-    findActiveWallets, 
+    getBuyTrackerRecordsByAddress,
     connectToDatabase,
-    getDatabase
+    getDatabase,
+    findActiveWallets_for_buy,
+    deactivateWallet_buyer,
+    deactivateWallet_seller
 } from "./mongoDB_connection";
 import { Db } from "mongodb";
+import { logFailedBuyAction } from "./log_manager";
+import { createClient } from 'redis';
 
 dotenv.config({ path: '/root/project/solana-trading-bot/jupiter-trading-bot/.env' });
 
@@ -173,27 +181,19 @@ async function buy_all_from_filtered_v2(sniperbot_db: Db, sniperbot_tg_db: Db) {
 
         const stream = fs.createReadStream(filePath).pipe(csv({ headers: csvHeaders }));
 
+        let final_amount_usd_to_buy = 0;
+
         for await (const row of stream) {
             if (!row.address || row.address.trim() === '' || row.address === 'address') {
                 console.log("Skipping row with invalid address.");
                 continue;
             }
 
-            console.log(`Performing OHLCV checks on ${row.address}`);
-            const canBuy = await checkOHLCVConditions(row.pairAddress);
-            console.log(`OHLCV check result: ${canBuy}`);
-
-            if (canBuy) {
-                try {
-                    console.log("Before retryBuyForActiveWallets()");
-                    await retryBuyForActiveWallets(row.address, sniperbot_tg_db, MAX_RETRIES, RETRY_DELAY_MS);
-                    console.log(`Finished buys for associated wallets!`);
-                } catch (error) {
-                    console.error('Error during buy operation:', error);
-                }
+            if (row.address == "GRx2Ajz95vQR85nCrX2GvjhJm8kLRGnKBEBere3phaiU") {
+                continue;
             }
 
-
+            
             const buyTrackerRecords = await getBuyTrackerRecordsByAddress(row.address, sniperbot_db);
             if (buyTrackerRecords.some(record => record.tx_state === "pending")) {
                 console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "pending".`);
@@ -204,20 +204,39 @@ async function buy_all_from_filtered_v2(sniperbot_db: Db, sniperbot_tg_db: Db) {
                 console.log(`Skipping purchase for ${row.address} as it has records in buy_tracker with tx_state "completed".`);
                 continue;
             }
+            
 
             const openOrderRecord = await getOpenOrderRecordByAddress(row.address, sniperbot_db);
+
+            if (openOrderRecord) {
+                console.log(`Skipping purchase for ${row.address} as it is already in Open Orders.`);
+                continue;
+            }
+
             const balance = balances[row.address];
             
-           
+            console.log(`Performing OHLCV checks on ${row.address}`);
+            let canBuy = await checkOHLCVConditions(row.pairAddress);
+            console.log(`OHLCV check result: ${canBuy}`);
+
+            /*
+            if (row.address == "3ffxmEgmUsw1DK9kY2657WwPCNQPTDu7o2yCuAsSUhxc") {
+                canBuy = true;
+            }
+            */
+            
 
             if (canBuy) {
-                if ((balance && balance < 1) || balance === undefined && !openOrderRecord) {
+                if ((balance && balance < 1) || balance === undefined) {
                     const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : null;
                     const wallet = Keypair.fromSecretKey(Uint8Array.from(secretKey));
                     const walletBalances = await get_wallet_balances_in_usd(wallet);
-                    const accountPercentToInvest = parseFloat(process.env.PERCENT_OF_ACCOUNT_TO_INVEST || "0.025");
+                    const accountPercentToInvest = parseFloat(process.env.PERCENT_OF_ACCOUNT_TO_INVEST || "0.0125");
                     console.log(`percent to invest: ${accountPercentToInvest}`);
-                    const amountUSDToBuy = walletBalances.USDC_value * accountPercentToInvest;
+                    const amountUSDToBuy = (walletBalances.USDC_value + walletBalances.sol_value_in_USD) * accountPercentToInvest;
+
+                    final_amount_usd_to_buy = amountUSDToBuy;
+
                     console.log(`amount to buy: ${amountUSDToBuy}`);
 
                     try {
@@ -225,6 +244,7 @@ async function buy_all_from_filtered_v2(sniperbot_db: Db, sniperbot_tg_db: Db) {
                         const result = await pre_and_post_buy_operations_v2(amountUSDToBuy, row.address, row.symbol, sniperbot_db);
                         console.log(`Buy operation result for ${row.address}:`, result);
                     } catch (error) {
+                        await logFailedBuyAction("Main Wallet", amountUSDToBuy.toString(), row.address, `Error catched inside buy_all_from_filtered:\n ${error}`);
                         console.error('Error during buy operation:', error);
                     }
         
@@ -239,7 +259,7 @@ async function buy_all_from_filtered_v2(sniperbot_db: Db, sniperbot_tg_db: Db) {
         }
 
         console.log("\n*** Processing pending transactions... ***\n");
-        const result = await processPendingTransactions(sniperbot_db);
+        const result = await processPendingTransactions(final_amount_usd_to_buy, sniperbot_db);
 
         if (result) {
             console.log("New buy! Updating open_orders!!");
@@ -256,7 +276,7 @@ async function buy_all_from_filtered_v2(sniperbot_db: Db, sniperbot_tg_db: Db) {
     return true;
 }
 
-async function retryBuyForActiveWallets(address: string, sniperbot_tg_db: Db, maxRetries: number, delayMs: number) {
+export async function retryBuyForActiveWallets(address: string, sniperbot_tg_db: Db, maxRetries: number, delayMs: number) {
     let retries = 0;
     let success = false;
 
@@ -289,7 +309,7 @@ export async function printTokenBalancesInUSD_v2() {
     const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : null;
     const wallet = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
-    const balances = await get_wallet_balances_in_usd_v2(wallet);
+    const balances = await get_wallet_balances_in_usd(wallet);
 
     const sol_balance = balances.sol_balance;
     const sol_value_in_USD = balances.sol_value_in_USD;
@@ -441,6 +461,9 @@ async function main() {
     const sniperbot_db = getDatabase("sniperbot");
     const sniperbot_tg_db = getDatabase("sniperbot-tg");
 
+    const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : null;
+    const wallet = Keypair.fromSecretKey(Uint8Array.from(secretKey));
+
     switch (arg1) {
         
 
@@ -464,51 +487,70 @@ async function main() {
             sellWrapper(sniperbot_db, sniperbot_tg_db);
             break;     
 
-        case "sell-main":
-            
-
-            //await pre_and_post_sell_operations_v2_emergency(2000, "4g4X48qFc8Muv61c9HZHVJhVUKtXTiqLBxhg9wgUGTpF", "", "");
+        case "sell-for-wallets":
+        
+            await sell_for_active_wallets("Aj9MJ2AoX1AH3iGhPcrYwPMPjcJyRNo95am36bj3nh6U", 0, sniperbot_tg_db);
             
             break;    
             
+        case "send-usdc":
+            
+            
+
+            await send_USDC(10, "7v6E4oURasPBSHCKgojQjYy7ni62xGxLuzy4T2cQ97Z2", wallet, "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v");
+            
+            break;
+
         case "sell":
            
             if (args.length >= 3) {
                 const tokenAddress = args[1];
                 const amountToken = parseFloat(args[2]);
 
-                const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : null;
-                const wallet = Keypair.fromSecretKey(Uint8Array.from(secretKey));
+                //const secretKey = process.env.SECRET_KEY ? JSON.parse(process.env.SECRET_KEY) : null;
+                //const wallet = Keypair.fromSecretKey(Uint8Array.from(secretKey));
 
-                await sell_token(amountToken, tokenAddress, "2088746736");
+                await pre_and_post_sell_operations_v2(0.65, "So11111111111111111111111111111111111111112", "", "", sniperbot_db);
             } else {
                 console.log("Error: Insufficient arguments for 'sell'");
             }
             break;
             
+        case "buy-for-wallets":
+
+            
+            await buy_for_active_wallets(1, "49xnJumyhPreTYgvBzyAgWyCngF69DLPHu8SPTVYKJXT", sniperbot_tg_db);
+            break;
+              
         case "buy":
 
             
+            await buy_wrapper(4, "So11111111111111111111111111111111111111112", "2088746736");
+            break;   
+            
+        case "buy-manual":
+
+            //await pre_and_post_buy_operations_v2(1000, "So11111111111111111111111111111111111111112", "SOL", sniperbot_db);
+            await buy_manual(750, "So11111111111111111111111111111111111111112");
+            break;     
+
+        case "sell-token_all_wallets":
+
             if (args.length >= 3) {
-
-                const tokenAddress = args[1];
-                const amount_usd = parseFloat(args[2]);
-                await pre_and_post_buy_operations_v2_emergency(amount_usd, tokenAddress, "", sniperbot_db);
+                const percentage_to_sell = args[1];
             
-                break;    
-
+                await full_liquidation(parseFloat(percentage_to_sell), sniperbot_tg_db);
+            } else {
+                console.log("Error: Insufficient arguments for 'sell'");
             }
-        case "sell-all":
+            break;
 
-        if (args.length >= 3) {
-            const percentage_to_sell = args[1];
-            
-            await full_liquidation(parseFloat(percentage_to_sell), sniperbot_tg_db);
-        } else {
-            console.log("Error: Insufficient arguments for 'sell'");
-        }
-        break;
-        
+        case "sell-all":    
+
+            await sell_all(0.5, wallet, "-1002006874152");
+            break;
+
+
         case "balance":
             await printTokenBalancesInUSD();
             break;    
@@ -534,7 +576,7 @@ async function buy_manual(amount_usd: number, token_address: String) {
 async function buy_for_active_wallets(amount_usd: number, token_address: string, db: Db) {
     console.log("Initializing the manual buy...");
 
-    const activeWallets = await findActiveWallets(db);
+    const activeWallets = await findActiveWallets_for_buy(db);
     
 
     if (!activeWallets || activeWallets.length === 0) {
@@ -585,39 +627,49 @@ async function buy_for_active_wallets(amount_usd: number, token_address: string,
             }
 
             console.log("Buying token for wallet!");
-            const total_balances = await get_wallet_balances_in_usd(wallet);
+            const total_balances = await get_wallet_balances_in_usd_v2(wallet);
             
 
             const totalUSDInvested = typeof total_balances.totalUSDInvested === 'string' ? parseFloat(total_balances.totalUSDInvested) : total_balances.totalUSDInvested;
             console.log("Total USD Invested:", totalUSDInvested);
 
-            const amount_usd_to_invest = total_balances.USDC_value * walletRecord.account_percent_to_invest;
+            let amount_usd_to_invest = 0;
 
-
-            if (total_balances.sol_balance < 0.015 && totalUSDInvested > 3) {
-                await pre_and_post_buy_operations_for_ACTIVATED_wallets(3, "So11111111111111111111111111111111111111112", wallet, walletRecord.telegramId);
-                
-            }else if (total_balances.sol_balance < 0.015 && totalUSDInvested < 3) {
-                console.log("Not enough Balance to invest");
-                return;
-            }
-
-            if (totalUSDInvested < 2) {
-                console.log("Not enough Balance to invest");
-                return;
-            }
-
-
-            const signature = await pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd_to_invest, token_address.toString(), wallet, walletRecord.telegramId);
-
-            if(signature) {
-
-                console.log(`Swap transaction send with success for wallet ${wallet}\nn Signature_ ${signature}`);
-
+            if (walletRecord.trade_value_mode === 'percent') {
+                amount_usd_to_invest = total_balances.USDC_value * walletRecord.account_percent_to_invest;
+            } else {
+                amount_usd_to_invest = walletRecord.fixed_value_to_invest;
             }
             
 
+            if (total_balances.sol_balance < 0.01 && totalUSDInvested < 3) {
+                console.log("Not enough Balance to invest");
+                return;
+            }else if (total_balances.sol_balance < 0.01 && totalUSDInvested < 3) {
+                console.log("Not enough Balance to invest");
+                const result_seller = await deactivateWallet_seller(walletRecord.telegramId, db);
+                const result_buyer = await deactivateWallet_buyer(walletRecord.telegramId, db);
+                return;
+            }
+            else if (total_balances.sol_balance < 0.01 && totalUSDInvested > 3) {
+                await pre_and_post_buy_operations_for_ACTIVATED_wallets(3, "So11111111111111111111111111111111111111112", wallet, walletRecord.telegramId);
+                
+            }
 
+            if (amount_usd_to_invest == 0) {
+                console.log("amount to invest is 0, something went wrong.");
+                await logFailedBuyAction(walletRecord. walletAddress, amount_usd_to_invest.toString(), token_address, "amount to invest is 0");
+                return;
+            }
+
+            const signature = await pre_and_post_buy_operations_for_ACTIVATED_wallets(amount_usd_to_invest, token_address.toString(), wallet, walletRecord.telegramId);
+            if(signature) {
+
+                console.log(`Swap transaction send with success for wallet ${wallet}\nn Signature_ ${signature}`);
+                
+            }
+            
+            
         } catch (swapError) {
             console.error(`Swap operation failed for wallet ${walletRecord.walletAddress}:`, swapError);
         } 
